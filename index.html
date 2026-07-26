@@ -1,196 +1,267 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Stanly Fernandez Data Analyst Portfolio </title>
-		<meta charset="utf-8" />
-		<meta name="ViewProject" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Stanly Fernández — Data Engineer and BI professional building reliable ETL pipelines, lakehouse solutions, and decision-ready analytics with Databricks, SQL, Python, Azure, Microsoft Fabric, and Power BI." />
+  <meta name="keywords" content="Data Engineer, BI Engineer, Databricks, PySpark, SQL, Azure, Microsoft Fabric, Power BI, ETL, Delta Lake, Dominican Republic" />
+  <meta name="author" content="Stanly Fernández" />
+  <meta property="og:title" content="Stanly Fernández | Data Engineer & BI Professional" />
+  <meta property="og:description" content="End-to-end data pipelines, lakehouse architecture, and business intelligence solutions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stanly06.github.io/" />
+  <meta name="theme-color" content="#08111f" />
+  <title>Stanly Fernández | Data Engineer & BI Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-		<!-- Wrapper -->
-			<div id="wrapper" class="f">
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Stanly Fernández home">
+        <span class="brand-mark">SF</span>
+        <span>Stanly Fernández</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#credentials">Credentials</a>
+        <a class="nav-cta" href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
 
-				<!-- Intro -->
-					<div id="intro">
-						<h1>Stanly Data Analyst Portfolio<br />
-						</h1>
-						<p>Data Analyst skilled in SQL, Power Bi and Python <a href="https://github.com/Stanly06" target="_blank">Stanly06</a> 
-						</p>
-						<ul class="actions">
-							<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
-						</ul>
-					</div>
+  <main id="main">
+    <section class="hero section">
+      <div class="hero-glow hero-glow-one"></div>
+      <div class="hero-glow hero-glow-two"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="status-dot"></span> Open to remote and international opportunities</div>
+          <h1>Building reliable data pipelines that turn raw data into <span>business value.</span></h1>
+          <p class="hero-lead">Data Engineer and BI professional with an Industrial Engineering background, combining operational leadership with Databricks, SQL, Python, Azure, Microsoft Fabric, and Power BI.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#projects">View featured work</a>
+            <a class="button button-secondary" href="https://github.com/Stanly06" target="_blank" rel="noreferrer">GitHub profile</a>
+          </div>
+          <div class="hero-proof" aria-label="Professional highlights">
+            <div><strong>400+</strong><span>People supported through operations leadership</span></div>
+            <div><strong>End-to-end</strong><span>ETL, lakehouse, analytics, and reporting</span></div>
+            <div><strong>Business-first</strong><span>Solutions tied to KPIs and decisions</span></div>
+          </div>
+        </div>
 
-				<!-- Header -->
-					<header id="header">
-						<a href="https://www.linkedin.com/in/stanly-fernandez/" target="_blank" class="logo">Stanly Fernandez</a>
-					</header>
+        <aside class="hero-card reveal" aria-label="Core stack">
+          <div class="code-window">
+            <div class="window-bar"><span></span><span></span><span></span><small>pipeline.py</small></div>
+            <pre><code><span class="code-muted"># Reliable, incremental processing</span>
+raw = ingest(source="API")
+bronze = persist(raw, format="delta")
+silver = clean(bronze).deduplicate()
+gold = model(silver, business_kpis=True)
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li class="active"><a href="index.html">Projects</a></li>
-							
-							
-						</ul>
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/stanly-fernandez/" class="icon brands fa-linkedin" target="_blank"><span class="label">Linkedin</span></a></li>
-							<li><a href="https://github.com/Stanly06" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-							<li><a href="https://www.facebook.com/stanly.fernandez.545/" class="icon brands fa-facebook-f" target="_blank"><span class="label">Facebook</span></a></li>
-							<li><a href="https://www.instagram.com/stanly_fernandez/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
-							
-						</ul>
-					</nav>
+schedule(gold, cadence="daily")
+publish(gold, destination="Power BI")</code></pre>
+          </div>
+          <div class="stack-list">
+            <span>Databricks</span><span>PySpark</span><span>SQL</span><span>Delta Lake</span><span>Azure</span><span>Power BI</span>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-				<!-- Main -->
-					<div id="main">
+    <section class="section section-muted" id="about">
+      <div class="container split-layout">
+        <div class="section-heading reveal">
+          <span class="section-kicker">About me</span>
+          <h2>Operations experience meets modern data engineering.</h2>
+        </div>
+        <div class="about-copy reveal">
+          <p>I began my career improving manufacturing operations, production quality, planning, and KPI reporting. Working closely with operational data showed me how much better decisions become when information is accurate, automated, and accessible.</p>
+          <p>Today, I design practical data solutions that connect engineering and business: ingesting source data, applying reliable transformations, organizing lakehouse layers, automating workflows, and delivering decision-ready models and dashboards.</p>
+          <p>My differentiator is not only technical execution. I understand process constraints, stakeholder needs, data quality, and the operational consequences of unreliable information.</p>
+          <div class="about-tags"><span>Industrial Engineering</span><span>Data Engineering</span><span>Business Intelligence</span><span>Operational Analytics</span></div>
+        </div>
+      </div>
+    </section>
 
-						<!-- Featured Post -->
-							<article class="post featured">
-								<header class="major">
-								
-									<h2><a href="https://github.com/Stanly06/SQL_Music_Store_Analysis" target="_blank">Data Cleaning in SQL<br />
-									</a></h2>
-									<p>In this Project we clean, Prepare and analyze the music playlist database with SQL and help the store understand its business growth by answering simple questions.<br />
-									</p>
-								</header>
-								<a href="https://github.com/Stanly06/SQL_Music_Store_Analysis" class="image main" target="_blank"><img src="images/music-store.jpg" alt="" /></a>
-								<ul class="actions special">
-									<li><a href="https://github.com/Stanly06/SQL_Music_Store_Analysis" class="button large" target="_blank">View Project</a></li>
-								</ul>
-							</article>
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <span class="section-kicker">Featured projects</span>
+          <h2>Selected work that demonstrates complete data solutions.</h2>
+          <p>Projects are ordered by relevance to Data Engineering, Analytics Engineering, and BI roles.</p>
+        </div>
 
-						<!-- Posts -->
-							<section class="posts">
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/Stanly06/SQL-portfolio-project/tree/main" target="_blank">Data Exploration in SQL<br />
-										</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/SQL-portfolio-project/tree/main" class="image fit" target="_blank"><img src="images/Shark tank.jpg" alt="" /></a>
-									<p>Data Exploration of Shark Tank India Dataset in SQL Server.</p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/SQL-portfolio-project/tree/main" class="button" target="_blank">View Project</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/Stanly06/Big-Mart-Sales-Prediction" target="_blank">Big Mart Sales Prediction<br />
-										    (Machine Learning)</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/Big-Mart-Sales-Prediction" class="image fit" target="_blank"><img src="images/big mart.png" alt="" /></a>
-									<p>The Big Mart Sales Prediction project aims to predict the sales of various products in Big Mart outlets using machine learning techniques. </p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/Big-Mart-Sales-Prediction" class="button" target="_blank">View Project</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-									
-										<h2><a href="https://github.com/Stanly06/Ford-Car-Prediction" target="_blank">Ford-Car-Prediction<br />
-										    (Machine Learning)</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/Ford-Car-Prediction" class="image fit" target="_blank"><img src="images/ford.jpg" alt="" /></a>
-									<p>The presented data science project aims to predict car prices for Ford vehicles using machine learning techniques. To achieve this, a dataset provided by Kaggle will be used, specifically the "Ford Car Price Prediction" datase </p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/Ford-Car-Prediction" class="button" target="_blank">View Project</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/Stanly06/Power-Bi-Project-Infant-mortality" target="_blank">Power Bi Project<br />
-										    Infant Mortality</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/Power-Bi-Project-Infant-mortality" class="image fit" target="_blank"><img src="images/pbi.jpg" alt="" /></a>
-									<p>Data analysis project using Power BI: exploration of infant mortality rates by continents. Utilization of Power Query to segment data and create visualizations. Application of DAX formulas to calculate metrics and ratios, identifying patterns and trends.</p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/Power-Bi-Project-Infant-mortality" class="button" target="_blank">View Project</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/Stanly06/Power-Bi-Project-Video-Games-Industry" target="_blank">Power Bi Project <br />
-											Video Games Industry</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/Power-Bi-Project-Video-Games-Industry" class="image fit" target="_blank"><img src="images/Video-Games.JPG" alt="" /></a>
-									<p>The main objective of the project is to conduct a comprehensive analysis of yearly sales in the video game industry using Power BI as the primary tool. </p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/Power-Bi-Project-Video-Games-Industry" target="_blank" class="button">View Project</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/Stanly06/Exploratory-Data-Analysis-Project-Using-Python/blob/main/Emp_EDA.ipynb" target="_blank">Exploratory Data Analysis project With Python<br />
-										</a></h2>
-									</header>
-									<a href="https://github.com/Stanly06/Exploratory-Data-Analysis-Project-Using-Python/blob/main/Emp_EDA.ipynb" target="_blank" class="image fit"><img src="images/exploratory.jpeg" alt="" /></a>
-									<p>EDA, or Exploratory Data Analysis, involves analyzing and summarizing data sets to gain insights, discover patterns, and identify relationships or anomalies. It is a crucial step in data analysis, helping to understand the underlying structure and characteristics of the data.</p>
-									<ul class="actions special">
-										<li><a href="https://github.com/Stanly06/Exploratory-Data-Analysis-Project-Using-Python/blob/main/Emp_EDA.ipynb" target="_blank" class="button">View Project</a></li>
-									</ul>
-								</article>
-							</section>
+        <article class="featured-project reveal">
+          <div class="project-visual architecture-card" aria-label="MLB pipeline architecture">
+            <div class="architecture-title">Daily MLB Data Pipeline</div>
+            <div class="architecture-flow">
+              <div class="architecture-node">MLB API<small>Source</small></div><span>→</span>
+              <div class="architecture-node bronze">Bronze<small>Raw Delta</small></div><span>→</span>
+              <div class="architecture-node silver">Silver<small>Clean & validated</small></div><span>→</span>
+              <div class="architecture-node gold">Gold<small>Business-ready</small></div>
+            </div>
+            <div class="architecture-footer"><span>Incremental loads</span><span>MERGE / idempotency</span><span>Scheduled Databricks Job</span></div>
+          </div>
+          <div class="project-copy">
+            <span class="project-label">Flagship project</span>
+            <h3>MLB Daily Games ETL Pipeline</h3>
+            <p>An automated Databricks pipeline that ingests daily MLB game data, organizes it through Bronze, Silver, and Gold layers, and maintains reliable incremental updates with Delta Lake patterns.</p>
+            <ul class="project-points">
+              <li>Designed a complete Medallion Architecture workflow.</li>
+              <li>Applied incremental processing and idempotent update logic.</li>
+              <li>Added scheduling, operational logs, and curated analytical outputs.</li>
+            </ul>
+            <div class="tech-row"><span>Databricks</span><span>PySpark</span><span>Delta Lake</span><span>Python</span><span>ETL</span></div>
+            <a class="text-link" href="https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline" target="_blank" rel="noreferrer">Explore repository <span>↗</span></a>
+          </div>
+        </article>
 
-						
+        <div class="project-grid">
+          <article class="project-card reveal">
+            <div class="project-icon">01</div>
+            <span class="project-label">Lakehouse engineering</span>
+            <h3>Wine Quality Data Pipeline</h3>
+            <p>End-to-end Databricks solution structured to demonstrate ingestion, transformation, layered storage, and production-minded pipeline organization.</p>
+            <div class="tech-row"><span>Databricks</span><span>Delta</span><span>PySpark</span></div>
+            <a class="text-link" href="https://github.com/Stanly06/End-to-End-Wine-Quality-Data-Pipeline-with-Databricks" target="_blank" rel="noreferrer">View project <span>↗</span></a>
+          </article>
 
-				
-				
+          <article class="project-card reveal">
+            <div class="project-icon">02</div>
+            <span class="project-label">SQL analytics</span>
+            <h3>Netflix SQL Analysis</h3>
+            <p>Business-oriented SQL exploration using structured queries to answer content, genre, country, and catalog questions from a real-world dataset.</p>
+            <div class="tech-row"><span>SQL</span><span>CTEs</span><span>Analytics</span></div>
+            <a class="text-link" href="https://github.com/Stanly06/Netflix_Sql_Project" target="_blank" rel="noreferrer">View project <span>↗</span></a>
+          </article>
 
-						<section class="split contact">
-							<section class="alt">
-								<h3>Location</h3>
-								<p>Estancia, La Herradura<br />
-								Santiago, Dominican Republic</p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(809) 514-1912</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="#">Sffernandez06@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									
-									<li><a href="https://www.linkedin.com/in/stanly-fernandez/" target="_blank" class="icon brands alt fa-linkedin"><span class="label">Linkedin</span></a></li>
-									<li><a href="https://github.com/Stanly06" target="_blank" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="https://www.facebook.com/stanly.fernandez.545/" target="_blank" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="https://www.instagram.com/stanly_fernandez/" target="_blank" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-									
-								</ul>
-							</section>
-						</section>
-					</footer>
+          <article class="project-card reveal">
+            <div class="project-icon">03</div>
+            <span class="project-label">Business intelligence</span>
+            <h3>Video Games Industry Dashboard</h3>
+            <p>Power BI analysis of yearly sales performance, market patterns, publishers, platforms, and regional trends in the video game industry.</p>
+            <div class="tech-row"><span>Power BI</span><span>DAX</span><span>Power Query</span></div>
+            <a class="text-link" href="https://github.com/Stanly06/Power-Bi-Project-Video-Games-Industry" target="_blank" rel="noreferrer">View project <span>↗</span></a>
+          </article>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
+          <article class="project-card reveal">
+            <div class="project-icon">04</div>
+            <span class="project-label">Python analytics</span>
+            <h3>Exploratory Data Analysis</h3>
+            <p>Python-based data profiling, cleaning, visualization, and interpretation focused on discovering patterns and communicating useful findings.</p>
+            <div class="tech-row"><span>Python</span><span>Pandas</span><span>Matplotlib</span></div>
+            <a class="text-link" href="https://github.com/Stanly06/Exploratory-Data-Analysis-Project-Using-Python" target="_blank" rel="noreferrer">View project <span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-			</div>
+    <section class="section section-muted" id="experience">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Professional experience</span>
+          <h2>Leadership, process improvement, and data-driven operations.</h2>
+        </div>
+        <div class="timeline">
+          <article class="timeline-item reveal">
+            <div class="timeline-marker"></div>
+            <div class="timeline-meta">2023–2026 · Santiago, Dominican Republic</div>
+            <div class="timeline-content">
+              <h3>Production Coordination & Quality Control · CDF Domitab</h3>
+              <p>Coordinated large-scale manufacturing operations, quality control, production planning, reporting, and cross-functional execution in a complex tobacco environment.</p>
+              <ul>
+                <li>Supported operational leadership across a workforce of approximately 400 people.</li>
+                <li>Built and used KPI reports, Excel analyses, Power BI dashboards, and process controls for management decisions.</li>
+                <li>Worked with production, maintenance, finance, quality, customers, and senior leadership to improve visibility and execution.</li>
+              </ul>
+            </div>
+          </article>
+          <article class="timeline-item reveal">
+            <div class="timeline-marker"></div>
+            <div class="timeline-meta">2021–2023 · Santiago, Dominican Republic</div>
+            <div class="timeline-content">
+              <h3>Production Leader</h3>
+              <p>Directed production goals, quality follow-up, inventory control, personnel coordination, and performance monitoring using SAP, Excel, and operational KPIs.</p>
+            </div>
+          </article>
+          <article class="timeline-item reveal">
+            <div class="timeline-marker"></div>
+            <div class="timeline-meta">2018–2021 · Santiago, Dominican Republic</div>
+            <div class="timeline-content">
+              <h3>Warehouse, Production & Inventory Support</h3>
+              <p>Built the operational foundation that later informed my approach to data quality, traceability, workflow design, and business reporting.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <span class="section-kicker">Technical capabilities</span>
+          <h2>A focused stack for engineering reliable data products.</h2>
+        </div>
+        <div class="skills-grid">
+          <article class="skill-card reveal"><h3>Data Engineering</h3><p>ETL/ELT · Data pipelines · Medallion Architecture · Incremental ingestion · Idempotency · Data quality · Workflow orchestration</p></article>
+          <article class="skill-card reveal"><h3>Lakehouse & Cloud</h3><p>Databricks · Delta Lake · Unity Catalog · Microsoft Fabric · Azure fundamentals · Lakehouse modeling</p></article>
+          <article class="skill-card reveal"><h3>Programming & Querying</h3><p>Python · PySpark · SQL · Pandas · NumPy · CTEs · Window functions · Git · GitHub</p></article>
+          <article class="skill-card reveal"><h3>Business Intelligence</h3><p>Power BI · DAX · Power Query · Data modeling · KPI design · Executive reporting · Advanced Excel</p></article>
+          <article class="skill-card reveal"><h3>Operations Systems</h3><p>SAP ERP · Production planning · Quality control · Inventory · Process improvement · Root-cause analysis</p></article>
+          <article class="skill-card reveal"><h3>Professional Strengths</h3><p>Cross-functional leadership · Business communication · Stakeholder alignment · Continuous improvement · Spanish native · English B1 progressing to B2</p></article>
+        </div>
+      </div>
+    </section>
 
-	</body>
+    <section class="section section-muted" id="credentials">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Education & credentials</span>
+          <h2>Business, engineering, analytics, and continuous learning.</h2>
+        </div>
+        <div class="credentials-grid">
+          <article class="credential-card reveal"><span>Graduate education</span><h3>MBA + Master in Big Data & Business Intelligence</h3><p>ENEB · Completed 2026</p></article>
+          <article class="credential-card reveal"><span>Professional certificate</span><h3>Google Business Intelligence</h3><p>Google · Completed 2025</p></article>
+          <article class="credential-card reveal"><span>Bachelor’s degree</span><h3>Industrial Engineering</h3><p>Universidad Autónoma de Santo Domingo</p></article>
+          <article class="credential-card reveal"><span>Current development</span><h3>Databricks & Microsoft Fabric Data Engineering</h3><p>Lakehouse, Delta Lake, PySpark, pipelines, and certification preparation</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-card reveal">
+        <div>
+          <span class="section-kicker">Let’s connect</span>
+          <h2>Looking for a data professional who understands both systems and operations?</h2>
+          <p>I am open to Data Engineer, Analytics Engineer, BI Engineer, and data-focused analyst opportunities in the Dominican Republic or remotely.</p>
+        </div>
+        <div class="contact-actions">
+          <a class="button button-primary" href="mailto:sffernandez06@gmail.com">Email me</a>
+          <a class="button button-secondary" href="https://www.linkedin.com/in/stanly-fernandez/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="button button-secondary" href="https://github.com/Stanly06" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Stanly Fernández. Built for clarity, performance, and opportunity.</p>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>
