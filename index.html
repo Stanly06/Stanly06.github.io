@@ -301,6 +301,22 @@ a.share:hover{transform:translateY(-3px);border-color:#FF3B3B}
 .guide-btn:hover{transform:translateY(-2px);background:color-mix(in srgb,var(--c) 24%,transparent)}
 .guide-btn svg{width:17px;height:17px;color:var(--c)}
 
+.guide-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+button.guide-btn{cursor:pointer;font-family:var(--f-body);margin-top:0}
+.guide-link{font-size:.84rem;font-weight:600;color:var(--muted);text-decoration:none}
+.guide-link:hover{color:var(--fg)}
+.pdfv{position:fixed;inset:0;z-index:120;background:rgba(5,8,22,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.pdfv-box{width:min(980px,100%);height:100%;max-height:100%;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--ink-2);border:1px solid var(--line);box-shadow:var(--shadow);animation:pop .25s ease}
+.pdfv-bar{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pdfv-bar b{font-family:var(--f-display);font-size:1rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdfv-info{font:500 .76rem var(--f-mono);color:var(--muted)}
+.pdfv-tools{display:inline-flex;gap:6px}
+.pdfv-tools .icon-btn{font-size:1.1rem;text-decoration:none}
+.pdfv-pages{flex:1;overflow:auto;background:#1b1f33;padding:18px 12px;display:grid;justify-items:center;gap:14px;align-content:start}
+.pdfv-page{position:relative;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.35);border-radius:4px;overflow:hidden;max-width:100%}
+.pdfv-page canvas{display:block;width:100%;height:auto}
+.pdfv-msg{color:#C9CFEA;font-size:.95rem;padding:40px 16px;text-align:center}
+
 /* CONTACT */
 .contact{border-radius:28px;padding:44px;position:relative;overflow:hidden;background:var(--ink-2);border:1px solid var(--line);display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
 .contact::before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-200px;background:conic-gradient(from 90deg,var(--sea),var(--mango),var(--hibiscus),var(--sea));filter:blur(90px);opacity:.28;animation:spin 18s linear infinite}
@@ -900,14 +916,14 @@ footer a:hover{color:var(--fg)}
         <h3><span data-l="en">Databricks DE Associate study guide</span><span data-l="es">Guía de estudio Databricks DE Associate</span></h3>
         <p><span data-l="en">78 unique practice questions with explanations, organized by the 7 official exam sections, plus 28 hands-on SQL and PySpark code questions I wrote.</span><span data-l="es">78 preguntas de práctica únicas con explicación, organizadas por las 7 secciones oficiales del examen, más 28 preguntas de código SQL y PySpark que escribí.</span></p>
         <div class="guide-meta"><span>PDF · 66 <span data-l="en">pages</span><span data-l="es">páginas</span></span><span>English</span></div>
-        <a class="guide-btn" href="https://stanly06.github.io/guides/Databricks_DE_Associate_Study_Guide_Stanly_Fernandez.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-l="en">Open the guide</span><span data-l="es">Abrir la guía</span></a>
+        <div class="guide-actions"><button class="guide-btn" type="button" data-pdf="guides/Databricks_DE_Associate_Study_Guide_Stanly_Fernandez.pdf" data-abs="https://stanly06.github.io/guides/Databricks_DE_Associate_Study_Guide_Stanly_Fernandez.pdf" data-title="Databricks DE Associate · Study Guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-l="en">Open the guide</span><span data-l="es">Abrir la guía</span></button><a class="guide-link" href="https://stanly06.github.io/guides/Databricks_DE_Associate_Study_Guide_Stanly_Fernandez.pdf" target="_blank" rel="noreferrer"><span data-l="en">New tab ↗</span><span data-l="es">Pestaña nueva ↗</span></a></div>
       </div>
       <div class="share reveal" style="--c:var(--mango)">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
         <h3><span data-l="en">100 Power BI interview questions</span><span data-l="es">100 preguntas de entrevista de Power BI</span></h3>
         <p><span data-l="en">Questions and answers from fundamentals to DAX, data modeling, Power BI Service, performance tuning and Python/R integration, with DAX examples.</span><span data-l="es">Preguntas y respuestas desde los fundamentos hasta DAX, modelado, Power BI Service, optimización del rendimiento e integración con Python y R, con ejemplos en DAX.</span></p>
         <div class="guide-meta"><span>PDF · 65 <span data-l="en">pages</span><span data-l="es">páginas</span></span><span>Español</span></div>
-        <a class="guide-btn" href="https://stanly06.github.io/guides/100_Preguntas_Power_BI_Stanly_Fernandez.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-l="en">Open the guide</span><span data-l="es">Abrir la guía</span></a>
+        <div class="guide-actions"><button class="guide-btn" type="button" data-pdf="guides/100_Preguntas_Power_BI_Stanly_Fernandez.pdf" data-abs="https://stanly06.github.io/guides/100_Preguntas_Power_BI_Stanly_Fernandez.pdf" data-title="100 preguntas de entrevista de Power BI"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-l="en">Open the guide</span><span data-l="es">Abrir la guía</span></button><a class="guide-link" href="https://stanly06.github.io/guides/100_Preguntas_Power_BI_Stanly_Fernandez.pdf" target="_blank" rel="noreferrer"><span data-l="en">New tab ↗</span><span data-l="es">Pestaña nueva ↗</span></a></div>
       </div>
     </div>
   </div>
@@ -952,6 +968,21 @@ footer a:hover{color:var(--fg)}
 
 <button class="to-top" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
 
+<div class="pdfv" id="pdfv" hidden>
+  <div class="pdfv-box" role="dialog" aria-modal="true" aria-labelledby="pdfvTitle">
+    <div class="pdfv-bar">
+      <b id="pdfvTitle"></b>
+      <span class="pdfv-info" id="pdfvInfo"></span>
+      <span class="pdfv-tools">
+        <button class="icon-btn" id="pdfvOut" type="button" aria-label="Zoom out">−</button>
+        <button class="icon-btn" id="pdfvIn" type="button" aria-label="Zoom in">+</button>
+        <a class="icon-btn" id="pdfvTab" href="#" target="_blank" rel="noreferrer" aria-label="Open in new tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg></a>
+        <button class="icon-btn" id="pdfvClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </span>
+    </div>
+    <div class="pdfv-pages" id="pdfvPages"></div>
+  </div>
+</div>
 <div class="lb" id="lb" hidden>
   <div class="lb-box" role="dialog" aria-modal="true" aria-label="Project screenshots">
     <button class="lb-close icon-btn" id="lbClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -1136,6 +1167,42 @@ footer a:hover{color:var(--fg)}
   $('#lbPrev').addEventListener('click',()=>{gi=(gi-1+gal.length)%gal.length;lbShow()});
   $('#lbNext').addEventListener('click',()=>{gi=(gi+1)%gal.length;lbShow()});
   addEventListener('keydown',e=>{if(lbx.hidden)return;if(e.key==='Escape')lbClose();if(e.key==='ArrowRight')$('#lbNext').click();if(e.key==='ArrowLeft')$('#lbPrev').click()});
+
+  /* in-page PDF viewer (PDF.js, loaded on first use) */
+  const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+  const loadScript=src=>new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s)});
+  let pdfReady=null;
+  const getPdfjs=()=>pdfReady||(pdfReady=loadScript(PDFJS+'pdf.worker.min.js').then(()=>loadScript(PDFJS+'pdf.min.js')).then(()=>{window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js';return window.pdfjsLib}));
+  const pv=$('#pdfv'),pvPages=$('#pdfvPages');let pvDoc=null,pvScale=1,pvObs=null,pvToken=0;
+  const msg=t=>{pvPages.innerHTML='<div class="pdfv-msg">'+t+'</div>'};
+  async function renderAll(){
+    const token=++pvToken;pvPages.innerHTML='';if(pvObs)pvObs.disconnect();
+    const avail=Math.min(pvPages.clientWidth-24,900)*pvScale;
+    const first=await pvDoc.getPage(1),v0=first.getViewport({scale:1}),ratio=v0.height/v0.width;
+    const queue=[];let busy=false;
+    const pump=async()=>{if(busy)return;busy=true;while(queue.length&&token===pvToken){const el=queue.shift();
+      const page=await pvDoc.getPage(+el.dataset.n);if(token!==pvToken)break;
+      const dpr=Math.min(2,devicePixelRatio||1),vp=page.getViewport({scale:avail/page.getViewport({scale:1}).width*dpr});
+      const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+      await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;if(token!==pvToken)break;el.appendChild(c)}busy=false};
+    pvObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.q){e.target.dataset.q='1';pvObs.unobserve(e.target);queue.push(e.target)}});queue.sort((a,b)=>a.dataset.n-b.dataset.n);pump()},{root:pvPages,rootMargin:'400px 0px'});
+    for(let i=1;i<=pvDoc.numPages;i++){const d=document.createElement('div');d.className='pdfv-page';d.dataset.n=i;d.style.width=avail+'px';d.style.height=(avail*ratio)+'px';pvPages.appendChild(d)}
+    requestAnimationFrame(()=>$$('.pdfv-page',pvPages).forEach(d=>pvObs.observe(d)));
+  }
+  async function openPdf(src,title,abs){
+    $('#pdfvTitle').textContent=title;$('#pdfvTab').href=abs;$('#pdfvInfo').textContent='';pvScale=1;pv.hidden=false;document.body.style.overflow='hidden';
+    msg(L()==='es'?'Cargando la guía…':'Loading the guide…');
+    try{const lib=await getPdfjs();pvDoc=await lib.getDocument({url:src}).promise;
+      $('#pdfvInfo').textContent=pvDoc.numPages+(L()==='es'?' páginas':' pages');await renderAll();$('#pdfvClose').focus();}
+    catch(err){msg((L()==='es'?'No se pudo mostrar aquí. ':'Could not display it here. ')+'<a href="'+abs+'" target="_blank" rel="noreferrer" style="color:#19D3C5">'+(L()==='es'?'Abrir en una pestaña nueva':'Open in a new tab')+'</a>')}
+  }
+  const closePdf=()=>{pv.hidden=true;document.body.style.overflow='';pvToken++;if(pvObs)pvObs.disconnect();pvPages.innerHTML=''};
+  $$('[data-pdf]').forEach(b=>b.addEventListener('click',()=>openPdf(b.dataset.pdf,b.dataset.title,b.dataset.abs)));
+  $('#pdfvClose').addEventListener('click',closePdf);
+  pv.addEventListener('click',e=>{if(e.target===pv)closePdf()});
+  addEventListener('keydown',e=>{if(!pv.hidden&&e.key==='Escape')closePdf()});
+  $('#pdfvIn').addEventListener('click',()=>{if(pvDoc&&pvScale<2){pvScale+=.25;renderAll()}});
+  $('#pdfvOut').addEventListener('click',()=>{if(pvDoc&&pvScale>.5){pvScale-=.25;renderAll()}});
 
   /* live duration of current role */
   $$('[data-since]').forEach(el=>{const [y,m]=el.dataset.since.split('-').map(Number),n=new Date();let t=(n.getFullYear()-y)*12+(n.getMonth()+1-m)+1;const Y=Math.floor(t/12),M=t%12;
