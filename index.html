@@ -12,6 +12,12 @@
 <meta property="og:description" content="Power BI dashboards, SQL modeling and Databricks lakehouse pipelines with an operations mindset.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://stanly06.github.io/">
+<meta property="og:image" content="https://stanly06.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://stanly06.github.io/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2319D3C5'/%3E%3Cstop offset='.55' stop-color='%23FFB547'/%3E%3Cstop offset='1' stop-color='%23FF4D8D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='%230B1026'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -684,10 +690,10 @@ footer a:hover{color:var(--fg)}
 
     <article class="flagship reveal" id="rd-platform">
       <div class="flagship-copy">
-        <span class="status"><span data-l="en">Flagship · in development</span><span data-l="es">Proyecto principal · en desarrollo</span></span>
+        <span class="status"><span data-l="en">Flagship · in progress: data profiling</span><span data-l="es">Proyecto principal · en curso: perfilado de datos</span></span>
         <h3>RD Economic &amp; Financial Intelligence Platform</h3>
-        <p><span data-l="en">A Databricks lakehouse that collects Dominican economic and financial indicators, starting with exchange rates, and moves them through Bronze, Silver and Gold layers into analysis-ready tables for BI.</span><span data-l="es">Un lakehouse en Databricks que recopila indicadores económicos y financieros de República Dominicana, empezando por la tasa de cambio, y los lleva por las capas Bronze, Silver y Gold hasta tablas listas para BI.</span></p>
-        <div class="tags"><span>Databricks</span><span>PySpark</span><span>Delta Lake</span><span>Medallion</span><span>SQL</span><span>Power BI</span></div>
+        <p><span data-l="en">A Databricks lakehouse to centralize Dominican economic and price data (BCRD exchange rate and CPI, MICM fuel, Pro Consumidor, agriculture). Business requirements, KPI catalog and source assessment are done, the Unity Catalog foundation is built, and source profiling is in progress before the Bronze, Silver and Gold pipelines.</span><span data-l="es">Un lakehouse en Databricks para centralizar datos económicos y de precios de República Dominicana (tasa de cambio e IPC del BCRD, combustibles del MICM, Pro Consumidor, agricultura). Ya están listos los requerimientos de negocio, el catálogo de KPIs y la evaluación de fuentes, y la base en Unity Catalog. El perfilado de fuentes está en curso antes de construir los pipelines Bronze, Silver y Gold.</span></p>
+        <div class="tags"><span>Databricks</span><span>Unity Catalog</span><span>Delta Lake</span><span>Medallion</span><span>Data profiling</span><span>Power BI</span></div>
         <div class="card-links"><a class="card-link" style="--cat:var(--sea)" href="https://github.com/Stanly06/rd-economic-financial-intelligence" target="_blank" rel="noreferrer"><span data-l="en">View repository</span><span data-l="es">Ver repositorio</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
       </div>
@@ -726,13 +732,13 @@ footer a:hover{color:var(--fg)}
 <rect x="245" y="39" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--bronze);stroke-width:1.5"/><circle cx="260" cy="52" r="4" style="fill:var(--bronze)"/><text x="271" y="56" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">bronze</text><rect x="245" y="90" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--silver);stroke-width:1.5"/><circle cx="260" cy="103" r="4" style="fill:var(--silver)"/><text x="271" y="107" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">silver</text><rect x="245" y="141" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--gold);stroke-width:1.5"/><circle cx="260" cy="154" r="4" style="fill:var(--gold)"/><text x="271" y="158" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">gold</text>
 </svg><button class="shots top" type="button" data-gallery="mlb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">2 screenshots</span><span data-l="es">2 capturas</span></button></div>
         
-        <div class="card-top"><span class="cat">Databricks</span><span class="metric">−40% <span data-l="en">runtime</span><span data-l="es">tiempo</span></span></div>
+        <div class="card-top"><span class="cat">Databricks</span><span class="metric"><span data-l="en">daily job</span><span data-l="es">job diario</span></span></div>
         <h3>MLB Data Engineering Pipeline</h3>
-        <p><span data-l="en">End-to-end ETL on Azure Databricks: MLB API data through Bronze, Silver and Gold Delta tables, with PySpark cleaning, schema enforcement and incremental MERGE loads. Partition pruning and caching cut processing time by 40%.</span><span data-l="es">ETL completo en Azure Databricks: datos de la API de MLB por tablas Delta Bronze, Silver y Gold, con limpieza en PySpark, control de esquema y cargas incrementales con MERGE. El particionado y el caché redujeron 40% el tiempo de proceso.</span></p>
-        <div class="tags"><span>PySpark</span><span>Delta Lake</span><span>MERGE</span><span>Jobs</span></div>
+        <p><span data-l="en">Daily ETL on Databricks: pulls yesterday's games from the MLB Stats API, stores raw JSON in Bronze, parses it into a Silver games table and builds Gold daily KPIs, using Delta MERGE so re-runs never duplicate data. Runs nightly as a Databricks Job with a log table per layer.</span><span data-l="es">ETL diario en Databricks: extrae los juegos del día anterior de la API de MLB, guarda el JSON crudo en Bronze, lo transforma en una tabla Silver de juegos y genera KPIs diarios en Gold, con MERGE en Delta para que las re-ejecuciones no dupliquen datos. Corre cada noche como Job de Databricks con una tabla de logs por capa.</span></p>
+        <div class="tags"><span>PySpark</span><span>REST API</span><span>Delta MERGE</span><span>Databricks Jobs</span></div>
         <div class="card-links">
           <a class="card-link" href="https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline" target="_blank" rel="noreferrer"><span data-l="en">Repository</span><span data-l="es">Repositorio</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          <a class="card-link" href="https://www.youtube.com/@stanlyfernandez2887" target="_blank" rel="noreferrer"><span data-l="en">Video walkthrough</span><span data-l="es">Video explicativo</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="card-link" href="https://youtu.be/oDlRG3iUFq8" target="_blank" rel="noreferrer"><span data-l="en">Video walkthrough</span><span data-l="es">Video explicativo</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
       </article>
       <article class="card c-db" data-cat="db">
@@ -744,16 +750,16 @@ footer a:hover{color:var(--fg)}
 <path d="M60 34 h96 c0 58 -18 86 -48 92 c-30 -6 -48 -34 -48 -92z" style="fill:none;stroke:var(--fg);stroke-width:2"/>
 <path d="M108 126 V168 M84 170 h48" style="stroke:var(--fg);stroke-width:2.5;stroke-linecap:round"/>
 <path class="flow" d="M165 90 H232" style="fill:none;stroke:var(--muted);stroke-width:1.5"/>
-<g><ellipse cx="300" cy="56" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--bronze);stroke-width:1.6"/><text x="300" y="60" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">bronze</text>
-<ellipse cx="300" cy="100" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--silver);stroke-width:1.6"/><text x="300" y="104" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">silver</text>
-<ellipse cx="300" cy="144" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--gold);stroke-width:1.6"/><text x="300" y="148" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">gold</text></g>
-<text x="300" y="182" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--bronze)">delta tables</text>
+<g><ellipse cx="300" cy="56" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--bronze);stroke-width:1.6"/><text x="300" y="60" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">explore</text>
+<ellipse cx="300" cy="100" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--silver);stroke-width:1.6"/><text x="300" y="104" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">clean</text>
+<ellipse cx="300" cy="144" rx="58" ry="14" style="fill:var(--ink-2);stroke:var(--gold);stroke-width:1.6"/><text x="300" y="148" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">insights</text></g>
+<text x="300" y="182" text-anchor="middle" style="font-family:var(--f-mono);font-size:10px;fill:var(--bronze)">pyspark · pandas</text>
 </svg></div>
         
         <div class="card-top"><span class="cat">Databricks</span></div>
         <h3>Wine Quality Data Pipeline</h3>
-        <p><span data-l="en">End-to-end Databricks solution covering ingestion, transformation, layered Delta storage and analysis of wine quality attributes.</span><span data-l="es">Solución completa en Databricks: ingesta, transformación, almacenamiento Delta por capas y análisis de atributos de calidad del vino.</span></p>
-        <div class="tags"><span>Databricks</span><span>Delta</span><span>PySpark</span></div>
+        <p><span data-l="en">Exploratory analysis in Databricks with PySpark and pandas: cleaning, statistics and visualizations to see how alcohol, acidity and other properties relate to wine quality.</span><span data-l="es">Análisis exploratorio en Databricks con PySpark y pandas: limpieza, estadística y visualizaciones para ver cómo el alcohol, la acidez y otras propiedades se relacionan con la calidad del vino.</span></p>
+        <div class="tags"><span>Databricks</span><span>PySpark</span><span>pandas</span><span>EDA</span></div>
         <div class="card-links"><a class="card-link" href="https://github.com/Stanly06/End-to-End-Wine-Quality-Data-Pipeline-with-Databricks" target="_blank" rel="noreferrer"><span data-l="en">Repository</span><span data-l="es">Repositorio</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
       </article>
       <article class="card c-sql" data-cat="sql">
@@ -1013,15 +1019,15 @@ footer a:hover{color:var(--fg)}
     en:{roles:['BI Analyst','Power BI Developer','Data Analyst','Databricks Data Engineer','Operations Data Analyst'],
         ph:'Jump to a section or project…',foot:'↑ ↓ to move · Enter to open · Esc to close',none:'No matches',copied:'Copied',selected:'Selected',
         cmd:[['About','#about','section'],['Experience','#experience','section'],['Certifications','#credentials','section'],['Projects','#projects','section'],['RD Economic & Financial Intelligence','#rd-platform','flagship'],['Skills','#skills','section'],['Contact','#contact','section'],['GitHub','https://github.com/Stanly06','link'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','link'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','link'],['Switch to Spanish','lang','action'],['Toggle theme','theme','action']],
-        layers:{bronze:{t:'Bronze · raw, append-only',i:['Ingest exchange-rate and economic indicator files as they arrive','Store untouched source data as Delta tables with load timestamps','Keep full history so any day can be reprocessed']},
-                silver:{t:'Silver · cleaned and conformed',i:['Fix types, dates and currency codes; remove duplicates','Validate ranges and nulls before data moves on','Standardize into conformed tables such as <code>silver.exchange_rates</code>']},
-                gold:{t:'Gold · ready for analysis',i:['Aggregate daily and monthly rates and variations','Model business-friendly tables for Power BI and SQL','Feed dashboards on the Dominican peso and the local economy']}}},
+        layers:{bronze:{t:'Bronze (target design) · raw, append-only',i:['Ingest exchange-rate and economic indicator files as they arrive','Store untouched source data as Delta tables with load timestamps','Keep full history so any day can be reprocessed']},
+                silver:{t:'Silver (target design) · cleaned and conformed',i:['Fix types, dates and currency codes; remove duplicates','Validate ranges and nulls before data moves on','Standardize into conformed tables such as <code>silver.exchange_rates</code>']},
+                gold:{t:'Gold (target design) · ready for analysis',i:['Aggregate daily and monthly rates and variations','Model business-friendly tables for Power BI and SQL','Feed dashboards on the Dominican peso and the local economy']}}},
     es:{roles:['Analista de BI','Desarrollador Power BI','Analista de Datos','Data Engineer en Databricks','Analista de Datos de Operaciones'],
         ph:'Ir a una sección o proyecto…',foot:'↑ ↓ para moverte · Enter para abrir · Esc para cerrar',none:'Sin resultados',copied:'Copiado',selected:'Seleccionado',
         cmd:[['Sobre mí','#about','sección'],['Experiencia','#experience','sección'],['Certificaciones','#credentials','sección'],['Proyectos','#projects','sección'],['RD Economic & Financial Intelligence','#rd-platform','principal'],['Skills','#skills','sección'],['Contacto','#contact','sección'],['GitHub','https://github.com/Stanly06','enlace'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','enlace'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','enlace'],['Cambiar a inglés','lang','acción'],['Cambiar tema','theme','acción']],
-        layers:{bronze:{t:'Bronze · datos crudos, solo se agregan',i:['Ingesta de archivos de tasa de cambio e indicadores económicos a medida que llegan','Guarda los datos de origen sin modificar en tablas Delta con fecha de carga','Conserva todo el historial para reprocesar cualquier día']},
-                silver:{t:'Silver · limpio y estandarizado',i:['Corrige tipos, fechas y códigos de moneda; elimina duplicados','Valida rangos y nulos antes de avanzar','Estandariza en tablas como <code>silver.exchange_rates</code>']},
-                gold:{t:'Gold · listo para análisis',i:['Agrega tasas y variaciones diarias y mensuales','Modela tablas de negocio para Power BI y SQL','Alimenta dashboards sobre el peso dominicano y la economía local']}}}
+        layers:{bronze:{t:'Bronze (diseño objetivo) · datos crudos, solo se agregan',i:['Ingesta de archivos de tasa de cambio e indicadores económicos a medida que llegan','Guarda los datos de origen sin modificar en tablas Delta con fecha de carga','Conserva todo el historial para reprocesar cualquier día']},
+                silver:{t:'Silver (diseño objetivo) · limpio y estandarizado',i:['Corrige tipos, fechas y códigos de moneda; elimina duplicados','Valida rangos y nulos antes de avanzar','Estandariza en tablas como <code>silver.exchange_rates</code>']},
+                gold:{t:'Gold (diseño objetivo) · listo para análisis',i:['Agrega tasas y variaciones diarias y mensuales','Modela tablas de negocio para Power BI y SQL','Alimenta dashboards sobre el peso dominicano y la economía local']}}}
   };
   let curLayer='bronze';
   function setLang(l){
