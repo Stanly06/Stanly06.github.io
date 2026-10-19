@@ -318,6 +318,7 @@ button.guide-btn{cursor:pointer;font-family:var(--f-body);margin-top:0}
 .pdfv-info{font:500 .76rem var(--f-mono);color:var(--muted)}
 .pdfv-tools{display:inline-flex;gap:6px}
 .pdfv-tools .icon-btn{font-size:1.1rem;text-decoration:none}
+.pdfv-dl{background:var(--grad)!important;color:#0B1026!important;border-color:transparent!important;font:700 .8rem var(--f-body)!important;gap:6px;padding:0 12px!important}
 .pdfv-pages{flex:1;overflow:auto;background:#1b1f33;padding:18px 12px;display:grid;justify-items:center;gap:14px;align-content:start}
 .pdfv-page{position:relative;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.35);border-radius:4px;overflow:hidden;max-width:100%}
 .pdfv-page canvas{display:block;width:100%;height:auto}
@@ -330,7 +331,7 @@ button.guide-btn{cursor:pointer;font-family:var(--f-body);margin-top:0}
 .cv-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--grad);color:#0B1026;flex:none}
 .cv-ic svg{width:22px;height:22px}
 .cv-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.cv-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:12px;background:var(--fg);color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;transition:transform .2s}
+.cv-btn{border:0;cursor:pointer;font-family:var(--f-body);display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:12px;background:var(--fg);color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;transition:transform .2s}
 .cv-btn:hover{transform:translateY(-2px)}
 .cv-btn svg{width:16px;height:16px}
 .cv-word{font-size:.8rem;color:var(--muted)}
@@ -461,7 +462,7 @@ footer a:hover{color:var(--fg)}
         <button type="button" data-set-lang="en" aria-pressed="true" title="English">EN</button>
         <button type="button" data-set-lang="es" aria-pressed="false" title="Español">ES</button>
       </div>
-      <a class="icon-btn cv-nav" id="cvNav" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer" aria-label="Download CV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>CV</a>
+      <button class="icon-btn cv-nav" id="cvNav" type="button" data-pdf="cv/Stanly_Fernandez_CV_EN.pdf" data-abs="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" data-title="Stanly Fernández · CV (English)" aria-label="Open CV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>CV</button>
       <button class="icon-btn kbd-hint" id="cmdkBtn" type="button" aria-label="Quick navigation">Ctrl K</button>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Light / dark">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -498,8 +499,8 @@ footer a:hover{color:var(--fg)}
       <div class="cv-box" id="cvHero">
         <div class="cv-head"><span class="cv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><div><b><span data-l="en">Download my CV</span><span data-l="es">Descarga mi CV</span></b><small><span data-l="en">PDF · 2 pages</span><span data-l="es">PDF · 2 páginas</span></small></div></div>
         <div class="cv-actions">
-          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</a>
-          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</a>
+          <button class="cv-btn" type="button" data-pdf="cv/Stanly_Fernandez_CV_EN.pdf" data-abs="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" data-title="Stanly Fernández · CV (English)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</button>
+          <button class="cv-btn" type="button" data-pdf="cv/Stanly_Fernandez_CV_ES.pdf" data-abs="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" data-title="Stanly Fernández · CV (Español)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</button>
         </div>
       </div>
       <div class="actions">
@@ -971,8 +972,8 @@ footer a:hover{color:var(--fg)}
         <div class="cv-box" id="cvContact">
         <div class="cv-head"><span class="cv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><div><b><span data-l="en">Download my CV</span><span data-l="es">Descarga mi CV</span></b><small><span data-l="en">PDF · 2 pages</span><span data-l="es">PDF · 2 páginas</span></small></div></div>
         <div class="cv-actions">
-          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</a>
-          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</a>
+          <button class="cv-btn" type="button" data-pdf="cv/Stanly_Fernandez_CV_EN.pdf" data-abs="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" data-title="Stanly Fernández · CV (English)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</button>
+          <button class="cv-btn" type="button" data-pdf="cv/Stanly_Fernandez_CV_ES.pdf" data-abs="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" data-title="Stanly Fernández · CV (Español)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</button>
         </div>
       </div>
       </div>
@@ -1014,6 +1015,7 @@ footer a:hover{color:var(--fg)}
       <span class="pdfv-tools">
         <button class="icon-btn" id="pdfvOut" type="button" aria-label="Zoom out">−</button>
         <button class="icon-btn" id="pdfvIn" type="button" aria-label="Zoom in">+</button>
+        <a class="icon-btn pdfv-dl" id="pdfvDl" href="#" target="_blank" rel="noreferrer" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-l="en">Download</span><span data-l="es">Descargar</span></a>
         <a class="icon-btn" id="pdfvTab" href="#" target="_blank" rel="noreferrer" aria-label="Open in new tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg></a>
         <button class="icon-btn" id="pdfvClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       </span>
@@ -1066,7 +1068,7 @@ footer a:hover{color:var(--fg)}
     root.setAttribute('data-lang',l); root.lang=l;
     try{localStorage.setItem('sf-lang',l)}catch(e){}
     $$('[data-set-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.setLang===l));
-    const cvn=$('#cvNav');if(cvn)cvn.href='https://stanly06.github.io/cv/Stanly_Fernandez_CV_'+(l==='es'?'ES':'EN')+'.pdf';
+    const cvn=$('#cvNav');if(cvn){const k=l==='es'?'ES':'EN';cvn.dataset.pdf='cv/Stanly_Fernandez_CV_'+k+'.pdf';cvn.dataset.abs='https://stanly06.github.io/cv/Stanly_Fernandez_CV_'+k+'.pdf';cvn.dataset.title='Stanly Fernández · CV ('+(l==='es'?'Español':'English')+')'}
     $('#cmdkInput').placeholder=T[l].ph; $('#cmdkFoot').textContent=T[l].foot;
     showLayer(curLayer); roleIdx=0; charIdx=T[l].roles[0].length; deleting=true; $('#roleText').innerHTML='<b>'+T[l].roles[0]+'</b>';
   }
@@ -1229,7 +1231,7 @@ footer a:hover{color:var(--fg)}
     requestAnimationFrame(()=>$$('.pdfv-page',pvPages).forEach(d=>pvObs.observe(d)));
   }
   async function openPdf(src,title,abs){
-    $('#pdfvTitle').textContent=title;$('#pdfvTab').href=abs;$('#pdfvInfo').textContent='';pvScale=1;pv.hidden=false;document.body.style.overflow='hidden';
+    $('#pdfvTitle').textContent=title;$('#pdfvTab').href=abs;$('#pdfvDl').href=abs;$('#pdfvInfo').textContent='';pvScale=1;pv.hidden=false;document.body.style.overflow='hidden';
     msg(L()==='es'?'Cargando la guía…':'Loading the guide…');
     try{const lib=await getPdfjs();pvDoc=await lib.getDocument({url:src}).promise;
       $('#pdfvInfo').textContent=pvDoc.numPages+(L()==='es'?' páginas':' pages');await renderAll();$('#pdfvClose').focus();}
