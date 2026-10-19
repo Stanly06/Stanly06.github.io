@@ -202,7 +202,7 @@ section{padding-block:88px}
 .job ul b{color:var(--fg)}
 .sub-roles{display:grid;gap:14px;margin-top:14px}
 .sub-role{padding:16px 18px;border-radius:12px;background:var(--ink);border:1px solid var(--line)}
-.sub-role h4{margin:0;font-size:1.02rem;font-family:var(--f-display);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sub-role{min-width:0}.sub-role h4 .when{white-space:normal}.sub-role h4{margin:0;font-size:1.02rem;font-family:var(--f-display);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .sub-role ul{margin-top:10px;font-size:.95rem}
 
 .when-block{display:grid;gap:2px;justify-items:end;text-align:right}
@@ -322,6 +322,22 @@ button.guide-btn{cursor:pointer;font-family:var(--f-body);margin-top:0}
 .pdfv-page{position:relative;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.35);border-radius:4px;overflow:hidden;max-width:100%}
 .pdfv-page canvas{display:block;width:100%;height:auto}
 .pdfv-msg{color:#C9CFEA;font-size:.95rem;padding:40px 16px;text-align:center}
+
+.cv-box{margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;padding:14px 16px;border-radius:18px;max-width:640px;background:linear-gradient(var(--ink-2),var(--ink-2)) padding-box,var(--grad) border-box;border:2px solid transparent;box-shadow:0 18px 40px -22px var(--hibiscus)}
+.cv-head{display:flex;align-items:center;gap:12px}
+.cv-head b{display:block;font-family:var(--f-display);font-size:1.05rem}
+.cv-head small{font:500 .74rem var(--f-mono);color:var(--muted)}
+.cv-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--grad);color:#0B1026;flex:none}
+.cv-ic svg{width:22px;height:22px}
+.cv-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cv-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:12px;background:var(--fg);color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;transition:transform .2s}
+.cv-btn:hover{transform:translateY(-2px)}
+.cv-btn svg{width:16px;height:16px}
+.cv-word{font-size:.8rem;color:var(--muted)}
+.cv-word a{color:var(--fg);font-weight:700}
+.contact .cv-box{margin-top:20px}
+.cv-nav{background:var(--grad)!important;color:#0B1026!important;border-color:transparent!important;font-weight:700!important;text-decoration:none}
+.cv-nav svg{width:15px;height:15px}
 
 /* CONTACT */
 .contact{border-radius:28px;padding:44px;position:relative;overflow:hidden;background:var(--ink-2);border:1px solid var(--line);display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
@@ -444,6 +460,7 @@ footer a:hover{color:var(--fg)}
         <button type="button" data-set-lang="en" aria-pressed="true" title="English">EN</button>
         <button type="button" data-set-lang="es" aria-pressed="false" title="Español">ES</button>
       </div>
+      <a class="icon-btn cv-nav" id="cvNav" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer" download aria-label="Download CV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>CV</a>
       <button class="icon-btn kbd-hint" id="cmdkBtn" type="button" aria-label="Quick navigation">Ctrl K</button>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Light / dark">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -489,6 +506,13 @@ footer a:hover{color:var(--fg)}
         <a class="btn btn-ghost btn-yt" href="https://www.youtube.com/@stanlyfernandez2887" target="_blank" rel="noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
           YouTube</a>
+      </div>
+      <div class="cv-box" id="cvHero">
+        <div class="cv-head"><span class="cv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><div><b><span data-l="en">Download my CV</span><span data-l="es">Descarga mi CV</span></b><small><span data-l="en">PDF · ATS-friendly · 2 pages</span><span data-l="es">PDF · compatible con ATS · 2 páginas</span></small></div></div>
+        <div class="cv-actions">
+          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</a>
+          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" target="_blank" rel="noreferrer" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</a>
+        </div>
       </div>
       <div class="stats">
         <div class="stat"><strong data-count="7" data-suffix="+">7+</strong><span data-l="en">years in industrial operations</span><span data-l="es">años en operaciones industriales</span></div>
@@ -943,6 +967,13 @@ footer a:hover{color:var(--fg)}
         <span class="kicker"><span data-l="en">Contact</span><span data-l="es">Contacto</span></span>
         <h2><span data-l="en">Let's talk about <span class="grad-text">your data.</span></span><span data-l="es">Hablemos de <span class="grad-text">tus datos.</span></span></h2>
         <p><span data-l="en">Happy to talk BI, Power BI modeling, SQL or Databricks pipelines. The fastest way to reach me is email or LinkedIn.</span><span data-l="es">Con gusto converso sobre BI, modelado en Power BI, SQL o pipelines en Databricks. La forma más rápida de contactarme es por correo o LinkedIn.</span></p>
+        <div class="cv-box" id="cvContact">
+        <div class="cv-head"><span class="cv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><div><b><span data-l="en">Download my CV</span><span data-l="es">Descarga mi CV</span></b><small><span data-l="en">PDF · ATS-friendly · 2 pages</span><span data-l="es">PDF · compatible con ATS · 2 páginas</span></small></div></div>
+        <div class="cv-actions">
+          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf" target="_blank" rel="noreferrer" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>English · PDF</a>
+          <a class="cv-btn" href="https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf" target="_blank" rel="noreferrer" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Español · PDF</a>
+        </div>
+      </div>
       </div>
       <div class="contact-list">
         <div class="contact-item">
@@ -1018,13 +1049,13 @@ footer a:hover{color:var(--fg)}
   const T={
     en:{roles:['BI Analyst','Power BI Developer','Data Analyst','Databricks Data Engineer','Operations Data Analyst'],
         ph:'Jump to a section or project…',foot:'↑ ↓ to move · Enter to open · Esc to close',none:'No matches',copied:'Copied',selected:'Selected',
-        cmd:[['About','#about','section'],['Experience','#experience','section'],['Certifications','#credentials','section'],['Projects','#projects','section'],['RD Economic & Financial Intelligence','#rd-platform','flagship'],['Skills','#skills','section'],['Contact','#contact','section'],['GitHub','https://github.com/Stanly06','link'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','link'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','link'],['Switch to Spanish','lang','action'],['Toggle theme','theme','action']],
+        cmd:[['About','#about','section'],['Experience','#experience','section'],['Certifications','#credentials','section'],['Projects','#projects','section'],['RD Economic & Financial Intelligence','#rd-platform','flagship'],['Skills','#skills','section'],['Contact','#contact','section'],['GitHub','https://github.com/Stanly06','link'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','link'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','link'],['Switch to Spanish','lang','action'],['Download CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf','link'],['Toggle theme','theme','action']],
         layers:{bronze:{t:'Bronze (target design) · raw, append-only',i:['Ingest exchange-rate and economic indicator files as they arrive','Store untouched source data as Delta tables with load timestamps','Keep full history so any day can be reprocessed']},
                 silver:{t:'Silver (target design) · cleaned and conformed',i:['Fix types, dates and currency codes; remove duplicates','Validate ranges and nulls before data moves on','Standardize into conformed tables such as <code>silver.exchange_rates</code>']},
                 gold:{t:'Gold (target design) · ready for analysis',i:['Aggregate daily and monthly rates and variations','Model business-friendly tables for Power BI and SQL','Feed dashboards on the Dominican peso and the local economy']}}},
     es:{roles:['Analista de BI','Desarrollador Power BI','Analista de Datos','Data Engineer en Databricks','Analista de Datos de Operaciones'],
         ph:'Ir a una sección o proyecto…',foot:'↑ ↓ para moverte · Enter para abrir · Esc para cerrar',none:'Sin resultados',copied:'Copiado',selected:'Seleccionado',
-        cmd:[['Sobre mí','#about','sección'],['Experiencia','#experience','sección'],['Certificaciones','#credentials','sección'],['Proyectos','#projects','sección'],['RD Economic & Financial Intelligence','#rd-platform','principal'],['Skills','#skills','sección'],['Contacto','#contact','sección'],['GitHub','https://github.com/Stanly06','enlace'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','enlace'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','enlace'],['Cambiar a inglés','lang','acción'],['Cambiar tema','theme','acción']],
+        cmd:[['Sobre mí','#about','sección'],['Experiencia','#experience','sección'],['Certificaciones','#credentials','sección'],['Proyectos','#projects','sección'],['RD Economic & Financial Intelligence','#rd-platform','principal'],['Skills','#skills','sección'],['Contacto','#contact','sección'],['GitHub','https://github.com/Stanly06','enlace'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez/','enlace'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','enlace'],['Cambiar a inglés','lang','acción'],['Descargar CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf','enlace'],['Cambiar tema','theme','acción']],
         layers:{bronze:{t:'Bronze (diseño objetivo) · datos crudos, solo se agregan',i:['Ingesta de archivos de tasa de cambio e indicadores económicos a medida que llegan','Guarda los datos de origen sin modificar en tablas Delta con fecha de carga','Conserva todo el historial para reprocesar cualquier día']},
                 silver:{t:'Silver (diseño objetivo) · limpio y estandarizado',i:['Corrige tipos, fechas y códigos de moneda; elimina duplicados','Valida rangos y nulos antes de avanzar','Estandariza en tablas como <code>silver.exchange_rates</code>']},
                 gold:{t:'Gold (diseño objetivo) · listo para análisis',i:['Agrega tasas y variaciones diarias y mensuales','Modela tablas de negocio para Power BI y SQL','Alimenta dashboards sobre el peso dominicano y la economía local']}}}
@@ -1034,6 +1065,7 @@ footer a:hover{color:var(--fg)}
     root.setAttribute('data-lang',l); root.lang=l;
     try{localStorage.setItem('sf-lang',l)}catch(e){}
     $$('[data-set-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.setLang===l));
+    const cvn=$('#cvNav');if(cvn)cvn.href='https://stanly06.github.io/cv/Stanly_Fernandez_CV_'+(l==='es'?'ES':'EN')+'.pdf';
     $('#cmdkInput').placeholder=T[l].ph; $('#cmdkFoot').textContent=T[l].foot;
     showLayer(curLayer); roleIdx=0; charIdx=T[l].roles[0].length; deleting=true; $('#roleText').innerHTML='<b>'+T[l].roles[0]+'</b>';
   }
