@@ -252,14 +252,17 @@ section{padding-block:88px}
 .layer-panel code{font-family:var(--f-mono);font-size:.82em;color:var(--sea)}
 
 /* FLAGSHIP PREVIEW (real screenshots of the live platform) */
-.rd-preview{appearance:none;display:block;width:100%;padding:0;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink);cursor:zoom-in;position:relative;text-align:left;box-shadow:0 18px 40px -26px color-mix(in srgb,var(--sea) 70%,transparent);transition:transform .25s,border-color .25s}
+.rd-preview{display:block;width:100%;padding:0;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink);position:relative;text-align:left;box-shadow:0 18px 40px -26px color-mix(in srgb,var(--sea) 70%,transparent);transition:transform .25s,border-color .25s}
 .rd-preview:hover{transform:translateY(-3px);border-color:var(--sea)}
+.rd-open{display:block;color:inherit;text-decoration:none;cursor:pointer}
+.rd-open:focus-visible{outline:2px solid var(--sea);outline-offset:-2px}
+.rd-go{margin-left:auto;flex:none;font:700 .72rem var(--f-body);color:var(--sea);white-space:nowrap}
 .rd-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--ink-2);font:500 .72rem var(--f-mono);color:var(--muted)}
 .rd-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .rd-bar i:nth-child(1){background:#FF5F57}.rd-bar i:nth-child(2){background:#FEBC2E}.rd-bar i:nth-child(3){background:#28C840}
 .rd-bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rd-preview img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:top left}
-.rd-preview .rd-tag{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--fg);font:600 .74rem var(--f-body)}
+.rd-preview .rd-tag{position:absolute;right:10px;bottom:10px;z-index:2;cursor:zoom-in;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--fg);font:600 .74rem var(--f-body)}
 .rd-preview .rd-tag svg{width:14px;height:14px}
 
 /* PROJECTS */
@@ -730,7 +733,7 @@ footer a:hover{color:var(--fg)}
       <div class="flagship-copy">
         <span class="status"><span data-l="en">Flagship · live: 6 official sources, end to end</span><span data-l="es">Proyecto principal · en vivo: 6 fuentes oficiales, de punta a punta</span></span>
         <h3>RD Economic &amp; Financial Intelligence Platform</h3>
-        <p><span data-l="en">A Databricks lakehouse that centralizes official Dominican economic and price data: BCRD exchange rate (daily since 1991), CPI and family basket, MICM fuel prices, Pro Consumidor basic goods, MEM electricity and Ministry of Agriculture market prices. Every source is downloaded automatically, ingested incrementally with Auto Loader, validated in Bronze → Silver → Gold with logged data-quality rules, and reconciled with the values the institutions publish. One Lakeflow Job runs 25 tasks; the results feed a bilingual web platform and a Power BI report.</span><span data-l="es">Un lakehouse en Databricks que centraliza datos económicos y de precios oficiales de República Dominicana: tasa de cambio del BCRD (diaria desde 1991), IPC y canasta familiar, combustibles del MICM, productos de Pro Consumidor, electricidad del MEM y precios de mercado del Ministerio de Agricultura. Cada fuente se descarga automáticamente, se carga de forma incremental con Auto Loader, se valida en Bronze → Silver → Gold con reglas de calidad registradas y se concilia con los valores que publican las instituciones. Un Job de Lakeflow ejecuta 25 tareas; los resultados alimentan una plataforma web bilingüe y un reporte de Power BI.</span></p>
+        <p><span data-l="en">A Databricks lakehouse that centralizes official Dominican economic and price data: BCRD exchange rate (daily since 1991), CPI and family basket, MICM fuel prices, Pro Consumidor basic goods, MEM electricity and Ministry of Agriculture market prices. Every source is downloaded automatically, ingested incrementally with Auto Loader, validated in Bronze → Silver → Gold with logged data-quality rules, and reconciled with the values the institutions publish. One Lakeflow Job runs 26 tasks every week; the results feed a bilingual web platform and a Power BI report.</span><span data-l="es">Un lakehouse en Databricks que centraliza datos económicos y de precios oficiales de República Dominicana: tasa de cambio del BCRD (diaria desde 1991), IPC y canasta familiar, combustibles del MICM, productos de Pro Consumidor, electricidad del MEM y precios de mercado del Ministerio de Agricultura. Cada fuente se descarga automáticamente, se carga de forma incremental con Auto Loader, se valida en Bronze → Silver → Gold con reglas de calidad registradas y se concilia con los valores que publican las instituciones. Un Job de Lakeflow ejecuta 26 tareas cada semana; los resultados alimentan una plataforma web bilingüe y un reporte de Power BI.</span></p>
         <div class="tags"><span>Databricks</span><span>Unity Catalog</span><span>Delta Lake</span><span>Auto Loader</span><span>Lakeflow Jobs</span><span>PySpark</span><span>Data quality</span><span>Power BI</span></div>
         <div class="card-links">
           <a class="card-link" style="--cat:var(--sea)" href="rd-intelligence/?lang=en" target="_blank" rel="noreferrer" data-l="en">Open web platform <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
@@ -740,12 +743,11 @@ footer a:hover{color:var(--fg)}
         </div>
       </div>
       <div class="medallion">
-        <button class="rd-preview" type="button" data-gallery="rd" aria-label="Screenshots of the RD Intelligence Platform / Capturas de la plataforma">
-          <span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/rd-intelligence</span></span>
-          <img data-l="en" src="img/rd-preview-en.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: economic overview with inflation, USD/DOP, family basket, fuel and agricultural price KPIs">
-          <img data-l="es" src="img/rd-preview-es.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: panorama económico con KPIs de inflación, USD/DOP, canasta familiar, combustibles y precios agropecuarios">
-          <span class="rd-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">4 screenshots</span><span data-l="es">4 capturas</span></span>
-        </button>
+        <div class="rd-preview">
+          <a class="rd-open" data-l="en" href="rd-intelligence/?lang=en" target="_blank" rel="noreferrer" aria-label="Open the RD Intelligence Platform (English)"><span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/rd-intelligence</span><b class="rd-go">Open platform ↗</b></span><img data-l="en" src="img/rd-preview-en.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: economic overview with inflation, USD/DOP, family basket, fuel and agricultural price KPIs"></a>
+          <a class="rd-open" data-l="es" href="rd-intelligence/?lang=es" target="_blank" rel="noreferrer" aria-label="Abrir la RD Intelligence Platform (español)"><span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/rd-intelligence</span><b class="rd-go">Abrir plataforma ↗</b></span><img data-l="es" src="img/rd-preview-es.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: panorama económico con KPIs de inflación, USD/DOP, canasta familiar, combustibles y precios agropecuarios"></a>
+          <button class="rd-tag" type="button" data-gallery="rd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">4 screenshots</span><span data-l="es">4 capturas</span></button>
+        </div>
         <div class="layers" role="tablist" aria-label="Medallion architecture">
           <div class="src"><span data-l="en">sources</span><span data-l="es">fuentes</span></div>
           <button class="layer" role="tab" aria-selected="true" data-layer="bronze" style="--c:var(--bronze)"><b>Bronze</b><small><span data-l="en">Raw ingestion</span><span data-l="es">Ingesta cruda</span></small></button>
@@ -1225,7 +1227,8 @@ footer a:hover{color:var(--fg)}
     inf:[{src:'img/gallery-infant-mortality.webp',en:'Power BI report: infant mortality and life expectancy by region, with bubble map and scatter',es:'Reporte Power BI: mortalidad infantil y esperanza de vida por región, con mapa de burbujas y dispersión'}]
   };
   const lbx=$('#lb'),lbImg=$('#lbImg');let gal=[],gi=0;
-  const lbShow=()=>{const it=gal[gi];lbImg.src=typeof it.src==='string'?it.src:it.src[L()];lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
+  lbImg.addEventListener('click',()=>{if(gal===G.rd)window.open('rd-intelligence/?lang='+L(),'_blank','noopener')});
+  const lbShow=()=>{const it=gal[gi];lbImg.style.cursor=gal===G.rd?'pointer':'';lbImg.title=gal===G.rd?(L()==='es'?'Abrir la plataforma':'Open the platform'):'';lbImg.src=typeof it.src==='string'?it.src:it.src[L()];lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
   $$('[data-gallery]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();gal=G[b.dataset.gallery];gi=0;lbShow();lbx.hidden=false;$('#lbClose').focus()}));
   $$('.cover-shot img').forEach(im=>{im.style.cursor='zoom-in';im.addEventListener('click',()=>im.parentElement.querySelector('[data-gallery]').click())});
   const lbClose=()=>{lbx.hidden=true};

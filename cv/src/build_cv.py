@@ -42,7 +42,7 @@ CV = {
           "Built an end-to-end Databricks lakehouse that integrates 6 official Dominican sources (Central Bank exchange rate since 1991, CPI and family basket, MICM fuel prices, Pro Consumidor, MEM electricity and Ministry of Agriculture market prices) into Bronze, Silver and Gold Delta tables.",
           "Automated file acquisition from the national open-data portal API (datos.gob.do) and institutional sites into an append-only archive, with incremental, exactly-once ingestion using Auto Loader and SHA-256 file lineage.",
           "Enforced data-quality rules with rejected-record logging and reconciliation checks; Gold KPIs match officially published values (e.g., 5,550 of 5,550 monthly CPI changes).",
-          "Orchestrated 25 tasks in 6 parallel chains with a Lakeflow Job and published the results in a bilingual (ES/EN) web platform and a Power BI report."]),
+          "Orchestrated 26 tasks in 6 parallel chains with a weekly Lakeflow Job and published the results in a bilingual (ES/EN) web platform and a Power BI report."]),
         ("MLB Daily Games ETL Pipeline","Databricks, PySpark, Delta Lake, SQL, REST API","2026",
           ("github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline","https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline"),[
           "Built an automated ETL pipeline that ingests daily game data from the MLB Stats API into Bronze (raw JSON), Silver (typed games table) and Gold (daily KPI summary) Delta tables.",
@@ -94,7 +94,7 @@ CV = {
           "Construí un lakehouse de punta a punta en Databricks que integra 6 fuentes oficiales dominicanas (tasa de cambio del Banco Central desde 1991, IPC y canasta familiar, combustibles del MICM, Pro Consumidor, electricidad del MEM y precios de mercado del Ministerio de Agricultura) en tablas Delta Bronze, Silver y Gold.",
           "Automaticé la descarga de archivos desde la API del portal de datos abiertos (datos.gob.do) y los sitios de las instituciones hacia un archivo histórico que no se sobrescribe, con ingesta incremental exactamente una vez mediante Auto Loader y trazabilidad SHA-256 por archivo.",
           "Apliqué reglas de calidad de datos con registro de rechazados y conciliaciones; los KPIs de Gold coinciden con los valores oficiales publicados (ej. 5,550 de 5,550 variaciones mensuales del IPC).",
-          "Orquesté 25 tareas en 6 cadenas paralelas con un Job de Lakeflow y publiqué los resultados en una plataforma web bilingüe (ES/EN) y un reporte de Power BI."]),
+          "Orquesté 26 tareas en 6 cadenas paralelas con un Job semanal de Lakeflow y publiqué los resultados en una plataforma web bilingüe (ES/EN) y un reporte de Power BI."]),
         ("MLB Daily Games ETL Pipeline","Databricks, PySpark, Delta Lake, SQL, API REST","2026",
           ("github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline","https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline"),[
           "Construí un pipeline ETL automatizado que ingesta los juegos diarios desde la API de MLB hacia tablas Delta Bronze (JSON crudo), Silver (tabla de juegos tipada) y Gold (resumen diario de KPIs).",
