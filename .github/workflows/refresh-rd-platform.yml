@@ -1,0 +1,79 @@
+# Refresh the RD Intelligence Platform (rd-intelligence/) with the latest validated Gold data.
+# The Databricks job rd_economic_medallion_pipeline runs every Monday at 07:07 (Santo Domingo) and its last task writes
+# /Volumes/rd_economic_intelligence/gold/web_exports/rd_platform_data.json. This workflow runs afterwards, downloads that
+# export, rebuilds the page with the code in Stanly06/rd-economic-financial-intelligence (web/) and publishes only if the data changed.
+#
+# Repository secrets (Settings > Secrets and variables > Actions):
+#   DATABRICKS_HOST   https://dbc-05963ad7-c763.cloud.databricks.com
+#   DATABRICKS_TOKEN  a Databricks personal access token used only for this workflow
+name: Refresh RD Intelligence Platform
+
+on:
+  schedule:
+    - cron: "37 13 * * 1"   # Mondays 13:37 UTC = 09:37 Santo Domingo, after the Databricks job
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: refresh-rd-platform
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the portfolio
+        uses: actions/checkout@v4
+
+      - name: Check out the platform code (web/)
+        uses: actions/checkout@v4
+        with:
+          repository: Stanly06/rd-economic-financial-intelligence
+          path: platform-src
+          sparse-checkout: web
+
+      - name: Download the Gold export from Databricks
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          if [ -z "$DATABRICKS_HOST" ] || [ -z "$DATABRICKS_TOKEN" ]; then echo "::error::Missing DATABRICKS_HOST or DATABRICKS_TOKEN secret"; exit 1; fi
+          curl -sS --fail-with-body --retry 3 --max-time 120 \
+            -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+            "${DATABRICKS_HOST%/}/api/2.0/fs/files/Volumes/rd_economic_intelligence/gold/web_exports/rd_platform_data.json" \
+            -o rd_platform_data.json
+
+      - name: Validate the export
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          d = json.load(open("rd_platform_data.json", encoding="utf-8"))
+          required = ["generated", "fx", "cpi", "col", "fuel", "con", "elec", "agri"]
+          missing = [k for k in required if not d.get(k)]
+          if missing: sys.exit(f"Export is missing sections: {missing}")
+          age = (datetime.now(timezone.utc) - datetime.fromisoformat(d["generated"])).days
+          if len(d["fx"]["d"]) < 1000 or len(d["cpi"]) < 10 or len(d["agri"]["s"]) < 100: sys.exit("Export looks incomplete; not publishing")
+          if age > 8: sys.exit(f"Export is {age} days old: the Databricks job did not run this week")
+          print(f"OK: export generated {d['generated']} · FX to {d['fx']['d'][-1]} · CPI to {[s for s in d['cpi'] if s['t']=='headline'][0]['m'][-1]}")
+          PY
+
+      - name: Build the platform
+        run: python3 platform-src/web/build.py rd_platform_data.json rd-intelligence
+
+      - name: Publish if the data changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -rf platform-src rd_platform_data.json
+          if git diff --quiet -- rd-intelligence; then echo "No changes: the platform already has the latest data."; exit 0; fi
+          git config user.name "Stanly06"
+          git config user.email "sffernandez06@gmail.com"
+          git add rd-intelligence
+          git commit -m "data: weekly refresh of the RD Intelligence Platform"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null || echo "Pages build will start from the push"
