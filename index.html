@@ -251,6 +251,17 @@ section{padding-block:88px}
 .layer-panel ul{margin:0;padding-left:18px;color:var(--muted);display:grid;gap:4px;font-size:.93rem}
 .layer-panel code{font-family:var(--f-mono);font-size:.82em;color:var(--sea)}
 
+/* FLAGSHIP PREVIEW (real screenshots of the live platform) */
+.rd-preview{appearance:none;display:block;width:100%;padding:0;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink);cursor:zoom-in;position:relative;text-align:left;box-shadow:0 18px 40px -26px color-mix(in srgb,var(--sea) 70%,transparent);transition:transform .25s,border-color .25s}
+.rd-preview:hover{transform:translateY(-3px);border-color:var(--sea)}
+.rd-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--ink-2);font:500 .72rem var(--f-mono);color:var(--muted)}
+.rd-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.rd-bar i:nth-child(1){background:#FF5F57}.rd-bar i:nth-child(2){background:#FEBC2E}.rd-bar i:nth-child(3){background:#28C840}
+.rd-bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rd-preview img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:top left}
+.rd-preview .rd-tag{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--fg);font:600 .74rem var(--f-body)}
+.rd-preview .rd-tag svg{width:14px;height:14px}
+
 /* PROJECTS */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
 .filter{appearance:none;border:1px solid var(--line);background:var(--ink-2);color:var(--muted);padding:9px 15px;border-radius:999px;cursor:pointer;font:600 .86rem var(--f-body);display:inline-flex;gap:8px;align-items:center;transition:.2s}
@@ -729,6 +740,12 @@ footer a:hover{color:var(--fg)}
         </div>
       </div>
       <div class="medallion">
+        <button class="rd-preview" type="button" data-gallery="rd" aria-label="Screenshots of the RD Intelligence Platform / Capturas de la plataforma">
+          <span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/rd-intelligence</span></span>
+          <img data-l="en" src="img/rd-preview-en.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: economic overview with inflation, USD/DOP, family basket, fuel and agricultural price KPIs">
+          <img data-l="es" src="img/rd-preview-es.webp" width="960" height="640" loading="lazy" decoding="async" alt="RD Intelligence Platform: panorama económico con KPIs de inflación, USD/DOP, canasta familiar, combustibles y precios agropecuarios">
+          <span class="rd-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">4 screenshots</span><span data-l="es">4 capturas</span></span>
+        </button>
         <div class="layers" role="tablist" aria-label="Medallion architecture">
           <div class="src"><span data-l="en">sources</span><span data-l="es">fuentes</span></div>
           <button class="layer" role="tab" aria-selected="true" data-layer="bronze" style="--c:var(--bronze)"><b>Bronze</b><small><span data-l="en">Raw ingestion</span><span data-l="es">Ingesta cruda</span></small></button>
@@ -1197,6 +1214,10 @@ footer a:hover{color:var(--fg)}
 
   /* screenshot lightbox */
   const G={
+    rd:[{src:{en:'img/rd-panorama-en.webp',es:'img/rd-panorama-es.webp'},en:'RD Intelligence Platform · economic overview: inflation, USD/DOP, family basket, fuel and agricultural prices from official sources',es:'RD Intelligence Platform · panorama económico: inflación, USD/DOP, canasta familiar, combustibles y precios agropecuarios de fuentes oficiales'},
+        {src:{en:'img/rd-agro-en.webp',es:'img/rd-agro-es.webp'},en:'Agricultural prices (Ministry of Agriculture): product groups, product trend by market and market comparison (AGR-007)',es:'Precios agropecuarios (Ministerio de Agricultura): grupos de productos, evolución por mercado y comparación entre mercados (AGR-007)'},
+        {src:{en:'img/rd-cambiario-en.webp',es:'img/rd-cambiario-es.webp'},en:'Exchange rate: BCRD USD/DOP since 1991, month-end closes and annual averages',es:'Mercado cambiario: USD/DOP del BCRD desde 1991, cierres mensuales y promedios anuales'},
+        {src:{en:'img/rd-electricidad-en.webp',es:'img/rd-electricidad-es.webp'},en:'Electricity (MEM / SIE): selling price by distributor, BTS-1 residential bill and energy losses',es:'Electricidad (MEM / SIE): precio de venta por distribuidora, factura residencial BTS-1 y pérdidas de energía'}],
     mlb:[{src:'img/gallery-mlb-job.webp',en:'Databricks Job: the scheduled MLB pipeline (setup → bronze → silver → gold)',es:'Job en Databricks: el pipeline MLB programado (setup → bronze → silver → gold)'},
          {src:'img/gallery-mlb-architecture.webp',en:'Reference architecture: ingest, Bronze/Silver/Gold on Delta Lake, serve to Power BI',es:'Arquitectura de referencia: ingesta, Bronze/Silver/Gold en Delta Lake y Power BI'}],
     vg:[{src:'img/gallery-videogames-report.webp',en:'Power BI report: video game sales history by year, region, platform and genre',es:'Reporte Power BI: histórico de ventas de videojuegos por año, región, plataforma y género'}],
@@ -1204,7 +1225,7 @@ footer a:hover{color:var(--fg)}
     inf:[{src:'img/gallery-infant-mortality.webp',en:'Power BI report: infant mortality and life expectancy by region, with bubble map and scatter',es:'Reporte Power BI: mortalidad infantil y esperanza de vida por región, con mapa de burbujas y dispersión'}]
   };
   const lbx=$('#lb'),lbImg=$('#lbImg');let gal=[],gi=0;
-  const lbShow=()=>{const it=gal[gi];lbImg.src=it.src;lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
+  const lbShow=()=>{const it=gal[gi];lbImg.src=typeof it.src==='string'?it.src:it.src[L()];lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
   $$('[data-gallery]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();gal=G[b.dataset.gallery];gi=0;lbShow();lbx.hidden=false;$('#lbClose').focus()}));
   $$('.cover-shot img').forEach(im=>{im.style.cursor='zoom-in';im.addEventListener('click',()=>im.parentElement.querySelector('[data-gallery]').click())});
   const lbClose=()=>{lbx.hidden=true};
