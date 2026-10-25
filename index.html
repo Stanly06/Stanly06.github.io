@@ -265,6 +265,15 @@ section{padding-block:88px}
 .rd-preview .rd-tag{position:absolute;right:10px;bottom:10px;z-index:2;cursor:zoom-in;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--fg);font:600 .74rem var(--f-body)}
 .rd-preview .rd-tag svg{width:14px;height:14px}
 
+.mlb-flag{background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--hibiscus) 14%,transparent),transparent 55%),radial-gradient(120% 140% at 100% 100%,color-mix(in srgb,var(--sea) 12%,transparent),transparent 55%),var(--ink-2)}
+.mlb-flag .rd-preview:hover{border-color:var(--hibiscus)}.mlb-flag .rd-go{color:var(--hibiscus)}
+.mlb-flag .medallion{align-content:center}
+.mlb-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mlb-kpis div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--ink);display:grid;gap:2px}
+.mlb-kpis b{font-family:var(--f-display);font-size:1.2rem;color:var(--hibiscus)}
+.mlb-kpis small{color:var(--muted);font-size:.72rem;line-height:1.3}
+@media (max-width:640px){.mlb-kpis{grid-template-columns:repeat(2,1fr)}}
+
 /* PROJECTS */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
 .filter{appearance:none;border:1px solid var(--line);background:var(--ink-2);color:var(--muted);padding:9px 15px;border-radius:999px;cursor:pointer;font:600 .86rem var(--f-body);display:inline-flex;gap:8px;align-items:center;transition:.2s}
@@ -758,6 +767,34 @@ footer a:hover{color:var(--fg)}
       </div>
     </article>
 
+    <article class="flagship mlb-flag reveal" id="mlb-platform">
+      <div class="flagship-copy">
+        <span class="status"><span data-l="en">Live · refreshed every day from Databricks</span><span data-l="es">En vivo · se actualiza cada día desde Databricks</span></span>
+        <h3>MLB Performance Intelligence Platform</h3>
+        <p><span data-l="en">A Databricks lakehouse built on the MLB Stats API: every game, box score, player and standing since 2024, ingested incrementally (Auto Loader, Delta MERGE, watermarks) through Bronze → Silver → Gold. Gold models team, player, head-to-head and country KPIs (OPS, FIP, Pythagorean wins, form), reconciled 90/90 with official standings by 14 data-quality checks. A win-probability model (logistic regression, time-based split) beats the home-team baseline out of sample. One 13-task Lakeflow Job runs daily and GitHub Actions republishes the bilingual web platform.</span><span data-l="es">Un lakehouse en Databricks construido sobre la API de MLB: cada juego, boxscore, jugador y tabla de posiciones desde 2024, cargados de forma incremental (Auto Loader, MERGE en Delta, watermarks) en Bronze → Silver → Gold. Gold modela KPIs de equipos, jugadores, enfrentamientos y países (OPS, FIP, victorias pitagóricas, forma), conciliados 90/90 con las posiciones oficiales mediante 14 reglas de calidad. Un modelo de probabilidad de victoria (regresión logística, validación temporal) supera la línea base del equipo local fuera de muestra. Un Job de Lakeflow de 13 tareas corre a diario y GitHub Actions republica la plataforma web bilingüe.</span></p>
+        <div class="tags"><span>Databricks</span><span>Unity Catalog</span><span>Delta Lake</span><span>Auto Loader</span><span>Lakeflow Jobs</span><span>PySpark</span><span>scikit-learn</span><span>MLflow</span><span>GitHub Actions</span></div>
+        <div class="mlb-kpis">
+          <div><b>7,414</b><small><span data-l="en">games 2024–2026</span><span data-l="es">juegos 2024–2026</span></small></div>
+          <div><b>90/90</b><small><span data-l="en">standings reconciled</span><span data-l="es">posiciones conciliadas</span></small></div>
+          <div><b>56.0%</b><small><span data-l="en">model accuracy vs 52.9% baseline</span><span data-l="es">acierto del modelo vs 52.9% base</span></small></div>
+          <div><b>13</b><small><span data-l="en">daily job tasks</span><span data-l="es">tareas del job diario</span></small></div>
+        </div>
+        <div class="card-links">
+          <a class="card-link" style="--cat:var(--hibiscus)" href="mlb-intelligence/?lang=en#leaders" target="_blank" rel="noreferrer" data-l="en">Open web platform <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="card-link" style="--cat:var(--hibiscus)" href="mlb-intelligence/?lang=es#leaders" target="_blank" rel="noreferrer" data-l="es">Abrir plataforma web <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="card-link" href="https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline" target="_blank" rel="noreferrer"><span data-l="en">Repository</span><span data-l="es">Repositorio</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="card-link" href="https://youtu.be/oDlRG3iUFq8" target="_blank" rel="noreferrer"><span data-l="en">Video (v1 pipeline)</span><span data-l="es">Video (pipeline v1)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        </div>
+      </div>
+      <div class="medallion">
+        <div class="rd-preview">
+          <a class="rd-open" data-l="en" href="mlb-intelligence/?lang=en#leaders" target="_blank" rel="noreferrer" aria-label="Open the MLB Performance Intelligence Platform (English)"><span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/mlb-intelligence</span><b class="rd-go">Open platform ↗</b></span><img data-l="en" src="img/mlb-preview-leaders-en.webp" width="1440" height="960" loading="lazy" decoding="async" alt="MLB Performance Intelligence: 2026 league leaders in OPS, AVG and HR with player photos and team logos"></a>
+          <a class="rd-open" data-l="es" href="mlb-intelligence/?lang=es#leaders" target="_blank" rel="noreferrer" aria-label="Abrir la MLB Performance Intelligence Platform (español)"><span class="rd-bar"><i></i><i></i><i></i><span>stanly06.github.io/mlb-intelligence</span><b class="rd-go">Abrir plataforma ↗</b></span><img data-l="es" src="img/mlb-preview-leaders-es.webp" width="1440" height="960" loading="lazy" decoding="async" alt="MLB Performance Intelligence: líderes de la liga 2026 en OPS, AVG y HR con fotos de jugadores y logos de equipos"></a>
+          <button class="rd-tag" type="button" data-gallery="mlb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">5 screenshots</span><span data-l="es">5 capturas</span></button>
+        </div>
+      </div>
+    </article>
+
     <div class="filters" role="group" aria-label="Filter">
       <button class="filter" aria-pressed="true" data-filter="all"><span data-l="en">All</span><span data-l="es">Todos</span> <span class="n"></span></button>
       <button class="filter" aria-pressed="false" data-filter="db">Databricks <span class="n"></span></button>
@@ -767,30 +804,6 @@ footer a:hover{color:var(--fg)}
     </div>
 
     <div class="grid" id="projectGrid">
-      <article class="card c-db" data-cat="db">
-        <div class="cover"><svg viewBox="0 0 400 200" aria-hidden="true">
-<path d="M115 38 L180 103 L115 168 L50 103Z" style="fill:color-mix(in srgb,var(--bronze) 12%,transparent);stroke:var(--bronze);stroke-width:2"/>
-<path d="M115 168 L115 60" style="stroke:var(--line);stroke-width:1"/><circle cx="115" cy="103" r="7" style="fill:var(--ink-2);stroke:var(--fg);stroke-width:1.5"/>
-<rect x="108" y="31" width="14" height="14" transform="rotate(45 115 38)" style="fill:var(--fg)"/>
-<rect x="173" y="96" width="14" height="14" transform="rotate(45 180 103)" style="fill:var(--fg)"/>
-<rect x="43" y="96" width="14" height="14" transform="rotate(45 50 103)" style="fill:var(--fg)"/>
-<path d="M108 168 h14 l-7 8z" style="fill:var(--fg)"/>
-<text x="20" y="24" style="font-family:var(--f-mono);font-size:10px;fill:var(--muted)">MLB API</text>
-<path class="flow" d="M187 103 C215 103 215 52 245 52" style="fill:none;stroke:var(--bronze);stroke-width:1.6"/>
-<path class="flow" d="M187 103 L245 103" style="fill:none;stroke:var(--silver);stroke-width:1.6"/>
-<path class="flow" d="M187 103 C215 103 215 154 245 154" style="fill:none;stroke:var(--gold);stroke-width:1.6"/>
-<rect x="245" y="39" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--bronze);stroke-width:1.5"/><circle cx="260" cy="52" r="4" style="fill:var(--bronze)"/><text x="271" y="56" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">bronze</text><rect x="245" y="90" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--silver);stroke-width:1.5"/><circle cx="260" cy="103" r="4" style="fill:var(--silver)"/><text x="271" y="107" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">silver</text><rect x="245" y="141" width="120" height="26" rx="13" style="fill:var(--ink-2);stroke:var(--gold);stroke-width:1.5"/><circle cx="260" cy="154" r="4" style="fill:var(--gold)"/><text x="271" y="158" style="font-family:var(--f-mono);font-size:11px;font-weight:600;fill:var(--fg)">gold</text>
-</svg><button class="shots top" type="button" data-gallery="mlb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg><span data-l="en">2 screenshots</span><span data-l="es">2 capturas</span></button></div>
-        
-        <div class="card-top"><span class="cat">Databricks</span><span class="metric"><span data-l="en">daily job</span><span data-l="es">job diario</span></span></div>
-        <h3>MLB Data Engineering Pipeline</h3>
-        <p><span data-l="en">Daily ETL on Databricks: pulls yesterday's games from the MLB Stats API, stores raw JSON in Bronze, parses it into a Silver games table and builds Gold daily KPIs, using Delta MERGE so re-runs never duplicate data. Runs nightly as a Databricks Job with a log table per layer.</span><span data-l="es">ETL diario en Databricks: extrae los juegos del día anterior de la API de MLB, guarda el JSON crudo en Bronze, lo transforma en una tabla Silver de juegos y genera KPIs diarios en Gold, con MERGE en Delta para que las re-ejecuciones no dupliquen datos. Corre cada noche como Job de Databricks con una tabla de logs por capa.</span></p>
-        <div class="tags"><span>PySpark</span><span>REST API</span><span>Delta MERGE</span><span>Databricks Jobs</span></div>
-        <div class="card-links">
-          <a class="card-link" href="https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline" target="_blank" rel="noreferrer"><span data-l="en">Repository</span><span data-l="es">Repositorio</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          <a class="card-link" href="https://youtu.be/oDlRG3iUFq8" target="_blank" rel="noreferrer"><span data-l="en">Video walkthrough</span><span data-l="es">Video explicativo</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-        </div>
-      </article>
       <article class="card c-db" data-cat="db">
         <div class="cover"><svg viewBox="0 0 400 200" aria-hidden="true">
 <defs><clipPath id="cpWine"><path d="M60 34 h96 c0 58 -18 86 -48 92 c-30 -6 -48 -34 -48 -92z"/></clipPath>
@@ -1076,13 +1089,13 @@ footer a:hover{color:var(--fg)}
   const T={
     en:{roles:['BI Analyst','Power BI Developer','Data Analyst','Databricks Data Engineer','Operations Data Analyst'],
         ph:'Jump to a section or project…',foot:'↑ ↓ to move · Enter to open · Esc to close',none:'No matches',copied:'Copied',selected:'Selected',
-        cmd:[['About','#about','section'],['Experience','#experience','section'],['Certifications','#credentials','section'],['Projects','#projects','section'],['RD Economic & Financial Intelligence','#rd-platform','flagship'],['Skills','#skills','section'],['Contact','#contact','section'],['GitHub','https://github.com/Stanly06','link'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez-data/','link'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','link'],['Switch to Spanish','lang','action'],['Download CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf','link'],['Toggle theme','theme','action']],
+        cmd:[['About','#about','section'],['Experience','#experience','section'],['Certifications','#credentials','section'],['Projects','#projects','section'],['RD Economic & Financial Intelligence','#rd-platform','flagship'],['MLB Performance Intelligence','#mlb-platform','flagship'],['Skills','#skills','section'],['Contact','#contact','section'],['GitHub','https://github.com/Stanly06','link'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez-data/','link'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','link'],['Switch to Spanish','lang','action'],['Download CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_EN.pdf','link'],['Toggle theme','theme','action']],
         layers:{bronze:{t:'Bronze · raw, incremental',i:['Automatic download of official files (datos.gob.do API, BCRD, MEM) into an append-only archive','Auto Loader registers each new file once and keeps it as published, with file, row and hash lineage','Every version is kept, so history can be audited and reprocessed']},
                 silver:{t:'Silver · validated and conformed',i:['Typed tables with controlled dictionaries for source typos (weeks, months, product groups)','Enforced data-quality rules; failing records go to <code>quality.dq_rejected_records</code>','Reconciliation before writing: Bronze = Silver + rejected + superseded']},
                 gold:{t:'Gold · KPIs ready for analysis',i:['FX, inflation, cost of living, fuel, consumer, electricity and agricultural KPIs','Reconciled with official published values (e.g. CPI 5,550 of 5,550 months)','Feeds the bilingual web platform and the Power BI report']}}},
     es:{roles:['Analista de BI','Desarrollador Power BI','Analista de Datos','Data Engineer en Databricks','Analista de Datos de Operaciones'],
         ph:'Ir a una sección o proyecto…',foot:'↑ ↓ para moverte · Enter para abrir · Esc para cerrar',none:'Sin resultados',copied:'Copiado',selected:'Seleccionado',
-        cmd:[['Sobre mí','#about','sección'],['Experiencia','#experience','sección'],['Certificaciones','#credentials','sección'],['Proyectos','#projects','sección'],['RD Economic & Financial Intelligence','#rd-platform','principal'],['Skills','#skills','sección'],['Contacto','#contact','sección'],['GitHub','https://github.com/Stanly06','enlace'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez-data/','enlace'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','enlace'],['Cambiar a inglés','lang','acción'],['Descargar CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf','enlace'],['Cambiar tema','theme','acción']],
+        cmd:[['Sobre mí','#about','sección'],['Experiencia','#experience','sección'],['Certificaciones','#credentials','sección'],['Proyectos','#projects','sección'],['RD Economic & Financial Intelligence','#rd-platform','principal'],['MLB Performance Intelligence','#mlb-platform','principal'],['Skills','#skills','sección'],['Contacto','#contact','sección'],['GitHub','https://github.com/Stanly06','enlace'],['LinkedIn','https://www.linkedin.com/in/stanly-fernandez-data/','enlace'],['YouTube','https://www.youtube.com/@stanlyfernandez2887','enlace'],['Cambiar a inglés','lang','acción'],['Descargar CV (PDF)','https://stanly06.github.io/cv/Stanly_Fernandez_CV_ES.pdf','enlace'],['Cambiar tema','theme','acción']],
         layers:{bronze:{t:'Bronze · datos crudos, carga incremental',i:['Descarga automática de archivos oficiales (API de datos.gob.do, BCRD, MEM) a un archivo histórico que no se sobrescribe','Auto Loader registra cada archivo nuevo una sola vez y lo guarda tal como se publicó, con trazabilidad de archivo, fila y hash','Se conservan todas las versiones para auditar y reprocesar la historia']},
                 silver:{t:'Silver · validado y estandarizado',i:['Tablas tipadas con diccionarios controlados para errores de la fuente (semanas, meses, grupos de productos)','Reglas de calidad obligatorias; lo que falla va a <code>quality.dq_rejected_records</code>','Conciliación antes de escribir: Bronze = Silver + rechazados + reemplazados']},
                 gold:{t:'Gold · KPIs listos para análisis',i:['KPIs de tasa de cambio, inflación, costo de vida, combustibles, consumidor, electricidad y agricultura','Conciliados con los valores oficiales publicados (ej. IPC: 5,550 de 5,550 meses)','Alimenta la plataforma web bilingüe y el reporte de Power BI']}}}
@@ -1220,15 +1233,19 @@ footer a:hover{color:var(--fg)}
         {src:{en:'img/rd-agro-en.webp',es:'img/rd-agro-es.webp'},en:'Agricultural prices (Ministry of Agriculture): product groups, product trend by market and market comparison (AGR-007)',es:'Precios agropecuarios (Ministerio de Agricultura): grupos de productos, evolución por mercado y comparación entre mercados (AGR-007)'},
         {src:{en:'img/rd-cambiario-en.webp',es:'img/rd-cambiario-es.webp'},en:'Exchange rate: BCRD USD/DOP since 1991, month-end closes and annual averages',es:'Mercado cambiario: USD/DOP del BCRD desde 1991, cierres mensuales y promedios anuales'},
         {src:{en:'img/rd-electricidad-en.webp',es:'img/rd-electricidad-es.webp'},en:'Electricity (MEM / SIE): selling price by distributor, BTS-1 residential bill and energy losses',es:'Electricidad (MEM / SIE): precio de venta por distribuidora, factura residencial BTS-1 y pérdidas de energía'}],
-    mlb:[{src:'img/gallery-mlb-job.webp',en:'Databricks Job: the scheduled MLB pipeline (setup → bronze → silver → gold)',es:'Job en Databricks: el pipeline MLB programado (setup → bronze → silver → gold)'},
-         {src:'img/gallery-mlb-architecture.webp',en:'Reference architecture: ingest, Bronze/Silver/Gold on Delta Lake, serve to Power BI',es:'Arquitectura de referencia: ingesta, Bronze/Silver/Gold en Delta Lake y Power BI'}],
+    mlb:[{src:{en:'img/mlb-preview-leaders-en.webp',es:'img/mlb-preview-leaders-es.webp'},en:'League leaders (OPS, AVG, HR, RBI, SB, ERA) with player photos and team logos',es:'Líderes de la liga (OPS, AVG, HR, RBI, SB, ERA) con fotos de jugadores y logos de equipos'},
+         {src:{en:'img/mlb-forecast-en.webp',es:'img/mlb-forecast-es.webp'},en:'Predictions: win probability per game, biggest factors and odds comparison; out-of-sample accuracy 56.0%',es:'Pronósticos: probabilidad de victoria por juego, factores principales y comparación con momios; acierto fuera de muestra 56.0%'},
+         {src:{en:'img/mlb-countries-en.webp',es:'img/mlb-countries-es.webp'},en:'Countries: players by birth country, share of league production, standouts and latest game day',es:'Países: jugadores por país de nacimiento, peso en la producción de la liga, destacados y última jornada'},
+         {src:{en:'img/mlb-team-en.webp',es:'img/mlb-team-es.webp'},en:'Team: record, run differential, Pythagorean wins, season trajectory and top players',es:'Equipo: récord, diferencial de carreras, victorias pitagóricas, trayectoria y mejores jugadores'},
+         {src:{en:'img/mlb-calendar-en.webp',es:'img/mlb-calendar-es.webp'},en:'Schedule: full season calendar by league, team and month with the model pick',es:'Calendario: temporada completa por liga, equipo y mes con el pronóstico del modelo'}],
     vg:[{src:'img/gallery-videogames-report.webp',en:'Power BI report: video game sales history by year, region, platform and genre',es:'Reporte Power BI: histórico de ventas de videojuegos por año, región, plataforma y género'}],
     music:[{src:'img/gallery-music-store-schema.webp',en:'Music store database schema: 11 related tables from artist to invoice',es:'Esquema de la base de datos de la tienda: 11 tablas relacionadas, de artist a invoice'}],
     inf:[{src:'img/gallery-infant-mortality.webp',en:'Power BI report: infant mortality and life expectancy by region, with bubble map and scatter',es:'Reporte Power BI: mortalidad infantil y esperanza de vida por región, con mapa de burbujas y dispersión'}]
   };
   const lbx=$('#lb'),lbImg=$('#lbImg');let gal=[],gi=0;
-  lbImg.addEventListener('click',()=>{if(gal===G.rd)window.open('rd-intelligence/?lang='+L(),'_blank','noopener')});
-  const lbShow=()=>{const it=gal[gi];lbImg.style.cursor=gal===G.rd?'pointer':'';lbImg.title=gal===G.rd?(L()==='es'?'Abrir la plataforma':'Open the platform'):'';lbImg.src=typeof it.src==='string'?it.src:it.src[L()];lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
+  const lbLink=()=>gal===G.rd?'rd-intelligence/?lang='+L():gal===G.mlb?'mlb-intelligence/?lang='+L()+'#'+['leaders','forecast','countries','team','calendar'][gi]:null;
+  lbImg.addEventListener('click',()=>{const u=lbLink();if(u)window.open(u,'_blank','noopener')});
+  const lbShow=()=>{const it=gal[gi];lbImg.style.cursor=lbLink()?'pointer':'';lbImg.title=lbLink()?(L()==='es'?'Abrir la plataforma':'Open the platform'):'';lbImg.src=typeof it.src==='string'?it.src:it.src[L()];lbImg.alt=it[L()];$('#lbCap').textContent=it[L()];$('#lbCount').textContent=(gi+1)+' / '+gal.length;$('#lbPrev').hidden=$('#lbNext').hidden=gal.length<2};
   $$('[data-gallery]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();gal=G[b.dataset.gallery];gi=0;lbShow();lbx.hidden=false;$('#lbClose').focus()}));
   $$('.cover-shot img').forEach(im=>{im.style.cursor='zoom-in';im.addEventListener('click',()=>im.parentElement.querySelector('[data-gallery]').click())});
   const lbClose=()=>{lbx.hidden=true};
