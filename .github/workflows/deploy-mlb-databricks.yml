@@ -21,7 +21,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 40
     steps:
       - name: Check out the MLB pipeline repository
         uses: actions/checkout@v4
@@ -36,6 +36,8 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          # On a push of this file (a manual deploy) also run the web export right away; scheduled runs only sync
+          MLB_RUN_ONLY: ${{ github.event_name == 'push' && 'web_platform_export' || '' }}
         run: |
           if [ -z "$DATABRICKS_HOST" ] || [ -z "$DATABRICKS_TOKEN" ]; then echo "::error::Missing DATABRICKS_HOST or DATABRICKS_TOKEN secret"; exit 1; fi
           python3 mlb-src/scripts/databricks_deploy.py
@@ -45,3 +47,4 @@ jobs:
 # Status check: 2026-10-25
 # Status check 2: 2026-10-25
 # Status check 3: 2026-10-25
+# League export: 2026-10-25
