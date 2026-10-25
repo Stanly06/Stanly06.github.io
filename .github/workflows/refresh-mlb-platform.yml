@@ -88,3 +88,4 @@ jobs:
           gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null || echo "Pages build will start from the push"
 # Last manual trigger: 2026-10-25
 # Refresh after backfill: 2026-10-25
+# League executive view: 2026-10-25
