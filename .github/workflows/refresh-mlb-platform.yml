@@ -1,0 +1,88 @@
+# Refresh the MLB Performance Intelligence web platform (mlb-intelligence/) with the latest Gold data.
+# The Databricks job mlb_performance_intelligence_daily runs every day at 06:07 (Santo Domingo); its last task writes
+# /Volumes/mlb_intelligence/gold/exports/mlb_web_data.json. This workflow runs afterwards, downloads that export,
+# rebuilds the page with the code in Stanly06/MLB-Daily-Games-ETL-Pipeline (web/) and publishes only if it changed.
+#
+# Repository secrets (shared with the RD platform workflow): DATABRICKS_HOST, DATABRICKS_TOKEN
+name: Refresh MLB Performance Intelligence Platform
+
+on:
+  schedule:
+    - cron: "41 11 * * *"   # 11:41 UTC = 07:41 Santo Domingo, after the Databricks job
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: [".github/workflows/refresh-mlb-platform.yml"]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: refresh-mlb-platform
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the portfolio
+        uses: actions/checkout@v4
+
+      - name: Check out the platform code (web/)
+        uses: actions/checkout@v4
+        with:
+          repository: Stanly06/MLB-Daily-Games-ETL-Pipeline
+          path: mlb-src
+          sparse-checkout: web
+
+      - name: Download the Gold export from Databricks
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          if [ -z "$DATABRICKS_HOST" ] || [ -z "$DATABRICKS_TOKEN" ]; then echo "::error::Missing DATABRICKS_HOST or DATABRICKS_TOKEN secret"; exit 1; fi
+          curl -sS --fail-with-body --retry 3 --max-time 180 \
+            -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+            "${DATABRICKS_HOST%/}/api/2.0/fs/files/Volumes/mlb_intelligence/gold/exports/mlb_web_data.json" \
+            -o mlb_web_data.json
+
+      - name: Validate the export
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          d = json.load(open("mlb_web_data.json", encoding="utf-8"))
+          required = ["meta", "teams", "team_seasons", "batting", "pitching", "games", "countries", "quality"]
+          missing = [k for k in required if not d.get(k)]
+          if missing: sys.exit(f"Export is missing sections: {missing}")
+          gen = datetime.fromisoformat(d["meta"]["generated_at"].replace("Z", "+00:00"))
+          age = (datetime.now(timezone.utc) - gen).days
+          if len(d["games"]["rows"]) < 2000 or len(d["batting"]["rows"]) < 1000: sys.exit("Export looks incomplete; not publishing")
+          if age > 2: sys.exit(f"Export is {age} days old: the Databricks job did not run")
+          failed = [r for r in d["quality"]["rows"] if r[d["quality"]["cols"].index("status")] == "FAIL"
+                    and r[d["quality"]["cols"].index("severity")] == "CRITICAL"]
+          if failed: sys.exit(f"Critical data-quality failures in the export: {failed}")
+          print(f"OK: generated {d['meta']['generated_at']} · games through {d['meta']['last_game_date']} · "
+                f"{len(d['games']['rows'])} completed games · {len(d.get('schedule', {}).get('rows', []))} upcoming")
+          PY
+
+      - name: Build the platform
+        run: |
+          python3 mlb-src/web/build.py mlb_web_data.json
+          mkdir -p mlb-intelligence
+          cp mlb-src/web/dist/index.html mlb-intelligence/index.html
+
+      - name: Publish if the page changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -rf mlb-src mlb_web_data.json
+          if git diff --quiet -- mlb-intelligence; then echo "No changes: the platform already has the latest data."; exit 0; fi
+          git config user.name "Stanly06"
+          git config user.email "sffernandez06@gmail.com"
+          git add mlb-intelligence
+          git commit -m "data: daily refresh of the MLB Performance Intelligence platform"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null || echo "Pages build will start from the push"

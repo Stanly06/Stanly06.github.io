@@ -1,0 +1,41 @@
+# Keep the MLB Performance Intelligence pipeline in Databricks in sync with GitHub.
+# Pulls the workspace Git folder of Stanly06/MLB-Daily-Games-ETL-Pipeline to the latest main and updates the
+# setup and daily jobs from resources/jobs/mlb_performance_daily.job.json (13 tasks). Runs every day at
+# 05:31 Santo Domingo, before the 06:07 daily job, so each run uses the code on GitHub. Never starts a backfill.
+#
+# Repository secrets (shared with the RD platform workflow): DATABRICKS_HOST, DATABRICKS_TOKEN
+name: Deploy MLB pipeline to Databricks
+
+on:
+  schedule:
+    - cron: "31 9 * * *"   # 09:31 UTC = 05:31 Santo Domingo
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: [".github/workflows/deploy-mlb-databricks.yml"]
+
+concurrency:
+  group: deploy-mlb-databricks
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the MLB pipeline repository
+        uses: actions/checkout@v4
+        with:
+          repository: Stanly06/MLB-Daily-Games-ETL-Pipeline
+          path: mlb-src
+          sparse-checkout: |
+            scripts
+            resources
+
+      - name: Sync Git folder and jobs
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          if [ -z "$DATABRICKS_HOST" ] || [ -z "$DATABRICKS_TOKEN" ]; then echo "::error::Missing DATABRICKS_HOST or DATABRICKS_TOKEN secret"; exit 1; fi
+          python3 mlb-src/scripts/databricks_deploy.py
