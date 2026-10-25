@@ -8,7 +8,9 @@ name: Refresh MLB Performance Intelligence Platform
 
 on:
   schedule:
-    - cron: "41 11 * * *"   # 11:41 UTC = 07:41 Santo Domingo, after the Databricks job
+    # 07:41, 09:41, 11:41, 14:41 and 18:41 Santo Domingo. GitHub schedules are best-effort (they can be late or
+    # skipped), so several attempts make the daily refresh reliable; a run with no new data publishes nothing.
+    - cron: "41 11,13,15,18,22 * * *"
   workflow_dispatch: {}
   push:
     branches: [main]
