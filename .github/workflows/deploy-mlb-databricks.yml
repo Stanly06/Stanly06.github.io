@@ -39,3 +39,4 @@ jobs:
         run: |
           if [ -z "$DATABRICKS_HOST" ] || [ -z "$DATABRICKS_TOKEN" ]; then echo "::error::Missing DATABRICKS_HOST or DATABRICKS_TOKEN secret"; exit 1; fi
           python3 mlb-src/scripts/databricks_deploy.py
+# Last manual trigger: 2026-10-25

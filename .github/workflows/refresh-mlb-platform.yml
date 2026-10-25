@@ -86,3 +86,4 @@ jobs:
           git commit -m "data: daily refresh of the MLB Performance Intelligence platform"
           git push
           gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null || echo "Pages build will start from the push"
+# Last manual trigger: 2026-10-25
