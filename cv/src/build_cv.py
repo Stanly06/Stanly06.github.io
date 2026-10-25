@@ -43,11 +43,11 @@ CV = {
           "Automated file acquisition from the national open-data portal API (datos.gob.do) and institutional sites into an append-only archive, with incremental, exactly-once ingestion using Auto Loader and SHA-256 file lineage.",
           "Enforced data-quality rules with rejected-record logging and reconciliation checks; Gold KPIs match officially published values (e.g., 5,550 of 5,550 monthly CPI changes).",
           "Orchestrated 26 tasks in 6 parallel chains with a weekly Lakeflow Job and published the results in a bilingual (ES/EN) web platform and a Power BI report."]),
-        ("MLB Daily Games ETL Pipeline","Databricks, PySpark, Delta Lake, SQL, REST API","2026",
-          ("github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline","https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline"),[
-          "Built an automated ETL pipeline that ingests daily game data from the MLB Stats API into Bronze (raw JSON), Silver (typed games table) and Gold (daily KPI summary) Delta tables.",
-          "Implemented idempotent Delta Lake MERGE upserts and a pipeline log table that records status, rows processed and duration for each layer.",
-          "Orchestrated four dependent notebooks as a Databricks Job scheduled nightly, with SQL validation queries for each layer."]),
+        ("MLB Performance Intelligence Platform","Databricks, PySpark, Delta Lake, Lakeflow Jobs, scikit-learn","2026",
+          ("Live platform: stanly06.github.io/mlb-intelligence","https://stanly06.github.io/mlb-intelligence/?lang=en"),[
+          "Built a Databricks lakehouse on the MLB Stats API (7,400+ games, 2024–2026) with Auto Loader and incremental Delta MERGE through Bronze, Silver and Gold: team, player and country KPIs.",
+          "Wrote 14 data-quality checks; records and runs reconcile 90 of 90 with official MLB standings.",
+          "Trained a win-probability model (56.0% accuracy vs 52.9% baseline on an unseen season) and orchestrated a daily 13-task Lakeflow Job that refreshes a bilingual website."]),
         ("SQL Analytics: Music Store and Netflix Catalog","PostgreSQL","",("github.com/Stanly06","https://github.com/Stanly06"),[
           "Answered 11 business questions on an 11-table music store database using JOINs, subqueries, CTEs, ROW_NUMBER() and recursive CTEs.",
           "Answered 15 business questions on 8,800+ Netflix titles using CTEs, RANK() and string functions (STRING_TO_ARRAY, UNNEST, SPLIT_PART)."]),
@@ -95,11 +95,11 @@ CV = {
           "Automaticé la descarga de archivos desde la API del portal de datos abiertos (datos.gob.do) y los sitios de las instituciones hacia un archivo histórico que no se sobrescribe, con ingesta incremental exactamente una vez mediante Auto Loader y trazabilidad SHA-256 por archivo.",
           "Apliqué reglas de calidad de datos con registro de rechazados y conciliaciones; los KPIs de Gold coinciden con los valores oficiales publicados (ej. 5,550 de 5,550 variaciones mensuales del IPC).",
           "Orquesté 26 tareas en 6 cadenas paralelas con un Job semanal de Lakeflow y publiqué los resultados en una plataforma web bilingüe (ES/EN) y un reporte de Power BI."]),
-        ("MLB Daily Games ETL Pipeline","Databricks, PySpark, Delta Lake, SQL, API REST","2026",
-          ("github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline","https://github.com/Stanly06/MLB-Daily-Games-ETL-Pipeline"),[
-          "Construí un pipeline ETL automatizado que ingesta los juegos diarios desde la API de MLB hacia tablas Delta Bronze (JSON crudo), Silver (tabla de juegos tipada) y Gold (resumen diario de KPIs).",
-          "Implementé upserts idempotentes con MERGE de Delta Lake y una tabla de logs que registra estado, filas procesadas y duración por capa.",
-          "Orquesté cuatro notebooks dependientes como un Job de Databricks programado cada noche, con consultas SQL de validación por capa."]),
+        ("MLB Performance Intelligence Platform","Databricks, PySpark, Delta Lake, Lakeflow Jobs, scikit-learn","2026",
+          ("Plataforma en vivo: stanly06.github.io/mlb-intelligence","https://stanly06.github.io/mlb-intelligence/?lang=es"),[
+          "Construí un lakehouse en Databricks sobre la API de MLB (7,400+ juegos, 2024–2026) con Auto Loader y MERGE incremental en Bronze, Silver y Gold: KPIs de equipos, jugadores y países.",
+          "Escribí 14 controles de calidad; récord y carreras coinciden 90 de 90 con las posiciones oficiales de MLB.",
+          "Entrené un modelo de victoria (56.0% de acierto vs 52.9% base en una temporada no vista) y orquesté un Job diario de 13 tareas que actualiza una web bilingüe."]),
         ("Análisis SQL: Tienda de Música y Catálogo de Netflix","PostgreSQL","",("github.com/Stanly06","https://github.com/Stanly06"),[
           "Respondí 11 preguntas de negocio sobre una base de datos de 11 tablas usando JOINs, subconsultas, CTEs, ROW_NUMBER() y CTEs recursivos.",
           "Respondí 15 preguntas de negocio sobre más de 8,800 títulos de Netflix usando CTEs, RANK() y funciones de texto (STRING_TO_ARRAY, UNNEST, SPLIT_PART)."]),
