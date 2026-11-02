@@ -62,7 +62,7 @@ jobs:
           gen = datetime.fromisoformat(d["meta"]["generated_at"].replace("Z", "+00:00"))
           age = (datetime.now(timezone.utc) - gen).days
           if len(d["games"]["rows"]) < 2000 or len(d["batting"]["rows"]) < 1000: sys.exit("Export looks incomplete; not publishing")
-          if age > 2: sys.exit(f"Export is {age} days old: the Databricks job did not run")
+          if age > 8: sys.exit(f"Export is {age} days old: the Databricks job did not run (in the off-season it runs weekly)")
           failed = [r for r in d["quality"]["rows"] if r[d["quality"]["cols"].index("status")] == "FAIL"
                     and r[d["quality"]["cols"].index("severity")] == "CRITICAL"]
           if failed: sys.exit(f"Critical data-quality failures in the export: {failed}")
