@@ -48,6 +48,12 @@ CV = {
           "Built a Databricks lakehouse on the MLB Stats API (7,400+ games, 2024–2026) with Auto Loader and incremental Delta MERGE through Bronze, Silver and Gold: team, player and country KPIs.",
           "Wrote 14 data-quality checks; records and runs reconcile 90 of 90 with official MLB standings.",
           "Trained a win-probability model (56.0% accuracy vs 52.9% baseline on an unseen season) and orchestrated a daily 13-task Lakeflow Job that refreshes a bilingual website."]),
+        ("Road Safety Intelligence: DIGESETT Traffic Violations","Power BI, DAX, Power Query, Star Schema, Python","2026",
+          ("github.com/Stanly06/digesett-road-safety-intelligence","https://github.com/Stanly06/digesett-road-safety-intelligence"),[
+          "Built a 5-page Power BI report on 13.3 million official DIGESETT traffic violations (2018–2026) and road deaths (2016–2025) that answers 12 documented business questions on trends, top violations, seasonality and fatalities, to support prevention-campaign priorities.",
+          "Transformed wide Excel files in Power Query (unpivot, unpublished months vs real zeros) and mapped 145 raw violation names to 106 canonical types; designed a constellation star schema with two fact tables and a shared date dimension.",
+          "Wrote 60 DAX measures that compare only equivalent periods (2026 YoY −17.2% instead of a misleading −36.2%) and validated every yearly total and 56 measures against an independent Python calculation.",
+          "Documented the BRD, business questions and insights (e.g., no-helmet violations = 27.2% of the total; Top 10 types = 74.8%), data dictionary and DAX catalog; versioned as PBIP in Git."]),
         ("SQL Analytics: Music Store and Netflix Catalog","PostgreSQL","",("github.com/Stanly06","https://github.com/Stanly06"),[
           "Answered 11 business questions on an 11-table music store database using JOINs, subqueries, CTEs, ROW_NUMBER() and recursive CTEs.",
           "Answered 15 business questions on 8,800+ Netflix titles using CTEs, RANK() and string functions (STRING_TO_ARRAY, UNNEST, SPLIT_PART)."]),
@@ -55,8 +61,8 @@ CV = {
           "Built interactive reports with KPI cards, stacked charts, maps, scatter plots and slicers, using Power Query segmentation and DAX measures to compare regions, platforms and countries."])],
   edu=["MBA + Master's in Big Data & Business Intelligence | ENEB, European Business School of Barcelona (Universidad Isabel I) | Jun 2023 – Jun 2026",
        "B.S. Industrial Engineering | Universidad Autónoma de Santo Domingo (UASD) | 2014 – 2021"],
-  certs=["Google Business Intelligence Professional Certificate – Google / Coursera","Google Data Analytics Professional Certificate – Google / Coursera",
-         "Data Science with Python","Professional Course in Forecasting Methods: Calculations & Interpretation","EF SET English Certificate (B1)",
+  certs=["Google Business Intelligence and Google Data Analytics Professional Certificates – Google / Coursera",
+         "Data Science with Python · Professional Course in Forecasting Methods: Calculations & Interpretation · EF SET English Certificate (B1)",
          "In progress: Microsoft PL-300 Power BI Data Analyst; Databricks Certified Data Engineer Associate; Microsoft Fabric Data Engineering"],
   share=("Author of a Databricks Data Engineer Associate study guide, a 100-question Power BI interview guide and project walkthrough videos on YouTube (", "youtube.com/@stanlyfernandez2887", ")."),
 ),
@@ -100,23 +106,28 @@ CV = {
           "Construí un lakehouse en Databricks sobre la API de MLB (7,400+ juegos, 2024–2026) con Auto Loader y MERGE incremental en Bronze, Silver y Gold: KPIs de equipos, jugadores y países.",
           "Escribí 14 controles de calidad; récord y carreras coinciden 90 de 90 con las posiciones oficiales de MLB.",
           "Entrené un modelo de victoria (56.0% de acierto vs 52.9% base en una temporada no vista) y orquesté un Job diario de 13 tareas que actualiza una web bilingüe."]),
+        ("Road Safety Intelligence: Infracciones de Tránsito DIGESETT","Power BI, DAX, Power Query, Modelo Estrella, Python","2026",
+          ("github.com/Stanly06/digesett-road-safety-intelligence","https://github.com/Stanly06/digesett-road-safety-intelligence"),[
+          "Construí un reporte de Power BI de 5 páginas sobre 13.3 millones de infracciones oficiales de la DIGESETT (2018–2026) y fallecimientos viales (2016–2025) que responde 12 preguntas de negocio documentadas (tendencias, principales infracciones, estacionalidad y fallecimientos) para priorizar campañas de prevención.",
+          "Transformé Excel anchos en Power Query (despivoteo; meses no publicados vs ceros reales), mapeé 145 nombres a 106 tipos canónicos y diseñé un modelo estrella de constelación (2 tablas de hechos, 1 dimensión de fechas).",
+          "Escribí 60 medidas DAX que comparan solo periodos equivalentes (2026: −17.2%, no un engañoso −36.2%) y validé cada total anual y 56 medidas con Python.",
+          "Documenté el BRD, las preguntas de negocio e insights (no usar casco = 27.2% del total; Top 10 = 74.8%), el diccionario de datos y el catálogo DAX; versionado como PBIP en Git."]),
         ("Análisis SQL: Tienda de Música y Catálogo de Netflix","PostgreSQL","",("github.com/Stanly06","https://github.com/Stanly06"),[
-          "Respondí 11 preguntas de negocio sobre una base de datos de 11 tablas usando JOINs, subconsultas, CTEs, ROW_NUMBER() y CTEs recursivos.",
-          "Respondí 15 preguntas de negocio sobre más de 8,800 títulos de Netflix usando CTEs, RANK() y funciones de texto (STRING_TO_ARRAY, UNNEST, SPLIT_PART)."]),
+          "Respondí 11 preguntas de negocio sobre una base de datos de 11 tablas (JOINs, subconsultas, ROW_NUMBER(), CTEs recursivos) y 15 sobre más de 8,800 títulos de Netflix (CTEs, RANK() y funciones de texto)."]),
         ("Dashboards en Power BI: Ventas de Videojuegos y Mortalidad Infantil","Power BI, DAX, Power Query","",("github.com/Stanly06","https://github.com/Stanly06"),[
-          "Construí reportes interactivos con tarjetas de KPI, gráficos apilados, mapas, dispersión y segmentadores, usando segmentación en Power Query y medidas DAX para comparar regiones, plataformas y países."])],
+          "Construí reportes interactivos con tarjetas de KPI, gráficos, mapas y segmentadores, con Power Query y medidas DAX para comparar regiones, plataformas y países."])],
   edu=["MBA + Máster en Big Data y Business Intelligence | ENEB, Escuela de Negocios Europea de Barcelona (Universidad Isabel I) | Jun 2023 – Jun 2026",
        "Ingeniería Industrial | Universidad Autónoma de Santo Domingo (UASD) | 2014 – 2021"],
-  certs=["Google Business Intelligence Professional Certificate – Google / Coursera","Google Data Analytics Professional Certificate – Google / Coursera",
-         "Data Science with Python","Curso Profesional en Métodos de Pronósticos: Cálculos e Interpretaciones","EF SET English Certificate (B1)",
-         "En preparación: Microsoft PL-300 Power BI Data Analyst; Databricks Certified Data Engineer Associate; Microsoft Fabric Data Engineering"],
+  certs=["Google Business Intelligence y Google Data Analytics Professional Certificates – Google / Coursera",
+         "Data Science with Python · Curso Profesional en Métodos de Pronósticos · EF SET English Certificate (B1)",
+         "En preparación: PL-300 Power BI Data Analyst · Databricks Data Engineer Associate · Microsoft Fabric Data Engineering"],
   share=("Autor de una guía de estudio para Databricks Data Engineer Associate, una guía de 100 preguntas de entrevista de Power BI y videos explicativos de proyectos en YouTube (", "youtube.com/@stanlyfernandez2887", ")."),
 )}
 
 CSS = """
-@page{size:Letter;margin:0.4in 0.55in 0.4in 0.55in}
+@page{size:Letter;margin:0.35in 0.5in 0.35in 0.5in}
 *{box-sizing:border-box}
-body{font-family:Carlito,Calibri,"Liberation Sans",sans-serif;font-size:10pt;line-height:1.2;color:#1a1a1a;margin:0}
+body{font-family:Carlito,Calibri,"Liberation Sans",sans-serif;font-size:10pt;line-height:1.17;color:#1a1a1a;margin:0}
 a{color:inherit;text-decoration:none}
 a.u{color:#1F3864;text-decoration:underline;text-decoration-color:#9fb1d0}
 header{text-align:center;margin-bottom:4pt}
