@@ -32,6 +32,17 @@ main{padding:10px 20px 6px;max-width:1920px;margin:0 auto}
 .sl.dirty select{border-bottom-color:var(--y);color:var(--y)}
 .reset{align-self:flex-end;background:transparent;border:1px solid var(--line);color:var(--sub);border-radius:4px;padding:7px 12px;font:inherit;font-size:12px;cursor:pointer;margin-bottom:2px}
 .reset:hover{color:var(--text);border-color:var(--y)}
+.acts{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:2px}
+.acts .reset{margin:0}
+.selchip{background:rgba(255,199,44,.14);border:1px solid var(--y);color:var(--text);border-radius:14px;padding:6px 12px;font:inherit;font-size:12px;cursor:pointer}
+.selchip b{color:var(--y);font-weight:600}
+.hint{color:#7B828C;font-size:11.5px;padding-bottom:7px}
+table.pick td[data-y],table.pick td[data-m],table.pick th[data-m],table.pick th[data-y],table.pick [data-cat],table.pick [data-type],table.pick tr[data-type]{cursor:pointer}
+table.pick td[data-y]:hover,table.pick th[data-m]:hover,table.pick th[data-y]:hover,table.pick [data-cat]:hover,table.pick tr[data-type]:hover td{outline:1px solid rgba(255,199,44,.6);outline-offset:-1px}
+td.hit{outline:2px solid #fff;outline-offset:-2px;font-weight:700}
+tr.hitrow td{background:rgba(255,199,44,.16)!important}
+tr.dimrow td{opacity:.4}
+td.cat i{cursor:pointer}
 .page{display:none}.page.on{display:block}
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:14px}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}}
@@ -231,7 +242,7 @@ const ENGINE=(function(){
   const isCommon=MI=>MI>=Math.max(MINV,FMIN)&&MI<=Math.min(LAST,FMAX);
   const yearLabel=y=>(y===LASTY&&LASTM<12)?y+'*':String(y);
   // DimDate filtrada por los segmentadores de fecha del contexto
-  function dates(ctx){const ys=ctx.y!=null?[ctx.y]:years(),ms=ctx.m!=null?[ctx.m]:[1,2,3,4,5,6,7,8,9,10,11,12],o=[];ys.forEach(y=>ms.forEach(m=>o.push(y*12+m)));return o;}
+  function dates(ctx){const ys=ctx.y!=null?[ctx.y]:years();let ms=ctx.m!=null?[ctx.m]:[1,2,3,4,5,6,7,8,9,10,11,12];if(ctx.q!=null)ms=ms.filter(m=>Math.ceil(m/3)===ctx.q);const o=[];ys.forEach(y=>ms.forEach(m=>o.push(y*12+m)));return o;}
   const infOk=(ctx,id)=>(ctx.cat==null||INF[id].cat===ctx.cat)&&(ctx.type==null||id===ctx.type);
   function sel(MIs,ctx,extra){const o=[];for(const mi of MIs){const rs=byMI.get(mi);if(!rs)continue;for(const r of rs)if(infOk(ctx,r.id)&&(!extra||extra(r)))o.push(r);}return o;}
   const T=rs=>rs.length?rs.reduce((s,r)=>s+r.c,0):null;
@@ -348,14 +359,39 @@ const ab=(v,d)=>{if(v==null)return '';const a=Math.abs(v);if(a>=1e6)return (v/1e
 const abM=v=>v==null?'':(v/1e6).toFixed(1)+'M';
 const axM=v=>{if(v===0)return '0';const a=Math.abs(v);return a>=1e6?+(v/1e6).toFixed(2)+'M':a>=1e3?+(v/1e3).toFixed(1)+'K':String(v);};
 const yoyLabel=(g,y)=>g==null?'Sin período comparable':(g>=0?'▲ ':'▼ ')+pcs(g)+' · '+y+' vs. '+(y-1);
-const charts={};
-function ch(id){if(!charts[id])charts[id]=echarts.init($(id),null,{renderer:'canvas'});return charts[id];}
+const charts={},H={},AXC={};
+// ---- Filtrado cruzado (como en Power BI): un clic en un visual filtra las tarjetas y los demás visuales de la hoja ----
+let SEL=null;
+const KEYS=['y','m','q','cat','type'];
+const same=(a,b)=>!!(a&&b&&a.src===b.src&&KEYS.every(k=>(a[k]??null)===(b[k]??null)));
+function pick(o){SEL=same(SEL,o)?null:o;render();}
+function eff(page,id){const c=ctxFor(page);if(!SEL||SEL.src===id)return c;const o={...c};KEYS.forEach(k=>{if(SEL[k]!=null)o[k]=SEL[k];});return o;}
+const isSrc=id=>!!(SEL&&SEL.src===id);
+const op=(id,match)=>isSrc(id)&&!match?0.28:1;
+function ch(id,axis){
+  if(!charts[id]){
+    const c=echarts.init($(id),null,{renderer:'canvas'});charts[id]=c;
+    c.on('click',p=>{c.__t=Date.now();if(H[id])H[id](p);});
+    c.getZr().on('click',e=>{ // clic en el área del gráfico (no sobre una marca): toma la categoría del eje
+      setTimeout(()=>{if(Date.now()-(c.__t||0)<120)return;const ax=AXC[id],pt=[e.offsetX,e.offsetY];
+        if(ax&&c.containPixel('grid',pt)){const v=c.convertFromPixel({gridIndex:0},pt);const i=Math.round(ax==='y'?v[1]:v[0]);if(H[id]&&i>=0)H[id]({dataIndex:i,axis:true});}
+        else if(isSrc(id)){SEL=null;render();}},0);});
+  }
+  AXC[id]=axis||null;return charts[id];
+}
 const TT={backgroundColor:'#1F2328',borderColor:'#3A3F47',textStyle:{color:'#E8EAED',fontSize:12},confine:true};
 const AX=(o)=>Object.assign({axisLine:{lineStyle:{color:'#5A6069'}},axisTick:{show:false},axisLabel:{color:C.sub,fontSize:11},splitLine:{lineStyle:{color:C.grid}}},o);
 const LEG={bottom:0,left:0,icon:'circle',itemWidth:9,itemHeight:9,textStyle:{color:C.sub,fontSize:11}};
-const base=o=>Object.assign({backgroundColor:'transparent',textStyle:{fontFamily:'Segoe UI, Inter, sans-serif',color:C.txt},tooltip:TT,animationDuration:400},o);
+const base=o=>Object.assign({backgroundColor:'transparent',textStyle:{fontFamily:'Segoe UI, Inter, sans-serif',color:C.txt},tooltip:TT,animationDuration:350},o);
 function empty(id,isEmpty){const el=$(id).parentElement;let e=el.querySelector('.empty');if(isEmpty){if(!e){e=document.createElement('div');e.className='empty';e.textContent='No hay datos para esta selección';el.appendChild(e);}}else if(e)e.remove();}
-const note=ctxp=>ctxp?`* ${E.LAST?Math.floor((E.LAST-1)/12):''}: datos de enero a ${MESL[E.mOf(E.LAST)-1].toLowerCase()}. Las variaciones comparan el mismo tramo del año anterior.`:'';
+const note=p=>p?`* ${E.yOf(E.LAST)}: datos de enero a ${MESL[E.mOf(E.LAST)-1].toLowerCase()}. Las variaciones comparan el mismo tramo del año anterior.`:'';
+const lab=mi=>MES[E.mOf(mi)-1]+' '+E.yOf(mi);
+const monthAxis=(mis)=>({type:'category',data:mis.map(lab),axisLabel:{color:C.sub,fontSize:11,interval:mis.length<=14?0:(i=>E.mOf(mis[i])===1),formatter:v=>mis.length<=14?v:v.split(' ')[1]}});
+const selMark=(id,cats)=>{ // línea vertical sobre el mes elegido en un gráfico de líneas
+  if(!isSrc(id)||SEL.y==null||SEL.m==null)return undefined;const l=MES[SEL.m-1]+' '+SEL.y;if(!cats.includes(l))return undefined;
+  return {silent:true,symbol:'none',lineStyle:{color:'#fff',type:'dashed',width:1},label:{color:'#fff',fontSize:10,formatter:l},data:[{xAxis:l}]};};
+const wrapTxt=(t,w,lines)=>{const cpl=Math.max(6,Math.floor(w/6.3)),ws=t.split(' '),out=[];let cur='';for(const x of ws){if((cur+' '+x).trim().length>cpl&&cur){out.push(cur);cur=x;}else cur=(cur+' '+x).trim();}if(cur)out.push(cur);if(out.length>lines){out.length=lines;out[lines-1]=out[lines-1].slice(0,cpl-1)+'…';}return out.join('\n');};
+const wrapW=(id,n,pad)=>Math.max(40,Math.floor((($(id).clientWidth||600)-pad)/Math.max(n,1))-8);
 
 /* ---------- segmentadores ---------- */
 function slicers(){
@@ -366,218 +402,267 @@ function slicers(){
   if(s.includes('m'))h.push(`<div class="sl${S.m!=null?' dirty':''}" style="width:220px"><label>Mes</label><select data-k="m">${opt('','Todos',S.m==null?'':S.m)}${MESL.map((n,i)=>opt(i+1,n,S.m)).join('')}</select></div>`);
   if(s.includes('cat'))h.push(`<div class="sl${S.cat!=null?' dirty':''}" style="width:340px"><label>Categoría (clasificación propia)</label><select data-k="cat">${opt('','Todas',S.cat==null?'':S.cat)}${E.CATS.map(c=>opt(c,c,S.cat)).join('')}</select></div>`);
   if(s.includes('type')){const ids=E.IDS.filter(id=>S.cat==null||E.INF[id].cat===S.cat).sort((a,b)=>E.INF[a].name.localeCompare(E.INF[b].name,'es'));
-    h.push(`<div class="sl${S.type!=null?' dirty':''}" style="width:500px"><label>Tipo de infracción</label><select data-k="type">${opt('','Todos',S.type==null?'':S.type)}${ids.map(id=>opt(id,E.INF[id].name,S.type)).join('')}</select></div>`);}
+    h.push(`<div class="sl${S.type!=null?' dirty':''}" style="width:380px"><label>Tipo de infracción</label><select data-k="type">${opt('','Todos',S.type==null?'':S.type)}${ids.map(id=>opt(id,E.INF[id].name,S.type)).join('')}</select></div>`);}
   if(s.includes('cmp'))h.push(`<div class="sl${S.cmp!==1?' dirty':''}" style="width:230px"><label>Comparación</label><select data-k="cmp">${opt(1,'Interanual (YoY)',S.cmp)}${opt(2,'Mensual (MoM)',S.cmp)}</select></div>`);
   if(s.includes('topn'))h.push(`<div class="sl${S.topn!==10?' dirty':''}" style="width:150px"><label>Top N</label><select data-k="topn">${[3,5,10,15,20].map(n=>opt(n,n,S.topn)).join('')}</select></div>`);
   if(s.includes('metric'))h.push(`<div class="sl${S.metric!==1?' dirty':''}" style="width:260px"><label>Métrica de la matriz</label><select data-k="metric">${['Infracciones','Promedio mensual','Acumulado YTD','Variación interanual %','Participación %'].map((n,i)=>opt(i+1,n,S.metric)).join('')}</select></div>`);
-  h.push('<button class="reset" id="reset">Borrar filtros</button>');
+  h.push('<div class="acts"><button class="reset" id="reset">Borrar filtros</button>'+(SEL?`<button class="selchip" id="selchip" title="Quitar la selección">Selección: <b>${SEL.label}</b> ✕</button>`:'<span class="hint">Haz clic en barras, puntos, sectores o celdas para filtrar la hoja</span>')+'</div>');
   box.innerHTML=h.join('');
   box.querySelectorAll('select').forEach(el=>el.onchange=()=>{const k=el.dataset.k,v=el.value;
     if(k==='cat'){S.cat=v||null;if(S.type!=null&&S.cat!=null&&E.INF[S.type].cat!==S.cat)S.type=null;}
     else if(k==='type')S.type=v?+v:null; else if(k==='y')S.y=v?+v:null; else if(k==='m')S.m=v?+v:null; else S[k]=+v;
-    render();});
-  $('reset').onclick=()=>{Object.assign(S,{y:null,m:null,cat:null,type:null,cmp:1,topn:10,metric:1});render();};
+    SEL=null;render();});
+  $('reset').onclick=()=>{Object.assign(S,{y:null,m:null,cat:null,type:null,cmp:1,topn:10,metric:1});SEL=null;render();};
+  if($('selchip'))$('selchip').onclick=()=>{SEL=null;render();};
 }
 
 /* ---------- 1 · Overview ---------- */
 function pOverview(){
-  const ctx=ctxFor('overview'),M=measures('overview',ctx),ds=E.dates(ctx);
+  const P='overview',K=eff(P,'kpi'),M=measures(P,K);
   $('o-k1').textContent=nf(M.total);$('o-k2').textContent=yoyLabel(M.latestYoY,M.latestYear);$('o-k3').textContent=nf(M.avgMonthly);
   $('o-k4').textContent=M.topName||'—';$('o-k5').textContent=nf(M.types);$('o-note').textContent=note(M.partial);
-  // título dinámico = [Dynamic KPI Title]
-  const ys=[...new Set(E.sel(ds,ctx).map(r=>r.y))];const yl=ys.length?(Math.min(...ys)===Math.max(...ys)?ys[0]:Math.min(...ys)+'–'+Math.max(...ys)):'Sin datos';
-  $('o-line-t').textContent='Infracciones de tránsito · '+yl+(ctx.m?' · '+MESL[ctx.m-1]:'')+(ctx.type!=null?' · '+E.INF[ctx.type].name:ctx.cat?' · '+ctx.cat:'');
-  const mis=ds.filter(mi=>E.T(E.sel([mi],ctx))!=null);
-  const lab=mi=>MES[E.mOf(mi)-1]+' '+E.yOf(mi);
-  empty('o-line',!mis.length);
-  ch('o-line').setOption(base({grid:{left:50,right:16,top:16,bottom:46},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:mis.map(lab),boundaryGap:false,axisLabel:{color:C.sub,fontSize:11,interval:i=>E.mOf(mis[i])===1||mis.length<=24,formatter:v=>mis.length<=24?v:v.split(' ')[1]}}),
-    yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
-    series:[{name:'Total Traffic Violations',type:'line',data:mis.map(mi=>E.T(E.sel([mi],ctx))),showSymbol:mis.length<=24,lineStyle:{width:2,color:C.y},itemStyle:{color:C.y}},
-      {name:'Rolling 12M Average',type:'line',data:mis.map(mi=>E.rolling(mi,12,ctx)),showSymbol:false,lineStyle:{width:2,color:C.t},itemStyle:{color:C.t}}]}),true);
-  // dona por categoría
-  const cm={};E.sel(ds,ctx).forEach(r=>{const c=E.INF[r.id].cat;cm[c]=(cm[c]||0)+r.c;});
-  const cats=E.CATS.filter(c=>cm[c]!=null),ct=cats.reduce((s,c)=>s+cm[c],0);
-  empty('o-donut',!cats.length);
-  ch('o-donut').setOption(base({color:PAL,tooltip:{...TT,trigger:'item',formatter:p=>`${p.name}<br><b>${nf(p.value)}</b> · ${pc(p.value/ct)}`},
-    legend:{orient:'vertical',right:0,top:'middle',icon:'circle',itemWidth:9,itemHeight:9,textStyle:{color:C.sub,fontSize:11,width:150,overflow:'truncate'}},
-    title:{text:ab(ct,0),left:'31%',top:'middle',textAlign:'center',textStyle:{color:C.y,fontSize:28,fontWeight:500}},
-    series:[{type:'pie',radius:['52%','68%'],center:['32%','52%'],data:cats.map(c=>({name:c,value:cm[c]})),label:{color:C.txt,fontSize:10.5,formatter:p=>(p.value/ct*100).toFixed(2)+'%'},labelLine:{length:6,length2:8},itemStyle:{borderColor:'#272B31',borderWidth:1}}]}),true);
-  // columnas por año
-  const yrs=E.years().map(y=>({y,v:E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx))})).filter(o=>o.v!=null);
-  empty('o-year',!yrs.length);
-  ch('o-year').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:yrs.map(o=>E.yearLabel(o.y))}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
-    series:[{name:'Infracciones',type:'bar',barWidth:'46%',data:yrs.map(o=>o.v),itemStyle:{color:C.y},label:{show:true,position:'top',color:C.txt,fontSize:10.5,formatter:p=>abM(p.value)}}]}),true);
-  // top 10
-  const rk=E.ranking(ds,ctx).arr.filter(x=>x.rank<=10).reverse();
-  empty('o-top',!rk.length);
-  ch('o-top').setOption(base({grid:{left:8,right:44,top:4,bottom:20,containLabel:true},tooltip:{...TT,trigger:'item',formatter:p=>`${rk[p.dataIndex].name}<br><b>${nf(p.value)}</b>`},
-    xAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),yAxis:AX({type:'category',data:rk.map(x=>x.name),axisLine:{show:false},axisLabel:{color:C.sub,fontSize:11,width:330,overflow:'truncate'}}),
-    series:[{type:'bar',barWidth:'55%',data:rk.map(x=>x.v),itemStyle:{color:C.y},label:{show:true,position:'right',color:C.txt,fontSize:10.5,formatter:p=>p.value>=1e5?abM(p.value):ab(p.value,1)}}]}),true);
+  { // línea mensual + media móvil 12M
+    const id='o-line',c=eff(P,id),ds=E.dates(c),mis=ds.filter(mi=>E.T(E.sel([mi],c))!=null),cats=mis.map(lab);
+    const ys=[...new Set(mis.map(E.yOf))];const yl=ys.length?(ys.length===1?ys[0]:Math.min(...ys)+'–'+Math.max(...ys)):'Sin datos';
+    $('o-line-t').textContent='Infracciones de tránsito · '+yl+(c.m?' · '+MESL[c.m-1]:'')+(c.type!=null?' · '+E.INF[c.type].name:c.cat?' · '+c.cat:'');
+    H[id]=p=>{const mi=mis[p.dataIndex];if(mi!=null)pick({src:id,y:E.yOf(mi),m:E.mOf(mi),label:lab(mi)});};
+    empty(id,!mis.length);
+    ch(id,'x').setOption(base({grid:{left:50,right:16,top:16,bottom:46},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({...monthAxis(mis),boundaryGap:false}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Infracciones',type:'line',data:mis.map(mi=>E.T(E.sel([mi],c))),showSymbol:mis.length<=24,symbolSize:6,lineStyle:{width:2,color:C.y},itemStyle:{color:C.y},markLine:selMark(id,cats)},
+        {name:'Media móvil 12 meses',type:'line',data:mis.map(mi=>E.rolling(mi,12,c)),showSymbol:false,lineStyle:{width:2,color:C.t},itemStyle:{color:C.t}}]}),true);
+  }
+  { // dona por categoría
+    const id='o-donut',c=eff(P,id),cm={};E.sel(E.dates(c),c).forEach(r=>{const k=E.INF[r.id].cat;cm[k]=(cm[k]||0)+r.c;});
+    const cats=E.CATS.filter(k=>cm[k]!=null),ct=cats.reduce((s,k)=>s+cm[k],0);
+    H[id]=p=>{if(p.name&&cm[p.name]!=null)pick({src:id,cat:p.name,label:p.name});};
+    empty(id,!cats.length);
+    ch(id).setOption(base({color:PAL,tooltip:{...TT,trigger:'item',formatter:p=>`${p.name}<br><b>${nf(p.value)}</b> · ${pc(p.value/ct)}`},
+      legend:{orient:'vertical',right:0,top:'middle',icon:'circle',itemWidth:9,itemHeight:9,textStyle:{color:C.sub,fontSize:11,width:150,overflow:'truncate'},selectedMode:false},
+      title:{text:ab(ct,1),subtext:'infracciones',left:'31%',top:'42%',textAlign:'center',textStyle:{color:C.y,fontSize:26,fontWeight:500},subtextStyle:{color:C.sub,fontSize:11}},
+      series:[{type:'pie',radius:['52%','68%'],center:['32%','52%'],data:cats.map((k,i)=>({name:k,value:cm[k],itemStyle:{opacity:op(id,SEL&&SEL.cat===k)}})),
+        label:{color:C.txt,fontSize:10.5,formatter:p=>(p.value/ct*100).toFixed(1)+'%'},labelLine:{length:6,length2:8},itemStyle:{borderColor:'#272B31',borderWidth:1}}]}),true);
+  }
+  { // columnas por año
+    const id='o-year',c=eff(P,id),ds=E.dates(c),yrs=E.years().map(y=>({y,v:E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),c))})).filter(o=>o.v!=null);
+    H[id]=p=>{const o=yrs[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+    empty(id,!yrs.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({type:'category',data:yrs.map(o=>E.yearLabel(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Infracciones',type:'bar',barMaxWidth:44,barWidth:'46%',data:yrs.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:true,position:'top',color:C.txt,fontSize:10.5,formatter:p=>ab(p.value,1)}}]}),true);
+  }
+  { // top 10
+    const id='o-top',c=eff(P,id),rk=E.ranking(E.dates(c),c).arr.filter(x=>x.rank<=10).reverse();
+    H[id]=p=>{const x=rk[p.dataIndex];if(x)pick({src:id,type:x.id,label:x.name});};
+    empty(id,!rk.length);
+    ch(id,'y').setOption(base({grid:{left:8,right:50,top:4,bottom:20,containLabel:true},tooltip:{...TT,trigger:'item',formatter:p=>`${rk[p.dataIndex].name}<br><b>${nf(p.value)}</b> · ${pc(rk[p.dataIndex].share)}`},
+      xAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),yAxis:AX({type:'category',data:rk.map(x=>x.name),axisLine:{show:false},axisLabel:{color:C.sub,fontSize:11,width:330,overflow:'truncate',interval:0}}),
+      series:[{type:'bar',barMaxWidth:44,barWidth:'55%',data:rk.map(x=>({value:x.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.type===x.id)}})),label:{show:true,position:'right',color:C.txt,fontSize:10.5,formatter:p=>ab(p.value,1)}}]}),true);
+  }
 }
 
 /* ---------- 2 · Tendencias ---------- */
+function yearRows(c){const ds=E.dates(c);return E.years().map(y=>{const mis=ds.filter(mi=>E.yOf(mi)===y),v=E.T(E.sel(mis,c)),yy=E.yoy(mis,c);return {y,v,g:yy.g,abs:yy.abs};}).filter(o=>o.v!=null);}
 function pTendencias(){
-  const ctx=ctxFor('tendencias'),M=measures('tendencias',ctx),ds=E.dates(ctx);
+  const P='tendencias',K=eff(P,'kpi'),M=measures(P,K);
   $('t-k1').textContent=nf(M.total);$('t-k2').textContent=nf(M.avgAnnual);$('t-k3').textContent=yoyLabel(M.latestYoY,M.latestYear);
   $('t-k4').textContent=nf(M.ytd);$('t-k5').textContent=M.ytdG==null?'—':(M.ytdG*100).toFixed(1)+'%';$('t-note').textContent=note(M.partial);
-  const yrs=E.years().map(y=>{const mis=ds.filter(mi=>E.yOf(mi)===y),v=E.T(E.sel(mis,ctx)),yy=E.yoy(mis,ctx);return {y,v,g:yy.g,abs:yy.abs};}).filter(o=>o.v!=null);
-  empty('t-combo',!yrs.length);
-  ch('t-combo').setOption(base({grid:{left:40,right:50,top:20,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.seriesIndex?pc(p.value):nf(p.value)}</b>`).join('<br>')},
-    xAxis:AX({type:'category',data:yrs.map(o=>E.yearLabel(o.y))}),
-    yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}})],
-    series:[{name:'Total Traffic Violations',type:'bar',barWidth:'46%',data:yrs.map(o=>o.v),itemStyle:{color:C.y}},
-      {name:'YoY Growth %',type:'line',yAxisIndex:1,smooth:true,showSymbol:false,data:yrs.map(o=>o.g),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},connectNulls:false}]}),true);
-  // comparación mensual entre años
-  const ser=yrs.map((o,i)=>({name:E.yearLabel(o.y),type:'line',smooth:true,showSymbol:false,data:MES.map((_,k)=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===o.y&&E.mOf(mi)===k+1),ctx))),lineStyle:{width:2},color:PAL[(o.y-2018+20)%PAL.length]}));
-  empty('t-cmp',!yrs.length);
-  ch('t-cmp').setOption(base({grid:{left:40,right:12,top:16,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf,order:'valueDesc'},
-    xAxis:AX({type:'category',data:MES,boundaryGap:false}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),series:ser}),true);
-  // cambio absoluto según comparación
-  if(S.cmp===1){
-    const pts=yrs.filter(o=>o.abs!=null);empty('t-abs',!pts.length);
-    $('t-abs-t').textContent='Cambio absoluto según comparación seleccionada · Interanual (YoY)';
-    ch('t-abs').setOption(base({grid:{left:44,right:8,top:22,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>(v>0?'+':'')+nf(v)},
-      xAxis:AX({type:'category',data:pts.map(o=>E.yearLabel(o.y))}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>(v>0?'+':'')+(v/1e6).toFixed(1)+'M'}}),
-      series:[{type:'bar',barWidth:'46%',data:pts.map(o=>o.abs),itemStyle:{color:C.y},label:{show:true,position:'outside',color:C.txt,fontSize:10.5,formatter:p=>(p.value>0?'+':'')+(p.value/1e6).toFixed(2)+'M'}}]}),true);
-  }else{
-    const mis=ds.filter(mi=>E.T(E.sel([mi],ctx))!=null),pts=mis.map(mi=>({mi,v:E.mom(mi,ctx).abs})).filter(o=>o.v!=null);empty('t-abs',!pts.length);
-    $('t-abs-t').textContent='Cambio absoluto según comparación seleccionada · Mensual (MoM)';
-    ch('t-abs').setOption(base({grid:{left:48,right:8,top:16,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>(v>0?'+':'')+nf(v)},
-      xAxis:AX({type:'category',data:pts.map(o=>MES[E.mOf(o.mi)-1]+' '+E.yOf(o.mi)),axisLabel:{color:C.sub,fontSize:11,interval:i=>pts.length<=24||E.mOf(pts[i].mi)===1,formatter:v=>pts.length<=24?v:v.split(' ')[1]}}),
-      yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>(v>0?'+':'')+ab(v)}}),
-      series:[{type:'bar',data:pts.map(o=>o.v),itemStyle:{color:C.y}}]}),true);
+  { const id='t-combo',c=eff(P,id),yrs=yearRows(c);
+    H[id]=p=>{const o=yrs[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+    empty(id,!yrs.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:50,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.seriesIndex?pcs(p.value):nf(p.value)}</b>`).join('<br>')},
+      xAxis:AX({type:'category',data:yrs.map(o=>E.yearLabel(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
+      yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}})],
+      series:[{name:'Infracciones',type:'bar',barMaxWidth:44,barWidth:'46%',itemStyle:{color:C.y},data:yrs.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:true,position:'insideTop',color:'#1B1E22',fontSize:10,formatter:p=>ab(p.value,1)}},
+        {name:'Variación interanual %',type:'line',yAxisIndex:1,smooth:true,symbolSize:6,data:yrs.map(o=>o.g),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},
+          label:{show:true,position:'top',color:'#9FE3D6',fontSize:10,backgroundColor:'rgba(27,30,34,.85)',padding:[2,4],borderRadius:3,formatter:p=>p.value==null?'':pcs(p.value)}}]}),true);
   }
-  // medias móviles
-  const mis=ds.filter(mi=>E.T(E.sel([mi],ctx))!=null);empty('t-trend',!mis.length);
-  ch('t-trend').setOption(base({grid:{left:44,right:12,top:16,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:mis.map(mi=>MES[E.mOf(mi)-1]+' '+E.yOf(mi)),boundaryGap:false,axisLabel:{color:C.sub,fontSize:11,interval:i=>mis.length<=24||E.mOf(mis[i])===1,formatter:v=>mis.length<=24?v:v.split(' ')[1]}}),
-    yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
-    series:[{name:'Rolling 3M Average',type:'line',showSymbol:false,data:mis.map(mi=>E.rolling(mi,3,ctx)),lineStyle:{width:2,color:C.y},itemStyle:{color:C.y}},
-      {name:'Rolling 12M Average',type:'line',showSymbol:false,data:mis.map(mi=>E.rolling(mi,12,ctx)),lineStyle:{width:2,color:C.t},itemStyle:{color:C.t}}]}),true);
-  // matriz año × mes
-  $('t-mx').innerHTML=pivot(ds,ctx,{totals:true});
+  { const id='t-cmp',c=eff(P,id),ds=E.dates(c),yrs=yearRows(c);
+    const ser=yrs.map(o=>({name:E.yearLabel(o.y),type:'line',smooth:true,symbolSize:5,showSymbol:true,data:MES.map((_,k)=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===o.y&&E.mOf(mi)===k+1),c))),
+      lineStyle:{width:isSrc(id)&&SEL.y===o.y?3.5:2,opacity:isSrc(id)&&SEL.y!==o.y?0.25:1},itemStyle:{opacity:isSrc(id)&&SEL.y!==o.y?0.25:1},color:PAL[(o.y-2018+20)%PAL.length]}));
+    H[id]=p=>{if(p.axis){pick({src:id,m:p.dataIndex+1,label:MESL[p.dataIndex]});return;}const y=parseInt(p.seriesName);if(y)pick({src:id,y,m:p.dataIndex+1,label:MES[p.dataIndex]+' '+y});};
+    empty(id,!yrs.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:12,top:16,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf,order:'valueDesc'},
+      xAxis:AX({type:'category',data:MES,boundaryGap:false,axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),series:ser}),true);
+  }
+  { const id='t-abs',c=eff(P,id);
+    if(S.cmp===1){
+      const pts=yearRows(c).filter(o=>o.abs!=null);
+      $('t-abs-t').textContent='Cambio absoluto según comparación seleccionada · Interanual (YoY)';
+      H[id]=p=>{const o=pts[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+      empty(id,!pts.length);
+      ch(id,'x').setOption(base({grid:{left:48,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>(v>0?'+':'')+nf(v)},
+        xAxis:AX({type:'category',data:pts.map(o=>E.yearLabel(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>(v>0?'+':'')+axM(v)}}),
+        series:[{name:'Cambio vs. año anterior',type:'bar',barMaxWidth:44,barWidth:'46%',data:pts.map(o=>({value:o.abs,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:true,position:'outside',color:C.txt,fontSize:10,formatter:p=>(p.value>0?'+':'')+ab(p.value,1)}}]}),true);
+    }else{
+      const ds=E.dates(c),pts=ds.filter(mi=>E.T(E.sel([mi],c))!=null).map(mi=>({mi,v:E.mom(mi,c).abs})).filter(o=>o.v!=null),mis=pts.map(o=>o.mi);
+      $('t-abs-t').textContent='Cambio absoluto según comparación seleccionada · Mensual (MoM)';
+      H[id]=p=>{const o=pts[p.dataIndex];if(o)pick({src:id,y:E.yOf(o.mi),m:E.mOf(o.mi),label:lab(o.mi)});};
+      empty(id,!pts.length);
+      ch(id,'x').setOption(base({grid:{left:48,right:8,top:16,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>(v>0?'+':'')+nf(v)},
+        xAxis:AX(monthAxis(mis)),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>(v>0?'+':'')+axM(v)}}),
+        series:[{name:'Cambio vs. mes anterior',type:'bar',barMaxWidth:44,data:pts.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===E.yOf(o.mi)&&SEL.m===E.mOf(o.mi))}})),
+          label:{show:pts.length<=14,position:'outside',color:C.txt,fontSize:10,formatter:p=>(p.value>0?'+':'')+ab(p.value,1)}}]}),true);
+    }
+  }
+  { const id='t-trend',c=eff(P,id),ds=E.dates(c),mis=ds.filter(mi=>E.T(E.sel([mi],c))!=null),cats=mis.map(lab);
+    H[id]=p=>{const mi=mis[p.dataIndex];if(mi!=null)pick({src:id,y:E.yOf(mi),m:E.mOf(mi),label:lab(mi)});};
+    empty(id,!mis.length);
+    ch(id,'x').setOption(base({grid:{left:44,right:12,top:16,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({...monthAxis(mis),boundaryGap:false}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Media móvil 3 meses',type:'line',showSymbol:false,data:mis.map(mi=>E.rolling(mi,3,c)),lineStyle:{width:2,color:C.y},itemStyle:{color:C.y},markLine:selMark(id,cats)},
+        {name:'Media móvil 12 meses',type:'line',showSymbol:false,data:mis.map(mi=>E.rolling(mi,12,c)),lineStyle:{width:2,color:C.t},itemStyle:{color:C.t}}]}),true);
+  }
+  { const id='t-mx',c=eff(P,id);$(id).innerHTML=pivot(E.dates(c),c,{totals:true,id});bindPivot(id); }
 }
-function pivot(ds,ctx,o){ // filas año, columnas mes, valor = infracciones
+function pivot(ds,ctx,o){ // filas año, columnas mes; cada celda, fila y encabezado se puede seleccionar
   const rows=E.years().filter(y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx))!=null);
   const cols=[1,2,3,4,5,6,7,8,9,10,11,12].filter(m=>E.T(E.sel(ds.filter(mi=>E.mOf(mi)===m),ctx))!=null);
   if(!rows.length)return '<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';
   const cell=(y,m)=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y&&E.mOf(mi)===m),ctx));
   let mx=-Infinity,mn=Infinity;if(o.heat)rows.forEach(y=>cols.forEach(m=>{const v=cell(y,m);if(v!=null){mx=Math.max(mx,v);mn=Math.min(mn,v);}}));
-  const bg=v=>{if(!o.heat||v==null)return '';const t=mx===mn?1:(v-mn)/(mx-mn);const a=[47,52,59],b=o.hi;const c=a.map((x,i)=>Math.round(x+(b[i]-x)*t));return `background:rgb(${c})`;};
-  let h=`<table><thead><tr><th>YearLabel</th>${cols.map(m=>`<th>${MES[m-1]}</th>`).join('')}${o.totals?'<th>Total</th>':''}</tr></thead><tbody>`;
-  rows.forEach(y=>{h+=`<tr><td>${E.yearLabel(y)}</td>`+cols.map(m=>{const v=cell(y,m);return `<td style="${bg(v)}">${v==null?'':o.fmt?o.fmt(v):nf(v)}</td>`;}).join('')+(o.totals?`<td><b>${nf(E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx)))}</b></td>`:'')+'</tr>';});
-  if(o.totals)h+=`<tr class="tot"><td>Total</td>${cols.map(m=>`<td>${nf(E.T(E.sel(ds.filter(mi=>E.mOf(mi)===m),ctx)))}</td>`).join('')}<td>${nf(E.T(E.sel(ds,ctx)))}</td></tr>`;
+  const bg=v=>{if(!o.heat||v==null)return '';const t=mx===mn?1:(v-mn)/(mx-mn);const a=[47,52,59],b=o.hi;return `background:rgb(${a.map((x,i)=>Math.round(x+(b[i]-x)*t))})`;};
+  const on=(y,m)=>isSrc(o.id)&&(SEL.y==null||SEL.y===y)&&(SEL.m==null||SEL.m===m);
+  const dimc=(y,m)=>isSrc(o.id)&&!on(y,m)?'opacity:.3;':'';
+  let h=`<table class="pick"><thead><tr><th>Año</th>${cols.map(m=>`<th data-m="${m}">${MES[m-1]}</th>`).join('')}${o.totals?'<th>Total</th>':''}</tr></thead><tbody>`;
+  rows.forEach(y=>{h+=`<tr><td data-y="${y}">${E.yearLabel(y)}</td>`+cols.map(m=>{const v=cell(y,m);return `<td data-y="${y}" data-m="${m}" class="${on(y,m)&&SEL.y!=null&&SEL.m!=null?'hit':''}" style="${dimc(y,m)}${bg(v)}">${v==null?'':nf(v)}</td>`;}).join('')+(o.totals?`<td data-y="${y}"><b>${nf(E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx)))}</b></td>`:'')+'</tr>';});
+  if(o.totals)h+=`<tr class="tot"><td>Total</td>${cols.map(m=>`<td data-m="${m}">${nf(E.T(E.sel(ds.filter(mi=>E.mOf(mi)===m),ctx)))}</td>`).join('')}<td>${nf(E.T(E.sel(ds,ctx)))}</td></tr>`;
   return h+'</tbody></table>';
+}
+function bindPivot(id){
+  $(id).querySelectorAll('[data-y],[data-m]').forEach(el=>el.onclick=()=>{const y=el.dataset.y?+el.dataset.y:null,m=el.dataset.m?+el.dataset.m:null;
+    pick({src:id,y,m,label:y&&m?MES[m-1]+' '+y:y?'Año '+y:MESL[m-1]});});
 }
 
 /* ---------- 3 · Infracciones ---------- */
 function pInfracciones(){
-  const ctx=ctxFor('infracciones'),M=measures('infracciones',ctx),ds=E.dates(ctx);
+  const P='infracciones',K=eff(P,'kpi'),M=measures(P,K);
   $('i-k1').textContent=M.topName||'—';$('i-k2').textContent=pc(M.topShare);$('i-k3').textContent=pc(M.top5);$('i-k4').textContent=pc(M.top10);$('i-k5').textContent=nf(M.types);$('i-note').textContent=note(M.partial);
-  const R=E.ranking(ds,ctx),top=R.arr.filter(x=>x.rank<=S.topn);
-  empty('i-rank',!top.length);
-  const rv=[...top].reverse();
-  ch('i-rank').setOption(base({grid:{left:8,right:44,top:4,bottom:20,containLabel:true},tooltip:{...TT,trigger:'item',formatter:p=>`${rv[p.dataIndex].name}<br><b>${nf(p.value)}</b>`},
-    xAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),yAxis:AX({type:'category',data:rv.map(x=>x.name),axisLine:{show:false},axisLabel:{color:C.sub,fontSize:S.topn>10?10:11,width:330,overflow:'truncate'}}),
-    series:[{type:'bar',barWidth:'55%',data:rv.map(x=>x.v),itemStyle:{color:C.y},label:{show:true,position:'right',color:C.txt,fontSize:10.5,formatter:p=>p.value>=1e5?abM(p.value):ab(p.value,1)}}]}),true);
-  empty('i-pareto',!top.length);
-  ch('i-pareto').setOption(base({grid:{left:44,right:50,top:20,bottom:96},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>{const x=top[ps[0].dataIndex];return `${x.name}<br>Violations Top N: <b>${nf(x.v)}</b><br>Cumulative Share Top N: <b>${pc(x.cum)}</b>`;}},
-    xAxis:AX({type:'category',data:top.map(x=>x.name),axisLabel:{color:C.sub,fontSize:10.5,interval:0,width:Math.max(60,700/Math.max(top.length,1)),overflow:'break',lineHeight:13,hideOverlap:true}}),
-    yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}})],
-    series:[{name:'Violations Top N',type:'bar',barWidth:'46%',data:top.map(x=>x.v),itemStyle:{color:C.y}},
-      {name:'Cumulative Share Top N',type:'line',yAxisIndex:1,showSymbol:false,data:top.map(x=>x.cum),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t}}]}),true);
-  infMatrix(ds,ctx);infTable(ds,ctx);
+  { const id='i-rank',c=eff(P,id),top=E.ranking(E.dates(c),c).arr.filter(x=>x.rank<=S.topn),rv=[...top].reverse();
+    H[id]=p=>{const x=rv[p.dataIndex];if(x)pick({src:id,type:x.id,label:x.name});};
+    empty(id,!top.length);
+    ch(id,'y').setOption(base({grid:{left:8,right:50,top:4,bottom:20,containLabel:true},tooltip:{...TT,trigger:'item',formatter:p=>`${rv[p.dataIndex].name}<br><b>${nf(p.value)}</b> · ${pc(rv[p.dataIndex].share)}`},
+      xAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),yAxis:AX({type:'category',data:rv.map(x=>x.name),axisLine:{show:false},axisLabel:{color:C.sub,fontSize:S.topn>10?10:11,width:330,overflow:'truncate',interval:0}}),
+      series:[{type:'bar',barMaxWidth:44,barWidth:'55%',data:rv.map(x=>({value:x.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.type===x.id)}})),label:{show:true,position:'right',color:C.txt,fontSize:10.5,formatter:p=>ab(p.value,1)}}]}),true);
+  }
+  { const id='i-pareto',c=eff(P,id),top=E.ranking(E.dates(c),c).arr.filter(x=>x.rank<=S.topn),n=top.length,many=n>10;
+    H[id]=p=>{const x=top[p.dataIndex];if(x)pick({src:id,type:x.id,label:x.name});};
+    empty(id,!n);
+    ch(id,'x').setOption(base({grid:{left:44,right:50,top:26,bottom:many?150:96},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>{const x=top[ps[0].dataIndex];return `${x.name}<br>Infracciones: <b>${nf(x.v)}</b><br>Participación acumulada: <b>${pc(x.cum)}</b>`;}},
+      xAxis:AX({type:'category',data:top.map(x=>x.name),axisLabel:many?{color:C.sub,fontSize:10,interval:0,rotate:40,width:150,overflow:'truncate'}:{color:C.sub,fontSize:10.5,interval:0,lineHeight:13,formatter:v=>wrapTxt(v,wrapW(id,n,120),4)}}),
+      yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',min:0,max:1,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}})],
+      series:[{name:'Infracciones (Top N)',type:'bar',barMaxWidth:44,barWidth:'46%',itemStyle:{color:C.y},data:top.map(x=>({value:x.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.type===x.id)}})),label:{show:n<=10,position:'insideTop',color:'#1B1E22',fontSize:9.5,formatter:p=>ab(p.value,1)}},
+        {name:'Participación acumulada',type:'line',yAxisIndex:1,symbolSize:5,data:top.map(x=>x.cum),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},label:{show:n<=10,position:'top',color:'#9FE3D6',fontSize:10,backgroundColor:'rgba(27,30,34,.85)',padding:[2,4],borderRadius:3,formatter:p=>pc(p.value)}}]}),true);
+  }
+  infMatrix(eff(P,'i-mx'));infTable(eff(P,'i-tbl'));
 }
 function metricVal(MIs,ctx){ // [Selected Metric] en una celda de la matriz
   const rs=E.sel(MIs,ctx),t=E.T(rs);
   switch(S.metric){case 1:return t;case 2:return E.DIV(t,E.MWD(rs));case 3:return E.ytd(MIs,ctx).v;case 4:return E.yoy(MIs,ctx).g;
     case 5:{const all=E.T(E.sel(MIs,{...ctx,type:null,cat:ctx.catSlicer??null}));return t==null?null:E.DIV(t,all);}}
 }
-function infMatrix(ds,ctx){
-  const labels=['Infracciones','Promedio mensual','Acumulado YTD','Variación interanual %','Participación %'];$('i-mx-t').textContent=labels[S.metric-1];
+function infMatrix(ctx){
+  const id='i-mx',ds=E.dates(ctx),labels=['Infracciones','Promedio mensual','Acumulado YTD','Variación interanual %','Participación %'];$('i-mx-t').textContent=labels[S.metric-1]+' por categoría y año';
   const fmt=v=>v==null?'':(S.metric>=4?pc(v):nf(v));
   const yrs=E.years().filter(y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx))!=null);
-  if(!yrs.length){$('i-mx').innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';return;}
-  const cols=[...yrs.map(y=>({l:E.yearLabel(y),mis:ds.filter(mi=>E.yOf(mi)===y)})),{l:'Total',mis:ds,tot:true}];
-  const cats=E.CATS.filter(c=>(ctx.cat==null||c===ctx.cat)&&E.T(E.sel(ds,{...ctx,cat:c}))!=null);
+  if(!yrs.length){$(id).innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';return;}
+  const cols=[...yrs.map(y=>({y,l:E.yearLabel(y),mis:ds.filter(mi=>E.yOf(mi)===y)})),{l:'Total',mis:ds,tot:true}];
+  const cats=E.CATS.filter(k=>(ctx.cat==null||k===ctx.cat)&&E.T(E.sel(ds,{...ctx,cat:k}))!=null);
   if(S.open.__init!==true){S.open={__init:true};if(cats[0])S.open[cats[0]]=true;}
-  const base={...ctx,catSlicer:ctx.cat};
-  let h=`<table><thead><tr><th>InfractionCategory</th>${cols.map(c=>`<th>${c.l}</th>`).join('')}</tr></thead><tbody>`;
-  cats.forEach(c=>{const op=!!S.open[c];
-    h+=`<tr><td class="cat" data-c="${c}"><i>${op?'⊟':'⊞'}</i>${c}</td>${cols.map(col=>`<td${col.tot?' style="font-weight:700"':''}><b>${fmt(metricVal(col.mis,{...base,cat:c}))}</b></td>`).join('')}</tr>`;
-    if(op){E.IDS.filter(id=>E.INF[id].cat===c&&E.T(E.sel(ds,{...ctx,type:id}))!=null).sort((a,b)=>E.INF[a].name.localeCompare(E.INF[b].name,'es')).forEach(id=>{
-      h+=`<tr><td class="sub name" title="${E.INF[id].name}">${E.INF[id].name}</td>${cols.map(col=>`<td${col.tot?' style="font-weight:700"':''}>${fmt(metricVal(col.mis,{...base,type:id}))}</td>`).join('')}</tr>`;});}
+  const b={...ctx,catSlicer:ctx.cat},hit=(k,v)=>isSrc(id)&&SEL[k]===v;
+  let h=`<table class="pick"><thead><tr><th>Categoría › tipo</th>${cols.map(col=>`<th${col.y?` data-y="${col.y}"`:''}>${col.l}</th>`).join('')}</tr></thead><tbody>`;
+  cats.forEach(k=>{const o=!!S.open[k];
+    h+=`<tr class="${hit('cat',k)?'hitrow':''}"><td class="cat"><i data-tog="${k}">${o?'⊟':'⊞'}</i><span data-cat="${k}">${k}</span></td>${cols.map(col=>`<td><b>${fmt(metricVal(col.mis,{...b,cat:k}))}</b></td>`).join('')}</tr>`;
+    if(o)E.IDS.filter(t=>E.INF[t].cat===k&&E.T(E.sel(ds,{...ctx,type:t}))!=null).sort((a,b2)=>E.INF[a].name.localeCompare(E.INF[b2].name,'es')).forEach(t=>{
+      h+=`<tr class="${hit('type',t)?'hitrow':''}"><td class="sub name" data-type="${t}" title="${E.INF[t].name}">${E.INF[t].name}</td>${cols.map(col=>`<td>${fmt(metricVal(col.mis,{...b,type:t}))}</td>`).join('')}</tr>`;});
   });
-  h+=`<tr class="tot"><td>Total</td>${cols.map(col=>`<td>${fmt(metricVal(col.mis,base))}</td>`).join('')}</tr>`;
-  $('i-mx').innerHTML=h+'</tbody></table>';
-  $('i-mx').querySelectorAll('td.cat').forEach(td=>td.onclick=()=>{S.open[td.dataset.c]=!S.open[td.dataset.c];infMatrix(ds,ctx);});
+  h+=`<tr class="tot"><td>Total</td>${cols.map(col=>`<td>${fmt(metricVal(col.mis,b))}</td>`).join('')}</tr>`;
+  $(id).innerHTML=h+'</tbody></table>';
+  $(id).querySelectorAll('[data-tog]').forEach(el=>el.onclick=e=>{e.stopPropagation();S.open[el.dataset.tog]=!S.open[el.dataset.tog];infMatrix(ctx);});
+  $(id).querySelectorAll('[data-cat]').forEach(el=>el.onclick=()=>pick({src:id,cat:el.dataset.cat,label:el.dataset.cat}));
+  $(id).querySelectorAll('[data-type]').forEach(el=>el.onclick=()=>pick({src:id,type:+el.dataset.type,label:E.INF[+el.dataset.type].name}));
+  $(id).querySelectorAll('th[data-y]').forEach(el=>el.onclick=()=>pick({src:id,y:+el.dataset.y,label:'Año '+el.dataset.y}));
 }
-function infTable(ds,ctx){
-  const R=E.ranking(ds,ctx);
-  if(!R.arr.length){$('i-tbl').innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';return;}
-  let h='<table><thead><tr><th>InfractionType</th><th style="text-align:left">LegalReference</th><th>Total Traffic Violations</th><th>Infraction Share %</th><th>YoY Growth %</th></tr></thead><tbody>';
-  R.arr.forEach(x=>{const g=E.yoy(ds,{...ctx,type:x.id}).g;h+=`<tr><td class="name" title="${x.name}">${x.name}</td><td style="text-align:left">${x.legal}</td><td>${nf(x.v)}</td><td>${pc(x.share)}</td><td>${g==null?'':pc(g)}</td></tr>`;});
+function infTable(ctx){
+  const id='i-tbl',ds=E.dates(ctx),R=E.ranking(ds,ctx);
+  if(!R.arr.length){$(id).innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';return;}
+  let h='<table class="pick"><thead><tr><th>Tipo de infracción</th><th style="text-align:left">Ref. legal</th><th>Infracciones</th><th>Participación %</th><th>Var. interanual %</th></tr></thead><tbody>';
+  R.arr.forEach(x=>{const g=E.yoy(ds,{...ctx,type:x.id}).g;h+=`<tr data-type="${x.id}" class="${isSrc(id)&&SEL.type===x.id?'hitrow':isSrc(id)?'dimrow':''}"><td class="name" title="${x.name}">${x.name}</td><td style="text-align:left">${x.legal}</td><td>${nf(x.v)}</td><td>${pc(x.share)}</td><td>${g==null?'':pcs(g)}</td></tr>`;});
   const gt=E.yoy(ds,ctx).g;
-  h+=`<tr class="tot"><td>Total</td><td></td><td>${nf(R.tot)}</td><td>100.0%</td><td>${gt==null?'':pc(gt)}</td></tr>`;
-  $('i-tbl').innerHTML=h+'</tbody></table>';
+  h+=`<tr class="tot"><td>Total</td><td></td><td>${nf(R.tot)}</td><td>100.0%</td><td>${gt==null?'':pcs(gt)}</td></tr>`;
+  $(id).innerHTML=h+'</tbody></table>';
+  $(id).querySelectorAll('tr[data-type]').forEach(el=>el.onclick=()=>pick({src:id,type:+el.dataset.type,label:E.INF[+el.dataset.type].name}));
 }
 
 /* ---------- 4 · Estacionalidad ---------- */
 function pEstacionalidad(){
-  const ctx=ctxFor('estacionalidad'),M=measures('estacionalidad',ctx),ds=E.dates(ctx);
+  const P='estacionalidad',K=eff(P,'kpi'),M=measures(P,K);
   $('s-k1').textContent=nf(M.maxMonth);$('s-k2').textContent=nf(M.minMonth);$('s-k3').textContent=nf(M.avgMonthly);$('s-k4').textContent=nf(M.months);$('s-k5').textContent=yoyLabel(M.latestYoY,M.latestYear);$('s-note').textContent=note(M.partial);
-  $('s-heat').innerHTML=pivot(ds,ctx,{heat:true,hi:[255,199,44]});
-  const avg=[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{const rs=E.sel(ds.filter(mi=>E.mOf(mi)===m),ctx);return {m,v:E.DIV(E.T(rs),E.MWD(rs))};}).filter(o=>o.v!=null);
-  empty('s-avg',!avg.length);
-  ch('s-avg').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:avg.map(o=>MES[o.m-1])}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
-    series:[{type:'bar',barWidth:'55%',data:avg.map(o=>o.v),itemStyle:{color:C.y},label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>ab(p.value)}}]}),true);
-  const mis=ds.filter(mi=>E.T(E.sel([mi],ctx))!=null),mm=mis.map(mi=>({mi,g:E.mom(mi,ctx).g}));
-  empty('s-mom',!mis.length);
-  ch('s-mom').setOption(base({grid:{left:48,right:8,top:16,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v==null?'—':pc(v)},
-    xAxis:AX({type:'category',data:mm.map(o=>MES[E.mOf(o.mi)-1]+' '+E.yOf(o.mi)),axisLabel:{color:C.sub,fontSize:11,interval:i=>mm.length<=24||E.mOf(mm[i].mi)===1,formatter:v=>mm.length<=24?v:v.split(' ')[1]}}),
-    yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
-    series:[{name:'MoM Growth %',type:'bar',data:mm.map(o=>o.g),itemStyle:{color:C.y}}]}),true);
-  const yrs=E.years().filter(y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx))!=null);
-  const q=(y,k)=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y&&Math.ceil(E.mOf(mi)/3)===k),ctx));
-  const yt=y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),ctx));
-  empty('s-q',!yrs.length);
-  ch('s-q').setOption(base({grid:{left:40,right:8,top:12,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',axisPointer:{type:'shadow'},formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.value==null?'—':pc(p.value)}</b>`).join('<br>')},
-    xAxis:AX({type:'category',data:yrs.map(E.yearLabel)}),yAxis:AX({type:'value',max:1,axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
-    series:['T1','T2','T3','T4'].map((n,k)=>({name:n,type:'bar',stack:'q',barWidth:'46%',data:yrs.map(y=>{const v=q(y,k+1);return v==null?null:E.DIV(v,yt(y));}),itemStyle:{color:[C.y,C.t,'#F28C28',C.r][k]}}))}),true);
+  { const id='s-heat',c=eff(P,id);$(id).innerHTML=pivot(E.dates(c),c,{heat:true,hi:[255,199,44],id});bindPivot(id); }
+  { const id='s-avg',c=eff(P,id),ds=E.dates(c),avg=[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{const rs=E.sel(ds.filter(mi=>E.mOf(mi)===m),c);return {m,v:E.DIV(E.T(rs),E.MWD(rs))};}).filter(o=>o.v!=null);
+    H[id]=p=>{const o=avg[p.dataIndex];if(o)pick({src:id,m:o.m,label:MESL[o.m-1]});};
+    empty(id,!avg.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({type:'category',data:avg.map(o=>MES[o.m-1]),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Promedio mensual',type:'bar',barMaxWidth:44,barWidth:'55%',data:avg.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.m===o.m)}})),label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>ab(p.value,0)}}]}),true);
+  }
+  { const id='s-mom',c=eff(P,id),ds=E.dates(c),mis=ds.filter(mi=>E.T(E.sel([mi],c))!=null),mm=mis.map(mi=>({mi,g:E.mom(mi,c).g}));
+    H[id]=p=>{const o=mm[p.dataIndex];if(o)pick({src:id,y:E.yOf(o.mi),m:E.mOf(o.mi),label:lab(o.mi)});};
+    empty(id,!mis.length);
+    ch(id,'x').setOption(base({grid:{left:48,right:8,top:20,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v==null?'—':pcs(v)},
+      xAxis:AX(monthAxis(mis)),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
+      series:[{name:'Variación mensual %',type:'bar',barMaxWidth:44,data:mm.map(o=>({value:o.g,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===E.yOf(o.mi)&&SEL.m===E.mOf(o.mi))}})),
+        label:{show:mm.length<=14,position:'outside',color:C.txt,fontSize:10,formatter:p=>p.value==null?'':pcs(p.value)}}]}),true);
+  }
+  { const id='s-q',c=eff(P,id),ds=E.dates(c),yrs=E.years().filter(y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),c))!=null);
+    const q=(y,k)=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y&&Math.ceil(E.mOf(mi)/3)===k),c)),yt=y=>E.T(E.sel(ds.filter(mi=>E.yOf(mi)===y),c));
+    H[id]=p=>{const y=yrs[p.dataIndex];if(y==null)return;if(p.axis)pick({src:id,y,label:'Año '+y});else{const k=p.seriesIndex+1;pick({src:id,y,q:k,label:'T'+k+' '+y});}};
+    empty(id,!yrs.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:8,top:12,bottom:44},legend:{...LEG,selectedMode:false},tooltip:{...TT,trigger:'axis',axisPointer:{type:'shadow'},formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.value==null?'—':pc(p.value)}</b>`).join('<br>')},
+      xAxis:AX({type:'category',data:yrs.map(E.yearLabel),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',max:1,axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
+      series:['T1','T2','T3','T4'].map((n,k)=>({name:n,type:'bar',barMaxWidth:44,stack:'q',barWidth:'50%',
+        data:yrs.map(y=>{const v=q(y,k+1),hitq=SEL&&SEL.y===y&&(SEL.q==null||SEL.q===k+1);return {value:v==null?null:E.DIV(v,yt(y)),itemStyle:{opacity:op(id,hitq)}};}),
+        itemStyle:{color:[C.y,C.t,'#F28C28',C.r][k]},label:{show:yrs.length<=10,color:k===0?'#1B1E22':'#fff',fontSize:9.5,formatter:p=>p.value==null||p.value<0.06?'':Math.round(p.value*100)+'%'}}))}),true);
+  }
 }
 
 /* ---------- 5 · Seguridad vial ---------- */
 function pSeguridad(){
-  const ctx=ctxFor('seguridad-vial'),M=measures('seguridad-vial',ctx),ds=E.dates(ctx);
+  const P='seguridad-vial',K=eff(P,'kpi'),M=measures(P,K);
   $('r-k1').textContent=nf(M.fat);$('r-k2').textContent=nf1(M.fatAvg);$('r-k3').textContent=yoyLabel(M.fatYoY,M.fatYear);$('r-k4').textContent=nf(M.fatCommon);$('r-k5').textContent=nf(M.vioCommon);
-  const fy=E.years().map(y=>({y,v:E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))})).filter(o=>o.v!=null);
-  empty('r-year',!fy.length);
-  ch('r-year').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:fy.map(o=>String(o.y))}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
-    series:[{name:'Fallecimientos',type:'bar',barWidth:'50%',data:fy.map(o=>o.v),itemStyle:{color:C.r},label:{show:true,position:'top',color:C.txt,fontSize:10.5,formatter:p=>p.value>=1000?(p.value/1000).toFixed(1)+'K':p.value}}]}),true);
-  const com=ds.filter(E.isCommon),cy=E.years().map(y=>{const m=com.filter(mi=>E.yOf(mi)===y);return {y,v:E.T(E.sel(m,{})),f:E.FT(E.fsel(m))};}).filter(o=>o.v!=null||o.f!=null);
-  empty('r-both',!cy.length);
-  ch('r-both').setOption(base({grid:{left:40,right:50,top:20,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-    xAxis:AX({type:'category',data:cy.map(o=>String(o.y))}),
-    yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:nf}})],
-    series:[{name:'Violations (Common Period)',type:'bar',barWidth:'46%',data:cy.map(o=>o.v),itemStyle:{color:C.y}},
-      {name:'Fatalities (Common Period)',type:'line',yAxisIndex:1,smooth:true,showSymbol:false,data:cy.map(o=>o.f),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t}}]}),true);
-  // mapa de calor de fallecimientos
-  const rows=E.years().filter(y=>E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))!=null),cols=[1,2,3,4,5,6,7,8,9,10,11,12].filter(m=>E.FT(E.fsel(ds.filter(mi=>E.mOf(mi)===m)))!=null);
-  if(!rows.length)$('r-heat').innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';
-  else{const cell=(y,m)=>E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y&&E.mOf(mi)===m)));let mx=-Infinity,mn=Infinity;rows.forEach(y=>cols.forEach(m=>{const v=cell(y,m);if(v!=null){mx=Math.max(mx,v);mn=Math.min(mn,v);}}));
-    const bg=v=>{const t=mx===mn?1:(v-mn)/(mx-mn);const a=[47,52,59],b=[229,56,59];return `background:rgb(${a.map((x,i)=>Math.round(x+(b[i]-x)*t))})`;};
-    let h=`<table style="width:auto"><thead><tr><th>YearLabel</th>${cols.map(m=>`<th>${MES[m-1]}</th>`).join('')}</tr></thead><tbody>`;
-    rows.forEach(y=>{h+=`<tr><td>${y}</td>${cols.map(m=>{const v=cell(y,m);return `<td style="${v==null?'':bg(v)}">${v??''}</td>`;}).join('')}</tr>`;});
-    $('r-heat').innerHTML=h+'</tbody></table>';}
-  const avg=[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{const rs=E.fsel(ds.filter(mi=>E.mOf(mi)===m));return {m,v:rs.length?E.FT(rs)/rs.length:null};}).filter(o=>o.v!=null);
-  empty('r-avg',!avg.length);
-  ch('r-avg').setOption(base({grid:{left:36,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf1},
-    xAxis:AX({type:'category',data:avg.map(o=>MES[o.m-1])}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11}}),
-    series:[{type:'bar',barWidth:'50%',data:avg.map(o=>+o.v.toFixed(1)),itemStyle:{color:C.r},label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>nf1(p.value)}}]}),true);
+  { const id='r-year',c=eff(P,id),ds=E.dates(c),fy=E.years().map(y=>({y,v:E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))})).filter(o=>o.v!=null);
+    H[id]=p=>{const o=fy[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+    empty(id,!fy.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({type:'category',data:fy.map(o=>String(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Fallecimientos',type:'bar',barMaxWidth:44,barWidth:'50%',data:fy.map(o=>({value:o.v,itemStyle:{color:C.r,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:true,position:'top',color:C.txt,fontSize:10.5,formatter:p=>p.value>=1000?(p.value/1000).toFixed(1)+'K':p.value}}]}),true);
+  }
+  { const id='r-both',c=eff(P,id),com=E.dates(c).filter(E.isCommon),cy=E.years().map(y=>{const m=com.filter(mi=>E.yOf(mi)===y);return {y,v:E.T(E.sel(m,{})),f:E.FT(E.fsel(m))};}).filter(o=>o.v!=null||o.f!=null);
+    H[id]=p=>{const o=cy[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+    empty(id,!cy.length);
+    ch(id,'x').setOption(base({grid:{left:40,right:50,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+      xAxis:AX({type:'category',data:cy.map(o=>String(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
+      yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:nf}})],
+      series:[{name:'Infracciones (período común)',type:'bar',barMaxWidth:44,barWidth:'46%',itemStyle:{color:C.y},data:cy.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:cy.length<=8,position:'insideTop',color:'#1B1E22',fontSize:9.5,formatter:p=>ab(p.value,1)}},
+        {name:'Fallecimientos (período común)',type:'line',yAxisIndex:1,smooth:true,symbolSize:6,data:cy.map(o=>o.f),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},label:{show:true,position:'top',color:'#9FE3D6',fontSize:10,backgroundColor:'rgba(27,30,34,.85)',padding:[2,4],borderRadius:3,formatter:p=>nf(p.value)}}]}),true);
+  }
+  { const id='r-heat',c=eff(P,id),ds=E.dates(c);
+    const rows=E.years().filter(y=>E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))!=null),cols=[1,2,3,4,5,6,7,8,9,10,11,12].filter(m=>E.FT(E.fsel(ds.filter(mi=>E.mOf(mi)===m)))!=null);
+    if(!rows.length)$(id).innerHTML='<div class="empty" style="position:static;height:100%">No hay datos para esta selección</div>';
+    else{const cell=(y,m)=>E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y&&E.mOf(mi)===m)));let mx=-Infinity,mn=Infinity;rows.forEach(y=>cols.forEach(m=>{const v=cell(y,m);if(v!=null){mx=Math.max(mx,v);mn=Math.min(mn,v);}}));
+      const bg=v=>{const t=mx===mn?1:(v-mn)/(mx-mn);const a=[47,52,59],b=[229,56,59];return `background:rgb(${a.map((x,i)=>Math.round(x+(b[i]-x)*t))})`;};
+      const on=(y,m)=>isSrc(id)&&(SEL.y==null||SEL.y===y)&&(SEL.m==null||SEL.m===m);
+      let h=`<table class="pick" style="width:auto"><thead><tr><th>Año</th>${cols.map(m=>`<th data-m="${m}">${MES[m-1]}</th>`).join('')}</tr></thead><tbody>`;
+      rows.forEach(y=>{h+=`<tr><td data-y="${y}">${y}</td>${cols.map(m=>{const v=cell(y,m);return `<td data-y="${y}" data-m="${m}" class="${on(y,m)&&SEL.y!=null&&SEL.m!=null?'hit':''}" style="${isSrc(id)&&!on(y,m)?'opacity:.3;':''}${v==null?'':bg(v)}">${v??''}</td>`;}).join('')}</tr>`;});
+      $(id).innerHTML=h+'</tbody></table>';bindPivot(id);}
+  }
+  { const id='r-avg',c=eff(P,id),ds=E.dates(c),avg=[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{const rs=E.fsel(ds.filter(mi=>E.mOf(mi)===m));return {m,v:rs.length?E.FT(rs)/rs.length:null};}).filter(o=>o.v!=null);
+    H[id]=p=>{const o=avg[p.dataIndex];if(o)pick({src:id,m:o.m,label:MESL[o.m-1]});};
+    empty(id,!avg.length);
+    ch(id,'x').setOption(base({grid:{left:36,right:8,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:nf1},
+      xAxis:AX({type:'category',data:avg.map(o=>MES[o.m-1]),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Promedio mensual',type:'bar',barMaxWidth:44,barWidth:'50%',data:avg.map(o=>({value:+o.v.toFixed(1),itemStyle:{color:C.r,opacity:op(id,SEL&&SEL.m===o.m)}})),label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>nf1(p.value)}}]}),true);
+  }
 }
 
 const R={'overview':pOverview,'tendencias':pTendencias,'infracciones':pInfracciones,'estacionalidad':pEstacionalidad,'seguridad-vial':pSeguridad};
@@ -587,14 +672,10 @@ function render(){
   $('subtitle').textContent=PAGES[S.page].sub+'  ·  Proyecto independiente, no oficial';
   slicers();R[S.page]();requestAnimationFrame(()=>Object.values(charts).forEach(c=>c.resize()));
 }
-function route(){const h=location.hash.slice(1);S.page=R[h]?h:'overview';render();}
-window.__state=S;window.__render=render;
+function route(){const h=location.hash.slice(1);const np=R[h]?h:'overview';if(np!==S.page)SEL=null;S.page=np;render();}
+window.__state=S;window.__render=render;window.__sel=()=>SEL;
 const load=window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json').then(r=>r.json());
 load.then(D=>{ENGINE.load(D);$('loading').remove();window.addEventListener('hashchange',route);window.addEventListener('resize',()=>Object.values(charts).forEach(c=>c.resize()));route();
-  // clic en visuales del Overview = filtra como un segmentador
-  ch('o-donut').on('click',p=>{S.cat=S.cat===p.name?null:p.name;if(S.type!=null&&S.cat&&E.INF[S.type].cat!==S.cat)S.type=null;render();});
-  ch('o-year').on('click',p=>{const y=parseInt(p.name);S.y=S.y===y?null:y;render();});
-  ch('o-top').on('click',p=>{const id=E.IDS.find(i=>E.INF[i].name===p.name);if(id==null)return;S.type=S.type===id?null:id;if(S.cat&&E.INF[id].cat!==S.cat)S.cat=null;render();});
   window.__ready=true;
 }).catch(e=>{$('loading').textContent='No se pudieron cargar los datos: '+e.message;});
 })();
