@@ -43,6 +43,23 @@ td.hit{outline:2px solid #fff;outline-offset:-2px;font-weight:700}
 tr.hitrow td{background:rgba(255,199,44,.16)!important}
 tr.dimrow td{opacity:.4}
 td.cat i{cursor:pointer}
+.kpi .s{font-size:11.5px;color:#8B929C;text-align:center;margin-top:2px}
+.sub{font-size:11.5px;color:#8B929C;margin:-2px 0 4px}
+.intro{margin:4px 0 14px}.intro h2{margin:0 0 4px;font-size:22px}.intro p{margin:0;color:var(--sub);font-size:13px;max-width:1100px;line-height:1.5}
+.finds{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(400px,100%),1fr));gap:16px;margin-bottom:18px}
+.find{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--y);border-radius:4px;padding:16px 18px;color:var(--text);text-decoration:none;transition:border-color .15s,transform .15s}
+.find:hover{border-color:var(--y);transform:translateY(-1px)}
+.find.r{border-left-color:var(--r)}.find.o{border-left-color:#F28C28}
+.find .fk{font-size:34px;color:var(--y);font-variant-numeric:tabular-nums;line-height:1.1}
+.find.r .fk{color:#FF6B6E}.find.o .fk{color:#F28C28}
+.find .ft{font-size:15px;font-weight:600;margin:6px 0 6px}
+.find .fd{font-size:13px;color:#C3C8CF;line-height:1.5;flex:1}
+.find .fl{font-size:12px;color:var(--y);margin-top:10px}
+.method p{font-size:12px;line-height:1.5;margin:0 0 7px;color:#C3C8CF}.method p.m{color:#8B929C}.method b{color:var(--text)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;position:absolute;right:12px;top:8px}
+.seg button{background:transparent;border:0;color:var(--sub);font:inherit;font-size:11.5px;padding:3px 9px;cursor:pointer}
+.seg button.on{background:var(--y);color:#1B1E22;font-weight:600}
+nav a{min-width:0!important;padding:6px 12px!important}
 .page{display:none}.page.on{display:block}
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:14px}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}}
@@ -92,11 +109,14 @@ footer a{color:var(--sub)}
   </div>
   <svg class="flag" width="46" height="30" viewBox="0 0 46 30" aria-label="Bandera dominicana"><rect width="46" height="30" rx="3" fill="#fff"/><rect x="0" y="0" width="20" height="12.5" fill="#002D62"/><rect x="26" y="0" width="20" height="12.5" fill="#CE1126"/><rect x="0" y="17.5" width="20" height="12.5" fill="#CE1126"/><rect x="26" y="17.5" width="20" height="12.5" fill="#002D62"/></svg>
   <nav id="nav">
+    <a href="#hallazgos" data-p="hallazgos">Hallazgos</a>
     <a href="#overview" data-p="overview">Overview</a>
     <a href="#tendencias" data-p="tendencias">Tendencias</a>
     <a href="#infracciones" data-p="infracciones">Infracciones</a>
     <a href="#estacionalidad" data-p="estacionalidad">Estacionalidad</a>
     <a href="#seguridad-vial" data-p="seguridad-vial">Seguridad vial</a>
+    <a href="#riesgo" data-p="riesgo">Riesgo y control</a>
+    <a href="#calidad" data-p="calidad">Calidad del dato</a>
   </nav>
 </div></header>
 
@@ -183,7 +203,7 @@ footer a{color:var(--sub)}
 
   <section class="page" id="p-seguridad-vial">
     <div class="kpis">
-      <div class="kpi"><div class="l">Fallecimientos registrados</div><div class="v red" id="r-k1"></div></div>
+      <div class="kpi"><div class="l">Fallecimientos registrados</div><div class="v red" id="r-k1"></div><div class="s" id="r-k1s"></div></div>
       <div class="kpi"><div class="l">Promedio mensual de fallecimientos</div><div class="v w" id="r-k2"></div></div>
       <div class="kpi"><div class="l">Variación interanual (último año)</div><div class="v t" id="r-k3"></div></div>
       <div class="kpi"><div class="l">Fallecimientos 2018–2025 (período común)</div><div class="v w" id="r-k4"></div></div>
@@ -191,14 +211,14 @@ footer a{color:var(--sub)}
     </div>
     <div class="row" style="grid-template-columns:620fr 700fr 520fr">
       <div class="card"><h3>Fallecimientos por año</h3><div class="ch" id="r-year"></div></div>
-      <div class="card"><h3>Infracciones y fallecimientos · período común (dos escalas)</h3><div class="ch" id="r-both"></div></div>
+      <div class="card"><h3 id="r-both-t">Infracciones y fallecimientos · período común (dos escalas)</h3><div class="seg" id="segBoth"><button data-v="dual">Dos escalas</button><button data-v="index">Índice</button></div><div class="ch" id="r-both"></div></div>
       <div class="howto" style="padding:6px 4px">
         <h4>Cómo leer esta página</h4>
         <p>• Las infracciones registradas miden también la intensidad de la fiscalización, no solo la conducta de los conductores.</p>
         <p>• Los fallecimientos son totales nacionales por mes: la fuente no los desglosa por tipo de infracción, provincia ni tipo de vehículo.</p>
         <p>• Ver ambas series juntas no implica causalidad.</p>
-        <p>• No se calculan tasas: faltan denominadores (parque vehicular, población, kilómetros recorridos).</p>
-        <p class="m">• Datos que ayudarían: accidentes y lesionados por provincia, tipo de vehículo, hora y vía; parque vehicular por año.</p>
+        <p>• Las tasas por habitante y por vehículo están en la hoja <a href="#riesgo" style="color:var(--y)">Riesgo y control</a> (población del Banco Mundial y parque vehicular de la DGII).</p>
+        <p class="m">• Datos que ayudarían: accidentes y lesionados por provincia, tipo de vehículo, hora y vía; kilómetros recorridos.</p>
       </div>
     </div>
     <div class="row" style="grid-template-columns:1100fr 756fr">
@@ -206,6 +226,68 @@ footer a{color:var(--sub)}
       <div class="card"><h3>Promedio de fallecimientos por mes del año</h3><div class="ch s" id="r-avg"></div></div>
     </div>
     <div class="note">Fuente: DIGESETT · datos.gov.do · Fallecimientos 2016–2025 · Infracciones 2018–sep. 2026 · Elaboración propia</div>
+  </section>
+  <section class="page" id="p-hallazgos">
+    <div class="intro">
+      <h2>Lo que muestran los datos</h2>
+      <p>Hallazgos calculados en vivo a partir de 13.3 millones de infracciones (ene 2018 – sep 2026), 18,785 fallecimientos (2016–2025), la población (Banco Mundial) y el parque vehicular (DGII). Cada tarjeta enlaza a la hoja donde se ve el detalle. Son descripciones, no relaciones de causa.</p>
+    </div>
+    <div class="finds" id="h-cards"></div>
+  </section>
+
+  <section class="page" id="p-riesgo">
+    <div class="kpis">
+      <div class="kpi"><div class="l">Fallecimientos por 100,000 habitantes</div><div class="v red" id="k-r1"></div><div class="s" id="k-r1s"></div></div>
+      <div class="kpi"><div class="l">Fallecimientos por 10,000 vehículos</div><div class="v w" id="k-r2"></div><div class="s" id="k-r2s"></div></div>
+      <div class="kpi"><div class="l">Infracciones por 1,000 vehículos</div><div class="v" id="k-r3"></div><div class="s" id="k-r3s"></div></div>
+      <div class="kpi"><div class="l">Infracciones de alto riesgo (%)</div><div class="v" id="k-r4"></div><div class="s" id="k-r4s"></div></div>
+      <div class="kpi"><div class="l">Proyección de cierre 2026 (estimación)</div><div class="v w" id="k-r5"></div><div class="s" id="k-r5s"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Tasas de fallecimientos por año</h3><div class="sub">Por 100,000 habitantes (eje izquierdo) y por 10,000 vehículos registrados (eje derecho)</div><div class="ch" id="r2-rates"></div></div>
+      <div class="card"><h3>Crecimiento comparado · índice 2018 = 100</h3><div class="sub">Misma escala para las cuatro series: así se ve qué creció más rápido</div><div class="ch" id="r2-index"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr">
+      <div class="card"><h3>Gráfico de control (I) de fallecimientos mensuales</h3><div class="sub" id="r2-ctl-sub"></div><div class="ch l" id="r2-ctl"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card"><h3>Proyección del cierre de 2026</h3><div class="sub">Lo registrado hasta el último mes publicado y el rango estimado para el año completo</div><div class="ch s" id="r2-proj"></div></div>
+      <div class="card"><h3>Intensidad de fiscalización</h3><div class="sub">Infracciones registradas por cada 1,000 vehículos del parque</div><div class="ch s" id="r2-intens"></div></div>
+      <div class="card"><h3>Índice estacional (100 = mes promedio)</h3><div class="sub">Infracciones 2018–2025 y fallecimientos 2016–2025</div><div class="ch s" id="r2-season"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Composición: alto riesgo vs. documentación vs. resto</h3><div class="sub">% de las infracciones de cada año · alto riesgo = factores de riesgo de la OMS y maniobras peligrosas (lista en Calidad del dato)</div><div class="ch s" id="r2-mix"></div></div>
+      <div class="card"><h3>Concentración de la fiscalización</h3><div class="sub">Índice Herfindahl-Hirschman (HHI) por año: más alto = las infracciones se concentran en menos tipos</div><div class="ch s" id="r2-hhi"></div></div>
+    </div>
+    <div class="note">Denominadores: población a mitad de año (Banco Mundial, WDI SP.POP.TOTL, act. 7-jul-2026) y parque vehicular al 31 de diciembre (DGII; 2017–2022 redondeado a miles). Las tasas describen; no explican causas.</div>
+  </section>
+
+  <section class="page" id="p-calidad">
+    <div class="kpis">
+      <div class="kpi"><div class="l">Último mes publicado · infracciones</div><div class="v t" id="q-k1"></div><div class="s" id="q-k1s"></div></div>
+      <div class="kpi"><div class="l">Último mes publicado · fallecimientos</div><div class="v t" id="q-k2"></div><div class="s" id="q-k2s"></div></div>
+      <div class="kpi"><div class="l">Ceros registrados (filas con valor 0)</div><div class="v" id="q-k3"></div><div class="s">un cero es un cero; un mes sin fila es «sin dato»</div></div>
+      <div class="kpi"><div class="l">Alertas de valores atípicos</div><div class="v" id="q-k4"></div><div class="s" id="q-k4s"></div></div>
+      <div class="kpi"><div class="l">Mes con más alertas</div><div class="v t" id="q-k5"></div><div class="s" id="q-k5s"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1180fr 676fr">
+      <div class="card"><h3>Alertas por mes</h3><div class="sub">Tipo con caída a ≤5 % o pico ≥5 veces su mediana de los 12 meses previos (solo tipos con mediana ≥200) · clic en una barra para filtrar la tabla</div><div class="ch s" id="q-alerts"></div></div>
+      <div class="card"><h3>Tipos de infracción con registros por año</h3><div class="sub">El catálogo cambió: 2018 tiene menos tipos que los años siguientes</div><div class="ch s" id="q-types"></div></div>
+    </div>
+    <div class="row" style="grid-template-columns:1180fr 676fr">
+      <div class="card"><h3 id="q-tbl-t">Detalle de alertas</h3><div class="tw" id="q-tbl"></div></div>
+      <div class="card method">
+        <h3>Metodología y fuentes</h3>
+        <p><b>Infracciones:</b> DIGESETT, datos abiertos (datos.gob.do). 41 a 101 tipos por año unificados en un catálogo de 106 con un mapeo validado (0 filas sin mapear).</p>
+        <p><b>Fallecimientos:</b> DIGESETT, totales nacionales mensuales 2016–2025, sin desglose por provincia, vehículo ni infracción.</p>
+        <p><b>Población:</b> Banco Mundial, WDI SP.POP.TOTL, estimación a mitad de año.</p>
+        <p><b>Parque vehicular:</b> DGII, boletines anuales, vehículos con placa al 31 de diciembre. 2017–2022 tomados del gráfico del informe 2024, redondeados a miles.</p>
+        <p><b>Conductas de alto riesgo:</b> clasificación propia basada en los factores de riesgo de la OMS (velocidad, alcohol y drogas, casco, cinturón, sistemas de retención infantil, distracción) más maniobras peligrosas (luz roja, vía contraria, cruzarse en sentido opuesto, manejo temerario, no ceder el paso, distancia).</p>
+        <p><b>Comparaciones:</b> las variaciones solo comparan meses equivalentes; un año parcial se compara con el mismo tramo del año anterior.</p>
+        <p><b>Gráfico de control:</b> límites calculados con 2016–2019 (antes de la pandemia). Regla 1: punto fuera de ±3σ. Regla 2: 8 meses seguidos del mismo lado de la media.</p>
+        <p class="m">Validación: cada medida se compara contra un cálculo independiente en Python (ver la carpeta qa/ del repositorio).</p>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -338,9 +420,12 @@ function measures(page,ctx){
 const E=ENGINE;
 const MES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const MESL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const PAL=['#FFC72C','#2A9D8F','#F28C28','#E5383B','#9AA5B1','#F3E3B3','#57C785','#D9A81E','#D47A86','#7FB2E5'];
+const PAL=['#FFC72C','#2A9D8F','#F28C28','#9B7EDE','#9AA5B1','#F3E3B3','#57C785','#D9A81E','#7FB2E5','#C9A27E'];
 const C={y:'#FFC72C',t:'#2A9D8F',r:'#E5383B',txt:'#E8EAED',sub:'#A3A9B2',grid:'#3A3F47'};
 const PAGES={
+  'hallazgos':{sub:'Resumen ejecutivo: lo más importante del proyecto en siete hallazgos calculados en vivo',sl:[]},
+  'riesgo':{sub:'Tasas por habitante y por vehículo, control estadístico de los fallecimientos, proyección y composición de las infracciones',sl:[]},
+  'calidad':{sub:'Cobertura, ceros, valores atípicos y metodología: qué tan confiable es cada cifra',sl:[]},
   'overview':{sub:'Infracciones de tránsito registradas en República Dominicana · Fuente: DIGESETT (datos.gov.do)',sl:['y','m','cat','type']},
   'tendencias':{sub:'Evolución histórica 2018–2026 · variaciones calculadas sobre períodos comparables',sl:['y','cat','type','cmp']},
   'infracciones':{sub:'Ranking, concentración y evolución por tipo de infracción · categorías: clasificación propia del analista',sl:['y','cat','topn','metric']},
@@ -348,7 +433,7 @@ const PAGES={
   'seguridad-vial':{sub:'Fallecimientos por accidentes de tránsito 2016–2025 · total nacional mensual · sin relación causal implícita con las infracciones',sl:['y','m']}
 };
 // Estado de los segmentadores, sincronizado entre páginas como en Power BI (grupos Year, Month, Category, Type)
-const S={page:'overview',y:null,m:null,cat:null,type:null,cmp:1,topn:10,metric:1,open:{}};
+const S={both:'index',page:'hallazgos',y:null,m:null,cat:null,type:null,cmp:1,topn:10,metric:1,open:{}};
 const ctxFor=p=>{const s=PAGES[p].sl,c={};c.y=s.includes('y')?S.y:null;c.m=s.includes('m')?S.m:null;c.cat=s.includes('cat')?S.cat:null;c.type=s.includes('type')?S.type:null;return c;};
 const $=id=>document.getElementById(id);
 const nf=v=>v==null?'—':Math.round(v).toLocaleString('en-US');
@@ -384,7 +469,7 @@ const AX=(o)=>Object.assign({axisLine:{lineStyle:{color:'#5A6069'}},axisTick:{sh
 const LEG={bottom:0,left:0,icon:'circle',itemWidth:9,itemHeight:9,textStyle:{color:C.sub,fontSize:11}};
 const base=o=>Object.assign({backgroundColor:'transparent',textStyle:{fontFamily:'Segoe UI, Inter, sans-serif',color:C.txt},tooltip:TT,animationDuration:350},o);
 function empty(id,isEmpty){const el=$(id).parentElement;let e=el.querySelector('.empty');if(isEmpty){if(!e){e=document.createElement('div');e.className='empty';e.textContent='No hay datos para esta selección';el.appendChild(e);}}else if(e)e.remove();}
-const note=p=>p?`* ${E.yOf(E.LAST)}: datos de enero a ${MESL[E.mOf(E.LAST)-1].toLowerCase()}. Las variaciones comparan el mismo tramo del año anterior.`:'';
+const note=p=>p?`* ${E.yOf(E.LAST)}: datos de enero a ${MESL[E.mOf(E.LAST)-1].toLowerCase()}. Las variaciones comparan el mismo tramo del año anterior.`+(RAW&&analytics().lastMonthSuspect?` El desglose por tipo de ${MESL[E.mOf(E.LAST)-1].toLowerCase()} ${E.yOf(E.LAST)} presenta inconsistencias en la fuente (ver Calidad del dato).`:''):'';
 const lab=mi=>MES[E.mOf(mi)-1]+' '+E.yOf(mi);
 const monthAxis=(mis)=>({type:'category',data:mis.map(lab),axisLabel:{color:C.sub,fontSize:11,interval:mis.length<=14?0:(i=>E.mOf(mis[i])===1),formatter:v=>mis.length<=14?v:v.split(' ')[1]}});
 const selMark=(id,cats)=>{ // línea vertical sobre el mes elegido en un gráfico de líneas
@@ -406,6 +491,7 @@ function slicers(){
   if(s.includes('cmp'))h.push(`<div class="sl${S.cmp!==1?' dirty':''}" style="width:230px"><label>Comparación</label><select data-k="cmp">${opt(1,'Interanual (YoY)',S.cmp)}${opt(2,'Mensual (MoM)',S.cmp)}</select></div>`);
   if(s.includes('topn'))h.push(`<div class="sl${S.topn!==10?' dirty':''}" style="width:150px"><label>Top N</label><select data-k="topn">${[3,5,10,15,20].map(n=>opt(n,n,S.topn)).join('')}</select></div>`);
   if(s.includes('metric'))h.push(`<div class="sl${S.metric!==1?' dirty':''}" style="width:260px"><label>Métrica de la matriz</label><select data-k="metric">${['Infracciones','Promedio mensual','Acumulado YTD','Variación interanual %','Participación %'].map((n,i)=>opt(i+1,n,S.metric)).join('')}</select></div>`);
+  if(!s.length){box.innerHTML='<span class="hint" style="padding:6px 0 10px">Esta hoja usa los totales nacionales y no responde a los filtros.</span>';return;}
   h.push('<div class="acts"><button class="reset" id="reset">Borrar filtros</button>'+(SEL?`<button class="selchip" id="selchip" title="Quitar la selección">Selección: <b>${SEL.label}</b> ✕</button>`:'<span class="hint">Haz clic en barras, puntos, sectores o celdas para filtrar la hoja</span>')+'</div>');
   box.innerHTML=h.join('');
   box.querySelectorAll('select').forEach(el=>el.onchange=()=>{const k=el.dataset.k,v=el.value;
@@ -622,14 +708,14 @@ function pEstacionalidad(){
       xAxis:AX({type:'category',data:yrs.map(E.yearLabel),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',max:1,axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
       series:['T1','T2','T3','T4'].map((n,k)=>({name:n,type:'bar',barMaxWidth:44,stack:'q',barWidth:'50%',
         data:yrs.map(y=>{const v=q(y,k+1),hitq=SEL&&SEL.y===y&&(SEL.q==null||SEL.q===k+1);return {value:v==null?null:E.DIV(v,yt(y)),itemStyle:{opacity:op(id,hitq)}};}),
-        itemStyle:{color:[C.y,C.t,'#F28C28',C.r][k]},label:{show:yrs.length<=10,color:k===0?'#1B1E22':'#fff',fontSize:9.5,formatter:p=>p.value==null||p.value<0.06?'':Math.round(p.value*100)+'%'}}))}),true);
+        itemStyle:{color:[C.y,C.t,'#F28C28','#9B7EDE'][k]},label:{show:yrs.length<=10,color:k===0?'#1B1E22':'#fff',fontSize:9.5,formatter:p=>p.value==null||p.value<0.06?'':Math.round(p.value*100)+'%'}}))}),true);
   }
 }
 
 /* ---------- 5 · Seguridad vial ---------- */
 function pSeguridad(){
   const P='seguridad-vial',K=eff(P,'kpi'),M=measures(P,K);
-  $('r-k1').textContent=nf(M.fat);$('r-k2').textContent=nf1(M.fatAvg);$('r-k3').textContent=yoyLabel(M.fatYoY,M.fatYear);$('r-k4').textContent=nf(M.fatCommon);$('r-k5').textContent=nf(M.vioCommon);
+  $('r-k1').textContent=nf(M.fat);{const lf=Math.max(...E.fsel(E.dates(K)).map(r=>r.MI).concat([0]));if(lf){const l12=E.FT(E.fsel(E.range(lf-11,lf)));$('r-k1s').textContent=`Últimos 12 meses (a ${MES[E.mOf(lf)-1].toLowerCase()} ${E.yOf(lf)}): ${nf(l12)}`;}else $('r-k1s').textContent='';}$('r-k2').textContent=nf1(M.fatAvg);$('r-k3').textContent=yoyLabel(M.fatYoY,M.fatYear);$('r-k4').textContent=nf(M.fatCommon);$('r-k5').textContent=nf(M.vioCommon);
   { const id='r-year',c=eff(P,id),ds=E.dates(c),fy=E.years().map(y=>({y,v:E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))})).filter(o=>o.v!=null);
     H[id]=p=>{const o=fy[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
     empty(id,!fy.length);
@@ -639,12 +725,23 @@ function pSeguridad(){
   }
   { const id='r-both',c=eff(P,id),com=E.dates(c).filter(E.isCommon),cy=E.years().map(y=>{const m=com.filter(mi=>E.yOf(mi)===y);return {y,v:E.T(E.sel(m,{})),f:E.FT(E.fsel(m))};}).filter(o=>o.v!=null||o.f!=null);
     H[id]=p=>{const o=cy[p.dataIndex];if(o)pick({src:id,y:o.y,label:'Año '+o.y});};
+    document.querySelectorAll('#segBoth button').forEach(b=>{b.classList.toggle('on',b.dataset.v===S.both);b.onclick=()=>{S.both=b.dataset.v;pSeguridad();};});
     empty(id,!cy.length);
-    ch(id,'x').setOption(base({grid:{left:40,right:50,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
-      xAxis:AX({type:'category',data:cy.map(o=>String(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
-      yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:nf}})],
-      series:[{name:'Infracciones (período común)',type:'bar',barMaxWidth:44,barWidth:'46%',itemStyle:{color:C.y},data:cy.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:cy.length<=8,position:'insideTop',color:'#1B1E22',fontSize:9.5,formatter:p=>ab(p.value,1)}},
-        {name:'Fallecimientos (período común)',type:'line',yAxisIndex:1,smooth:true,symbolSize:6,data:cy.map(o=>o.f),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},label:{show:true,position:'top',color:'#9FE3D6',fontSize:10,backgroundColor:'rgba(27,30,34,.85)',padding:[2,4],borderRadius:3,formatter:p=>nf(p.value)}}]}),true);
+    if(S.both==='index'&&cy.length){
+      const b0=cy[0];$('r-both-t').textContent=`Infracciones y fallecimientos · índice ${b0.y} = 100 (misma escala)`;
+      ch(id,'x').setOption(base({grid:{left:40,right:30,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v==null?'—':v.toFixed(1)},
+        xAxis:AX({type:'category',data:cy.map(o=>String(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',scale:true,axisLabel:{color:C.sub,fontSize:11}}),
+        series:[{name:'Infracciones',type:'line',symbolSize:6,data:cy.map(o=>o.v==null?null:+(o.v/b0.v*100).toFixed(1)),lineStyle:{width:2.5,color:C.y},itemStyle:{color:C.y},label:{show:cy.length<=8,position:'top',color:C.y,fontSize:10,formatter:p=>p.value.toFixed(0)},
+            markLine:{silent:true,symbol:'none',lineStyle:{color:'#6A717B',type:'dashed'},label:{show:false},data:[{yAxis:100}]}},
+          {name:'Fallecimientos',type:'line',symbolSize:6,data:cy.map(o=>o.f==null?null:+(o.f/b0.f*100).toFixed(1)),lineStyle:{width:2.5,color:C.r},itemStyle:{color:C.r},label:{show:cy.length<=8,position:'bottom',color:'#FF9A9C',fontSize:10,formatter:p=>p.value.toFixed(0)}}]}),true);
+    }else{
+      $('r-both-t').textContent='Infracciones y fallecimientos · período común (dos escalas)';
+      ch(id,'x').setOption(base({grid:{left:40,right:50,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:nf},
+        xAxis:AX({type:'category',data:cy.map(o=>String(o.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
+        yAxis:[AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:nf}})],
+        series:[{name:'Infracciones (período común)',type:'bar',barMaxWidth:44,barWidth:'46%',itemStyle:{color:C.y},data:cy.map(o=>({value:o.v,itemStyle:{color:C.y,opacity:op(id,SEL&&SEL.y===o.y)}})),label:{show:cy.length<=8,position:'insideTop',color:'#1B1E22',fontSize:9.5,formatter:p=>ab(p.value,1)}},
+          {name:'Fallecimientos (período común)',type:'line',yAxisIndex:1,smooth:true,symbolSize:6,data:cy.map(o=>o.f),lineStyle:{width:2.5,color:C.r},itemStyle:{color:C.r},label:{show:true,position:'top',color:'#FF9A9C',fontSize:10,backgroundColor:'rgba(27,30,34,.85)',padding:[2,4],borderRadius:3,formatter:p=>nf(p.value)}}]}),true);
+    }
   }
   { const id='r-heat',c=eff(P,id),ds=E.dates(c);
     const rows=E.years().filter(y=>E.FT(E.fsel(ds.filter(mi=>E.yOf(mi)===y)))!=null),cols=[1,2,3,4,5,6,7,8,9,10,11,12].filter(m=>E.FT(E.fsel(ds.filter(mi=>E.mOf(mi)===m)))!=null);
@@ -665,17 +762,187 @@ function pSeguridad(){
   }
 }
 
-const R={'overview':pOverview,'tendencias':pTendencias,'infracciones':pInfracciones,'estacionalidad':pEstacionalidad,'seguridad-vial':pSeguridad};
+/* =====================================================================
+   Analítica avanzada: tasas, control estadístico, proyección, mezcla,
+   concentración, estacionalidad y calidad del dato. Todo se recalcula
+   desde los datos; nada está escrito a mano.
+   ===================================================================== */
+let RAW=null,_AN=null;
+function analytics(){
+  if(_AN)return _AN;
+  const D=RAW,A={};
+  A.den={};D.den.forEach(([y,pop,veh,prec])=>A.den[y]={pop,veh,prec});
+  A.hr=new Map(D.hr.map(([id,f])=>[id,f]));
+  const vy=y=>E.T(E.sel(E.dates({y}),{})), fy=y=>E.FT(E.fsel(E.dates({y})));
+  A.years=E.years().filter(y=>A.den[y]);
+  A.rate=A.years.map(y=>{const f=fy(y),v=vy(y),d=A.den[y];return {y,f,v,pop:d.pop,veh:d.veh,
+    per100k:f==null?null:f/d.pop*1e5, per10kVeh:f==null?null:f/d.veh*1e4, vioPer1kVeh:(v==null||!E.isComplete(y))?null:v/d.veh*1e3};});
+  // índice 2018 = 100
+  const b=A.rate.find(r=>r.y===2018);
+  A.index=A.rate.filter(r=>r.y>=2018&&r.y<=2025).map(r=>({y:r.y,v:r.v/b.v*100,f:r.f/b.f*100,veh:r.veh/b.veh*100,pop:r.pop/b.pop*100}));
+  // gráfico de control I-MR, base 2016–2019
+  const fm=[];E.years().forEach(y=>{for(let m=1;m<=12;m++){const r=E.fsel([y*12+m]);if(r.length)fm.push({y,m,v:r[0].v});}});
+  const baseN=fm.filter(p=>p.y<=2019),mr=baseN.slice(1).map((p,i)=>Math.abs(p.v-baseN[i].v));
+  const CL=baseN.reduce((s,p)=>s+p.v,0)/baseN.length,MRb=mr.reduce((s,x)=>s+x,0)/mr.length,sig=MRb/1.128;
+  A.ctl={pts:fm,CL,UCL:CL+3*sig,LCL:CL-3*sig,sig,baseFrom:'2016',baseTo:'2019'};
+  let run=0,side=0;fm.forEach((p,i)=>{p.r1=p.v>A.ctl.UCL||p.v<A.ctl.LCL;const s=p.v>CL?1:p.v<CL?-1:0;
+    if(s!==0&&s===side)run++;else{run=s!==0?1:0;side=s;}p.run=run;p.side=side;p.r2=false;
+    if(run>=8){for(let k=i-run+1;k<=i;k++)fm[k].r2=true;}});
+  A.ctl.r1=fm.filter(p=>p.r1);A.ctl.r2=fm.filter(p=>p.r2);
+  // proyección del año parcial: participación ene–último mes en años completos (sin 2020)
+  const LY=E.yOf(E.LAST),LM=E.mOf(E.LAST),ytd=E.T(E.sel(E.range(LY*12+1,E.LAST),{}));
+  const shares=E.years().filter(y=>E.isComplete(y)&&y!==2020).map(y=>{const t=vy(y),p=E.T(E.sel(E.range(y*12+1,y*12+LM),{}));return {y,share:p/t};});
+  const est=shares.map(s=>ytd/s.share).sort((a,b2)=>a-b2),med=est.length%2?est[(est.length-1)/2]:(est[est.length/2-1]+est[est.length/2])/2;
+  A.proj={y:LY,lm:LM,ytd,min:est[0],max:est[est.length-1],med,shares,partial:LM<12};
+  // mezcla y concentración por año
+  A.mix=E.years().filter(y=>vy(y)!=null).map(y=>{const tt=E.typeTotals(E.dates({y}),{}),tot=[...tt.values()].reduce((s,v)=>s+v,0);
+    let hr=0,doc=0;tt.forEach((v,id)=>{if(A.hr.has(id))hr+=v;else if(E.INF[id].cat==='Documentación y registro')doc+=v;});
+    const hhi=[...tt.values()].reduce((s,v)=>s+(v/tot)**2,0)*1e4, srt=[...tt.values()].sort((a,b2)=>b2-a), top5=srt.slice(0,5).reduce((s,v)=>s+v,0)/tot;
+    return {y,hr:hr/tot,doc:doc/tot,rest:1-hr/tot-doc/tot,hhi,top5,types:[...tt.values()].filter(v=>v>0).length};});
+  // índice estacional
+  const vm=E.monthTotals(E.sel(E.dates({}),{})),vAvg=[...vm.values()].reduce((s,v)=>s+v,0)/vm.size;
+  A.season=[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{
+    const vs=[...vm.entries()].filter(([mi])=>E.mOf(mi)===m&&E.isComplete(E.yOf(mi))).map(e=>e[1]),fs=D.d.filter(r=>r[1]===m).map(r=>r[2]);
+    const vAll=[...vm.entries()].filter(([mi])=>E.isComplete(E.yOf(mi))).map(e=>e[1]),va=vAll.reduce((s,v)=>s+v,0)/vAll.length,fa=D.d.reduce((s,r)=>s+r[2],0)/D.d.length;
+    return {m,v:vs.reduce((s,x)=>s+x,0)/vs.length/va*100,f:fs.reduce((s,x)=>s+x,0)/fs.length/fa*100};});
+  // alertas de calidad: caída ≤5 % o pico ≥5× la mediana de los 12 meses previos (mediana ≥200)
+  const byType=new Map();D.v.forEach(([k,id,c])=>{const y=2018+Math.floor(k/12),m=k%12+1;if(!byType.has(id))byType.set(id,[]);byType.get(id).push({MI:y*12+m,c});});
+  A.alerts=[];byType.forEach((arr,id)=>{arr.sort((a,b2)=>a.MI-b2.MI);for(let i=6;i<arr.length;i++){const prev=arr.slice(Math.max(0,i-12),i).map(p=>p.c).sort((a,b2)=>a-b2);
+    const md=prev.length%2?prev[(prev.length-1)/2]:(prev[prev.length/2-1]+prev[prev.length/2])/2;const c=arr[i].c;
+    if(md>=200&&(c<=0.05*md||c>=5*md))A.alerts.push({MI:arr[i].MI,id,c,md,kind:c<=0.05*md?'Caída abrupta':'Pico',ratio:c/md});}});
+  A.alerts.sort((a,b2)=>b2.MI-a.MI||a.ratio-b2.ratio);
+  const am=new Map();A.alerts.forEach(a=>am.set(a.MI,(am.get(a.MI)||0)+1));A.alertMonths=am;
+  A.lastMonthSuspect=(am.get(E.LAST)||0)>=10;
+  A.zeros=D.v.filter(r=>r[2]===0).length;
+  A.lastF=Math.max(...D.d.map(r=>r[0]*12+r[1]));
+  _AN=A;return A;
+}
+window.__analytics=()=>{const A=analytics();return {rate:A.rate,ctl:{CL:A.ctl.CL,UCL:A.ctl.UCL,LCL:A.ctl.LCL,r1:A.ctl.r1.map(p=>[p.y,p.m]),r2:A.ctl.r2.length},proj:A.proj,mix:A.mix,season:A.season,alerts:A.alerts.length,alertMonths:[...A.alertMonths.entries()],zeros:A.zeros};};
+const ml=MI=>MESL[E.mOf(MI)-1].toLowerCase()+' '+E.yOf(MI);
+
+/* ---------- Hallazgos ---------- */
+function pHallazgos(){
+  const A=analytics(),L=E.yOf(E.LAST),r25=A.rate.find(r=>r.y===2025),r18=A.rate.find(r=>r.y===2018);
+  const casco=E.IDS.find(i=>/Casco Protector/.test(E.INF[i].name)),sh=y=>{const tt=E.typeTotals(E.dates({y}),{});const t=[...tt.values()].reduce((s,v)=>s+v,0);return (tt.get(casco)||0)/t;};
+  const all=measures('infracciones',{}),ly=measures('overview',{});
+  const fMax=A.season.reduce((a,b2)=>b2.f>a.f?b2:a),vMax=A.season.reduce((a,b2)=>b2.v>a.v?b2:a);
+  const lastOut=A.ctl.r1.length?A.ctl.r1[A.ctl.r1.length-1]:null,highs=A.ctl.r1.filter(p=>p.v>A.ctl.UCL);
+  const runs=[];A.ctl.pts.forEach((p,i)=>{if(p.r2&&p.side>0&&(i===0||!A.ctl.pts[i-1].r2||A.ctl.pts[i-1].side<=0))runs.push(p);});
+  const lastRunStart=runs.length?runs[runs.length-1]:null;
+  const cards=[
+    {k:pc(sh(2025)),t:sh(2025)>sh(2021)?'El casco es la primera causa de infracción y gana peso':'El casco es la primera causa de infracción',d:`«No uso del casco» es el ${pc(all.topShare)} de todas las infracciones registradas desde 2018 y pasó de ${pc(sh(2021))} en 2021 a ${pc(sh(2025))} en 2025. Las motocicletas son más de la mitad del parque vehicular (DGII).`,p:'infracciones',c:'y'},
+    {k:pc(all.top5),t:'Cinco tipos concentran más de la mitad del volumen',d:`Los 5 tipos más frecuentes suman el ${pc(all.top5)} y los 10 primeros el ${pc(all.top10)}. Una campaña sobre esos cinco cubriría la mayor parte de lo que hoy se sanciona.`,p:'infracciones',c:'y'},
+    {k:(r25.per100k).toFixed(1),t:'Fallecimientos por 100,000 habitantes en 2025',d:`La tasa pasó de ${r18.per100k.toFixed(1)} en 2018 a ${r25.per100k.toFixed(1)} en 2025. Por cada 10,000 vehículos ${Math.abs(r25.per10kVeh/r18.per10kVeh-1)<0.05?`se mantuvo casi igual (${r18.per10kVeh.toFixed(2)} → ${r25.per10kVeh.toFixed(2)}): las muertes crecieron al mismo ritmo que el parque vehicular`:`pasó de ${r18.per10kVeh.toFixed(2)} a ${r25.per10kVeh.toFixed(2)}`}.`,p:'riesgo',c:'r'},
+    {k:nf(highs.length),t:'Meses por encima del límite de control',d:`Con los límites de 2016–2019 (${Math.round(A.ctl.LCL)}–${Math.round(A.ctl.UCL)} fallecimientos al mes), ${highs.map(p=>MESL[p.m-1].toLowerCase()+' '+p.y).join(' y ')} superan el límite superior${lastRunStart?`, y desde ${MESL[lastRunStart.m-1].toLowerCase()} de ${lastRunStart.y} hay rachas de 8 o más meses seguidos por encima de la media: un cambio de nivel, no ruido`:''}.`,p:'riesgo',c:'r'},
+    {k:pcs(ly.latestYoY),t:`${L} va por debajo del mismo período de ${L-1}`,d:`De enero a ${MESL[E.mOf(E.LAST)-1].toLowerCase()} se registraron ${nf(A.proj.ytd)} infracciones. Si el resto del año sigue el patrón de años anteriores, ${L} cerraría entre ${ab(A.proj.min,2)} y ${ab(A.proj.max,2)} (estimación).`,p:'tendencias',c:'y'},
+    {k:MESL[fMax.m-1],t:`${MESL[fMax.m-1]} es el mes más crítico`,d:`${MESL[fMax.m-1]} tiene el índice estacional de fallecimientos más alto (${Math.round(fMax.f)}, donde 100 es un mes promedio) y ${MESL[vMax.m-1].toLowerCase()} el de infracciones (${Math.round(vMax.v)}).`,p:'estacionalidad',c:'y'},
+    {k:nf(A.alertMonths.get(E.LAST)||0),t:`Alertas en ${ml(E.LAST)}: desglose por tipo en revisión`,d:A.lastMonthSuspect?`En el último mes publicado ${A.alertMonths.get(E.LAST)} tipos caen a casi cero o se disparan frente a su historial, aunque el total del mes es normal. Parece un desplazamiento de columnas en el archivo de origen: el total se usa, pero el detalle por tipo de ese mes debe leerse con cautela.`:'El último mes publicado no presenta alertas relevantes.',p:'calidad',c:'o'},
+  ];
+  $('h-cards').innerHTML=cards.map(c=>`<a class="find ${c.c}" href="#${c.p}"><div class="fk">${c.k}</div><div class="ft">${c.t}</div><div class="fd">${c.d}</div><div class="fl">Ver detalle →</div></a>`).join('');
+}
+
+/* ---------- Riesgo y control ---------- */
+function pRiesgo(){
+  const A=analytics(),P='riesgo',L=A.rate.filter(r=>r.f!=null).slice(-1)[0],F=A.rate.find(r=>r.y===2018);
+  const mixL=A.mix.filter(r=>E.isComplete(r.y)).slice(-1)[0],mix21=A.mix.find(r=>r.y===2021);
+  $('k-r1').textContent=L.per100k.toFixed(1);$('k-r1s').textContent=`${L.y} · en 2018: ${F.per100k.toFixed(1)}`;
+  $('k-r2').textContent=L.per10kVeh.toFixed(2);$('k-r2s').textContent=`${L.y} · en 2018: ${F.per10kVeh.toFixed(2)}`;
+  const iv=A.rate.filter(r=>r.vioPer1kVeh!=null).slice(-1)[0];$('k-r3').textContent=iv.vioPer1kVeh.toFixed(0);$('k-r3s').textContent=`${iv.y} · en 2018: ${F.vioPer1kVeh.toFixed(0)}`;
+  $('k-r4').textContent=pc(mixL.hr);$('k-r4s').textContent=`${mixL.y} · en 2021: ${pc(mix21.hr)}`;
+  $('k-r5').textContent=A.proj.partial?ab(A.proj.med,2):'—';$('k-r5s').textContent=A.proj.partial?`rango ${ab(A.proj.min,2)} – ${ab(A.proj.max,2)} · ${A.proj.y}`:'año completo';
+  { const id='r2-rates',rs=A.rate.filter(r=>r.f!=null);
+    ch(id).setOption(base({grid:{left:40,right:56,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.value.toFixed(p.seriesIndex?2:1)}</b>`).join('<br>')},
+      xAxis:AX({type:'category',data:rs.map(r=>String(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
+      yAxis:[AX({type:'value',scale:true,axisLabel:{color:C.sub,fontSize:11}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>v.toFixed(1)}})],
+      series:[{name:'Por 100,000 habitantes',type:'line',symbolSize:6,data:rs.map(r=>+r.per100k.toFixed(2)),lineStyle:{width:3,color:C.r},itemStyle:{color:C.r},label:{show:true,position:'top',color:'#FF9A9C',fontSize:10,formatter:p=>p.value.toFixed(1)}},
+        {name:'Por 10,000 vehículos',type:'line',yAxisIndex:1,symbolSize:6,data:rs.map(r=>+r.per10kVeh.toFixed(3)),lineStyle:{width:2,type:'dashed',color:'#F4A7A8'},itemStyle:{color:'#F4A7A8'},endLabel:{show:true,color:'#F4A7A8',fontSize:10,formatter:p=>p.value.toFixed(2)}}]}),true);
+  }
+  { const id='r2-index',ix=A.index;
+    ch(id).setOption(base({grid:{left:40,right:16,top:24,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v.toFixed(1)},
+      xAxis:AX({type:'category',data:ix.map(r=>String(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',scale:true,axisLabel:{color:C.sub,fontSize:11}}),
+      series:[['Infracciones','v',C.y,2],['Fallecimientos','f',C.r,3],['Parque vehicular','veh',C.t,2],['Población','pop','#9AA5B1',2]].map(([n,k,c,w])=>({name:n,type:'line',symbolSize:5,data:ix.map(r=>+r[k].toFixed(1)),lineStyle:{width:w,color:c},itemStyle:{color:c},
+        endLabel:{show:true,color:c,fontSize:10.5,formatter:p=>p.value.toFixed(0)},markLine:k==='v'?{silent:true,symbol:'none',lineStyle:{color:'#6A717B',type:'dashed'},label:{show:false},data:[{yAxis:100}]}:undefined}))}),true);
+  }
+  { const id='r2-ctl',c=A.ctl,pts=c.pts,cats=pts.map(p=>MES[p.m-1]+' '+p.y);
+    $('r2-ctl-sub').innerHTML=`Línea central ${c.CL.toFixed(1)} · límites ${c.LCL.toFixed(1)} – ${c.UCL.toFixed(1)} (calculados con ${c.baseFrom}–${c.baseTo}) · <span style="color:#fff">●</span> fuera de límites (${c.r1.length}) · <span style="color:#F28C28">●</span> racha de 8+ meses del mismo lado (${c.r2.length} meses)`;
+    ch(id).setOption(base({grid:{left:40,right:90,top:20,bottom:30},tooltip:{...TT,trigger:'axis',formatter:ps=>{const p=pts[ps[0].dataIndex];return `${cats[ps[0].dataIndex]}<br>Fallecimientos: <b>${p.v}</b>${p.r1?'<br><b>Fuera de límites</b>':''}${p.r2?'<br>En racha de 8+ meses '+(p.side>0?'por encima':'por debajo'):''}`;}},
+      xAxis:AX({type:'category',data:cats,axisLabel:{color:C.sub,fontSize:11,interval:i=>pts[i].m===1,formatter:v=>v.split(' ')[1]}}),yAxis:AX({type:'value',min:60,axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Fallecimientos',type:'line',data:pts.map(p=>({value:p.v,symbol:'circle',symbolSize:p.r1?10:p.r2?6:3,itemStyle:{color:p.r1?'#fff':p.r2?'#F28C28':C.r,borderColor:p.r1?C.r:undefined,borderWidth:p.r1?2:0}})),lineStyle:{width:1.6,color:C.r},
+        markArea:{silent:true,itemStyle:{color:'rgba(255,255,255,.035)'},label:{color:C.sub,fontSize:10,position:'insideTop'},data:[[{name:'Período base',xAxis:cats[0]},{xAxis:cats[47]}]]},
+        markLine:{silent:true,symbol:'none',data:[{yAxis:c.UCL,name:'LSC'},{yAxis:c.CL,name:'Media'},{yAxis:c.LCL,name:'LIC'}],lineStyle:{color:'#9AA5B1',type:'dashed'},label:{color:C.sub,fontSize:10,formatter:p=>p.name+' '+p.value.toFixed(0)}}}]}),true);
+  }
+  { const id='r2-proj',p=A.proj,ys=E.years().filter(y=>E.isComplete(y));
+    const lab2=[...ys.map(String),p.y+'*'],act=[...ys.map(y=>E.T(E.sel(E.dates({y}),{}))),p.ytd];
+    ch(id).setOption(base({grid:{left:44,right:10,top:30,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>{const i=ps[0].dataIndex;return i<ys.length?`${lab2[i]}: <b>${nf(act[i])}</b>`:`${p.y} registrado (ene–${MES[p.lm-1].toLowerCase()}): <b>${nf(p.ytd)}</b><br>Proyección central: <b>${nf(p.med)}</b><br>Rango: ${nf(p.min)} – ${nf(p.max)}`;}},
+      xAxis:AX({type:'category',data:lab2,axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11,formatter:axM}}),
+      series:[{name:'Registrado',type:'bar',barMaxWidth:44,stack:'p',data:act,itemStyle:{color:C.y}},
+        {name:'Proyección (estimación)',type:'bar',barMaxWidth:44,stack:'p',data:[...ys.map(()=>null),p.partial?p.med-p.ytd:null],itemStyle:{color:'rgba(255,199,44,.25)',borderColor:C.y,borderType:'dashed',borderWidth:1},
+          label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:()=>ab(p.med,2)},
+          markLine:p.partial?{silent:true,symbol:'none',lineStyle:{color:'#fff',width:1},label:{show:false},data:[[{coord:[lab2.length-1,p.min]},{coord:[lab2.length-1,p.max]}]]}:undefined}]}),true);
+  }
+  { const id='r2-intens',rs=A.rate.filter(r=>r.vioPer1kVeh!=null);
+    ch(id).setOption(base({grid:{left:40,right:10,top:24,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v.toFixed(1)},
+      xAxis:AX({type:'category',data:rs.map(r=>String(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Infracciones por 1,000 vehículos',type:'bar',barMaxWidth:44,data:rs.map(r=>+r.vioPer1kVeh.toFixed(1)),itemStyle:{color:C.y},label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>p.value.toFixed(0)}}]}),true);
+  }
+  { const id='r2-season',s=A.season;
+    ch(id).setOption(base({grid:{left:36,right:10,top:20,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v.toFixed(0)},
+      xAxis:AX({type:'category',data:MES,axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',scale:true,axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Infracciones',type:'line',symbolSize:5,data:s.map(r=>+r.v.toFixed(1)),lineStyle:{width:2,color:C.y},itemStyle:{color:C.y},markLine:{silent:true,symbol:'none',lineStyle:{color:'#6A717B',type:'dashed'},label:{show:false},data:[{yAxis:100}]}},
+        {name:'Fallecimientos',type:'line',symbolSize:5,data:s.map(r=>+r.f.toFixed(1)),lineStyle:{width:2.5,color:C.r},itemStyle:{color:C.r}}]}),true);
+  }
+  { const id='r2-mix',mx=A.mix;
+    ch(id).setOption(base({grid:{left:40,right:10,top:16,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',axisPointer:{type:'shadow'},valueFormatter:v=>pc(v)},
+      xAxis:AX({type:'category',data:mx.map(r=>E.yearLabel(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',max:1,axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}}),
+      series:[['Alto riesgo','hr',C.y],['Documentación','doc','#9AA5B1'],['Resto','rest','#4E555E']].map(([n,k,c],i)=>({name:n,type:'bar',stack:'m',barMaxWidth:44,data:mx.map(r=>r[k]),itemStyle:{color:c},
+        label:{show:true,color:i===0?'#1B1E22':'#fff',fontSize:9.5,formatter:p=>Math.round(p.value*100)+'%'}}))}),true);
+  }
+  { const id='r2-hhi',mx=A.mix;
+    ch(id).setOption(base({grid:{left:44,right:44,top:20,bottom:44},legend:{...LEG},tooltip:{...TT,trigger:'axis',formatter:ps=>ps[0].name+'<br>'+ps.map(p=>`${p.marker}${p.seriesName}: <b>${p.seriesIndex?pc(p.value):nf(p.value)}</b>`).join('<br>')},
+      xAxis:AX({type:'category',data:mx.map(r=>E.yearLabel(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),
+      yAxis:[AX({type:'value',min:0,axisLabel:{color:C.sub,fontSize:11}}),AX({type:'value',scale:true,splitLine:{show:false},axisLabel:{color:C.sub,fontSize:11,formatter:v=>Math.round(v*100)+'%'}})],
+      series:[{name:'HHI',type:'bar',barMaxWidth:44,data:mx.map(r=>Math.round(r.hhi)),itemStyle:{color:'rgba(255,199,44,.75)'},label:{show:true,position:'insideTop',color:'#1B1E22',fontSize:9.5}},
+        {name:'Participación del Top 5',type:'line',yAxisIndex:1,symbolSize:5,data:mx.map(r=>r.top5),lineStyle:{width:2.5,color:C.t},itemStyle:{color:C.t},label:{show:true,position:'top',color:'#9FE3D6',fontSize:9.5,backgroundColor:'rgba(27,30,34,.85)',padding:[1,3],formatter:p=>Math.round(p.value*100)+'%'}}]}),true);
+  }
+}
+
+/* ---------- Calidad del dato ---------- */
+let QSEL=null;
+function pCalidad(){
+  const A=analytics();
+  $('q-k1').textContent=MESL[E.mOf(E.LAST)-1]+' '+E.yOf(E.LAST);$('q-k1s').textContent=`${E.MWD(E.sel(E.dates({}),{}))} meses desde enero 2018`;
+  $('q-k2').textContent=MESL[E.mOf(A.lastF)-1]+' '+E.yOf(A.lastF);$('q-k2s').textContent=`${RAW.d.length} meses desde enero 2016`;
+  $('q-k3').textContent=nf(A.zeros);$('q-k4').textContent=nf(A.alerts.length);$('q-k4s').textContent=`en ${A.alertMonths.size} meses distintos`;
+  const top=[...A.alertMonths.entries()].sort((a,b2)=>b2[1]-a[1])[0];$('q-k5').textContent=MESL[E.mOf(top[0])-1]+' '+E.yOf(top[0]);$('q-k5s').textContent=`${top[1]} tipos con alerta`;
+  { const id='q-alerts',mis=E.dates({}).filter(mi=>mi>=2018*12+1&&mi<=E.LAST),vals=mis.map(mi=>A.alertMonths.get(mi)||0);
+    H[id]=p=>{const mi=mis[p.dataIndex];if(mi==null)return;QSEL=QSEL===mi?null:mi;pCalidad();};
+    ch(id,'x').setOption(base({grid:{left:36,right:10,top:20,bottom:24},tooltip:{...TT,trigger:'axis',valueFormatter:v=>v+' tipos'},
+      xAxis:AX(monthAxis(mis)),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Tipos con alerta',type:'bar',data:vals.map((v,i)=>({value:v,itemStyle:{color:v>=10?'#F28C28':C.y,opacity:QSEL&&QSEL!==mis[i]?0.3:1}})),
+        label:{show:true,position:'top',color:C.txt,fontSize:10,formatter:p=>p.value>=10?MES[E.mOf(mis[p.dataIndex])-1]+' '+E.yOf(mis[p.dataIndex])+': '+p.value:''}}]}),true);
+  }
+  { const id='q-types',mx=A.mix;
+    ch(id).setOption(base({grid:{left:36,right:10,top:20,bottom:24},tooltip:{...TT,trigger:'axis'},
+      xAxis:AX({type:'category',data:mx.map(r=>E.yearLabel(r.y)),axisLabel:{color:C.sub,fontSize:11,interval:0}}),yAxis:AX({type:'value',axisLabel:{color:C.sub,fontSize:11}}),
+      series:[{name:'Tipos con registros',type:'bar',barMaxWidth:44,data:mx.map(r=>r.types),itemStyle:{color:C.t},label:{show:true,position:'top',color:C.txt,fontSize:10}}]}),true);
+  }
+  const rows=A.alerts.filter(a=>!QSEL||a.MI===QSEL);
+  $('q-tbl-t').textContent='Detalle de alertas'+(QSEL?' · '+MESL[E.mOf(QSEL)-1]+' '+E.yOf(QSEL)+' (clic de nuevo en la barra para ver todas)':' · '+rows.length+' alertas');
+  $('q-tbl').innerHTML='<table><thead><tr><th>Mes</th><th style="text-align:left">Tipo de infracción</th><th>Valor</th><th>Mediana 12 meses previos</th><th>Valor / mediana</th><th style="text-align:left">Alerta</th></tr></thead><tbody>'+
+    rows.map(a=>`<tr><td>${MES[E.mOf(a.MI)-1]} ${E.yOf(a.MI)}</td><td class="name" style="text-align:left" title="${E.INF[a.id].name}">${E.INF[a.id].name}</td><td>${nf(a.c)}</td><td>${nf(a.md)}</td><td>${a.ratio>=1?a.ratio.toFixed(1)+'×':(a.ratio*100).toFixed(1)+'%'}</td><td style="text-align:left;color:${a.kind==='Pico'?'#9FE3D6':'#F3A25B'}">${a.kind}</td></tr>`).join('')+'</tbody></table>';
+}
+
+const R={'hallazgos':pHallazgos,'riesgo':pRiesgo,'calidad':pCalidad,'overview':pOverview,'tendencias':pTendencias,'infracciones':pInfracciones,'estacionalidad':pEstacionalidad,'seguridad-vial':pSeguridad};
 function render(){
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id==='p-'+S.page));
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.p===S.page));
   $('subtitle').textContent=PAGES[S.page].sub+'  ·  Proyecto independiente, no oficial';
   slicers();R[S.page]();requestAnimationFrame(()=>Object.values(charts).forEach(c=>c.resize()));
 }
-function route(){const h=location.hash.slice(1);const np=R[h]?h:'overview';if(np!==S.page)SEL=null;S.page=np;render();}
+function route(){const h=location.hash.slice(1);const np=R[h]?h:'hallazgos';if(np!==S.page)SEL=null;S.page=np;render();}
 window.__state=S;window.__render=render;window.__sel=()=>SEL;
 const load=window.__DATA__?Promise.resolve(window.__DATA__):fetch('data.json').then(r=>r.json());
-load.then(D=>{ENGINE.load(D);$('loading').remove();window.addEventListener('hashchange',route);window.addEventListener('resize',()=>Object.values(charts).forEach(c=>c.resize()));route();
+load.then(D=>{ENGINE.load(D);RAW=D;$('loading').remove();window.addEventListener('hashchange',route);window.addEventListener('resize',()=>Object.values(charts).forEach(c=>c.resize()));route();
   window.__ready=true;
 }).catch(e=>{$('loading').textContent='No se pudieron cargar los datos: '+e.message;});
 })();
